@@ -40,6 +40,18 @@ urlpatterns = [
     path('restaurants_update_status/<int:id>', views.restaurants_update_status, name='restaurants_update_status'),
 
 
+ # Foundations
+    path('foundation_login', views.foundation_login, name='foundation_login'),
+    path('foundation_home', views.foundation_home, name='foundation_home'),
+    path('foundation_signup', views.foundation_signup, name='foundation_signup'),
+    path('foundation_add_post', views.foundation_add_post, name='foundation_add_post'),
+    path('foundation_food_posts', views.foundation_food_posts, name='foundation_food_posts'),
+    path('foundation_edit_post/<int:id>', views.foundation_edit_post, name='foundation_edit_post'),
+    path('foundation_delete_post/<int:id>', views.foundation_delete_post, name='foundation_delete_post'),
+    path('accept_post/<int:id>', views.accept_post, name='accept_post'),
+#foundation_profile
+     path('foundation_profile', views.foundation_profile, name='foundation_profile'),
+
 
 
     # Autosuggest
