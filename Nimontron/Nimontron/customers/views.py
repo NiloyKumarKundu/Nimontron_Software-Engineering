@@ -758,3 +758,41 @@ def foundation_signup(request):
 
 
 
+
+
+
+def foundation_add_post(request):
+    if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+    temp['error'] = ''
+    if request.method == 'POST':
+    
+        title=request.POST['post_title']
+        description = request.POST['description']
+        items=request.POST['items']
+        quantity=request.POST['quantity']
+        contact=request.POST['contact']
+        area=request.POST['area']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date'] 
+
+        user = request.user
+        foundation= Foundation.objects.get(user = user)
+        
+    
+        Foundation_Post.objects.create(foundation=foundation,title=title,description=description,items=items,quantity=quantity,contact=contact,area=area,start_date=start_date,
+             end_date=end_date,status='pending', creation_date=date.today(), contact_no='',fname='')
+          
+        temp['error'] = 'no'
+        
+    
+    return render(request, 'customers/foundation_add_post.html', temp)
+
+def foundation_food_posts(request):
+    if not request.user.is_authenticated:
+     return redirect('customer:login_as')
+    user = request.user
+    foundation = Foundation.objects.get(user=user)
+    post = Foundation_Post.objects.filter(foundation=foundation)
+    temp['post'] = post
+    return render(request, 'customers/foundation_food_posts.html', temp)
