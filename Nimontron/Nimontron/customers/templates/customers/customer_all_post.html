@@ -1,0 +1,150 @@
+{% include 'customers/customer_header.html' %}
+{% load static %}
+
+<style>
+    body {
+        background: #d1d5db
+    }
+
+    .height {
+        margin-bottom: 30px;
+    }
+
+    .form {
+        position: relative
+    }
+
+    .form .fa-search {
+        position: absolute;
+        top: 17px;
+        left: 18px;
+        color: #9ca3af
+    }
+
+    .form span {
+        position: absolute;
+        right: 17px;
+        top: 13px;
+        padding: 2px;
+        border-left: 1px solid #d1d5db
+    }
+
+    .form-input {
+        height: 50px;
+        text-indent: 33px;
+        border-radius: 10px
+    }
+
+    .form-input:focus {
+        box-shadow: none;
+        border: none
+    }
+
+    .form button {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        height: 50px;
+        width: 110px;
+        border: 1px solid #9ca3af;
+        border-radius: 0px 10px 10px 0px;
+    }
+</style>
+
+
+<div class="container">
+    <div class="row">
+        {% csrf_token %}
+        <form>
+            <div class="row height d-flex justify-content-center align-items-center">
+                <div class="col-md-6">
+                    <div class="form"> <i class="fa fa-search"></i> <input id="tags" name="search" type="text"
+                            class="form-control form-input" placeholder="Search by food name/price/location/restaurant name/category"> <button
+                            class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {% for i in total_posts %}
+        <div class="col-md-3">
+            <div class="card mb-4" style="width: 19rem;">
+                <img class="card-img-top" height="200px" src=" {{i.image.url}}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{i.title}}</h5>
+                    <p class="card-text">
+                        <del>{{i.prev_price}} TK </del> <span>{{i.new_price}} TK</span>
+                        <br>
+                        Restaurant: {{i.restaurant.user.first_name}} {{i.restaurant.user.last_name}}
+                        <br>
+                        Location: {{i.location}}
+                        <br>
+                        Category: {{i.category}}
+                    </p>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'customers:customer_food_post_details' i.id %}" type="button" class="btn btn-sm btn-secondary">Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Pagination  -->
+        <br>
+        <div class="d-flex justify-content-center">
+            <nav aria-label="...">
+                <ul class="pagination">
+
+
+                    {% if not total_posts.has_previous %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    {% if total_posts.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ total_posts.previous_page_number }}"
+                            tabindex="-1">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    
+                    {% for i in nums %}
+                    
+                    {% if forloop.counter == total_posts.number %}
+                    <li class="page-item active">
+                        <a class="page-link" href=""> {{ total_posts.number }} </a> <span
+                            class="sr-only">(current)</span></a>
+                    </li>
+                        
+                    {% endif %}
+                    {% if forloop.counter != total_posts.number %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ forloop.counter }}"
+                            tabindex="-1">{{ forloop.counter }}</a>
+                    </li>
+                    {% endif %}
+                        
+                    {% endfor %}
+
+
+                    {% if total_posts.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ total_posts.next_page_number }}">Next</a>
+                    </li>
+                    {% endif %}
+
+
+                    {% if not total_posts.has_next %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+
+{% include 'customers/customer_footer.html' %}

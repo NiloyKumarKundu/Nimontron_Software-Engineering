@@ -1,0 +1,72 @@
+{% include 'customers/restaurants_header.html' %}
+{% load static %}
+
+<!-- Sweet Alert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+
+
+<div class="container">
+    <p>Manage Post Details</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Title</th>
+                <th scope="col">Previous Price</th>
+                <th scope="col">Current Price</th>
+                <th scope="col">Image</th>
+                <th scope="col">Creation Date</th>
+                <th scope="col"> <span class="ml-4">Action</span> </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for i in post %}
+            <tr>
+                <th cope="row">{{forloop.counter}}</th>
+                <th>{{i.title}}</th>
+                <td>{{i.prev_price}}</td>
+                <td>{{i.new_price}}</td>
+                <td><img src="{{i.image.url}}" style="width: 80px; height: 60px;"></td>
+                <td>{{i.creation_date}}</td>
+                <td><a href="{% url 'customers:restaurants_edit_post' i.id %}" class="btn btn-success btn-sm">Edit</a>
+                    <a href="{% url 'customers:restaurants_delete_post' i.id %}"
+                        class="btn btn-danger delete ml-2 btn-sm">Delete</a></td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+
+{% include 'customers/restaurants_footer.html' %}
+
+
+
+<script>
+    $(".delete").click(function (e) {
+        console.log("Pressed");
+        var self = $(this);
+        e.preventDefault();
+        swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this post!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Your post has been deleted successfully", {
+                        icon: "success",
+                    }).then((value) => {
+                        location.href = self.attr('href');
+                    });
+                }
+            });
+    });
+</script>

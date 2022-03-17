@@ -1,0 +1,50 @@
+{% include 'customers/customer_header.html' %}
+{% load static %}
+
+<div class="container">
+    <div class="row px-4">
+        <div class="col-md-8">
+            {% include 'customers/messages.html' %}
+            <div class="card p-2 mb-3">
+                <div style="display: flex; justify-content: center; height: auto; width: 100%;">
+                    <img class="card-img-top" style="width: 100%; height: auto; border-radius: 4px 4px 4px 4px;"
+                        src="{{ post.image.url }}" alt="Card image cap">
+                </div>
+
+                <div class="card-body">
+                    <h5 class="card-title"> {{ post.title }} </h5>
+                    <p class="card-text"> <del>{{ post.prev_price }} TK</del> <span>{{ post.new_price }} TK</span> </p>
+                    <p class="card-text" style="margin-top: -15px;"><small
+                            class="text-muted">{{ post.location }}</small></p>
+                    <p class="card-text"> {{ post.description }} </p>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="col-md-12 mb-4">
+                        <div class="d-flex justify-content-center">
+                            <input type="submit" style="border-radius: 5px !important;" value="Add To Cart"
+                                class="btn btn-primary">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% include 'customers/customer_footer.html' %}
+
+{% if error == 'no' %}
+<script>
+    alert('Add Post Successfully!');
+    window.location = ('{% url "customers:customer_view_cart" %}')
+</script>
+{% endif %}
+
+{% if error == 'yes' %}
+<script>
+    alert('Something went wrong! Try again....');
+</script>
+{% endif %}

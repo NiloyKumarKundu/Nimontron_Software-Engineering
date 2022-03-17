@@ -1,0 +1,51 @@
+{% include 'customers/restaurants_header.html' %}
+{% load static %}
+
+<div class="container">
+    <div class="title">
+        <div class="row">
+            <div class="col">
+                <h4 class="text-secondary"><b>Delivered Orders</b></h4>
+            </div>
+        </div>
+    </div>
+
+
+    {% if size %}
+    <div class="p-4">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th>Food Name</th>
+                    <th>Customer's Name</th>
+                    <th>Order/Deliver Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in delivered_order %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <th>{{ i.title }}</th>
+                    <td>{{ i.user.first_name }} {{ i.user.last_name }}</td>
+                    <td>{{ i.delivery_date }}</td>
+                    <td>
+                        <a href="{% url 'customers:restaurants_update_status' i.id %}"
+                            class="btn btn-sm btn-primary">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+
+    {% if size == 0 %}
+    <p>You haven't deliver any order yet.</p>
+    {% endif %}
+</div>
+
+
+{% include 'customers/restaurants_footer.html' %}

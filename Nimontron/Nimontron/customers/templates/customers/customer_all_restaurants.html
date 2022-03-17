@@ -1,0 +1,90 @@
+{% include 'customers/customer_header.html' %}
+{% load static %}
+
+<style>
+    body {
+        background: #d1d5db
+    }
+
+    .height {
+        margin-bottom: 30px;
+    }
+
+    .form {
+        position: relative
+    }
+
+    .form .fa-search {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: #9ca3af
+    }
+
+    .form span {
+        position: absolute;
+        right: 17px;
+        top: 13px;
+        padding: 2px;
+        border-left: 1px solid #d1d5db
+    }
+
+    .form-input {
+        height: 50px;
+        text-indent: 33px;
+        border-radius: 10px
+    }
+
+    .form-input:focus {
+        box-shadow: none;
+        border: none
+    }
+
+    .form button {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        height: 50px;
+        width: 110px;
+        border: 1px solid #9ca3af;
+        border-radius: 0px 10px 10px 0px;
+    }
+</style>
+
+<div class="container">
+    <form>
+        {% csrf_token %}
+        <div class="row height d-flex justify-content-center align-items-center">
+            <div class="col-md-6">
+                <div class="form"> <i class="fa fa-search"></i> <input id="tag" name="search" type="text"
+                        class="form-control form-input" placeholder="Search by restaurant name/rating/address"> <button
+                        class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        {% for i in restaurant %}
+        <div class="col-md-3">
+            <div class="card mb-4" style="width: 19rem;">
+                <img class="card-img-top" height="200px" src=" {{i.image.url}}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ i.user.first_name }}</h5>
+                    <p class="card-text">
+                        {{ i.description|truncatechars:70 }}
+                        <br>
+                    </p>
+                    <p>
+                        Location: {{i.address}}
+                    </p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'customers:restaurant_all_post' %}" type="button" class="nav-item nav-link btn btn-primary {% if request.path == '/customer_all_post' %} active {% endif %}">Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+{% include 'customers/customer_footer.html' %}

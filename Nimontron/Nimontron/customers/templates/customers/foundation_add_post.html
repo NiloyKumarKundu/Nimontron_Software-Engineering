@@ -1,0 +1,92 @@
+{% include 'customers/restaurants_header.html' %}
+{% load static %}
+
+
+<section>
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="form-group col-6">
+                <div class="card card-registration" style="border-radius: 5px;">
+                    <div class="card-body p-4 text-center">
+                        <form name="signup" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <h3>Donation Post</h3>
+
+                            <div class="form-outline mb-4">
+                                <input type="text" name="post_title" class="form-control" placeholder="Foundation Name"
+                                    required />
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <textarea class="form-control" name="description" placeholder="Who needs the Donation"
+                                    rows="3"></textarea>
+                            </div>
+
+
+                            <div class="form-outline mb-4">
+                                <input type="text" name="items" class="form-control"
+                                    placeholder="Items name(Rice,vegetable,chicken curry/Kacchi)" required />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="text" name="quantity" class="form-control"
+                                    placeholder="quantity(10 people/50 people/100 people)" required />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="text" name="contact " class="form-control" placeholder="contact number"
+                                    required />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="text" name="area " class="form-control" placeholder="Preferable Area"
+                                    required />
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <p class="text-left">Start Date</p>
+                                </div>
+
+                                <div class="form-group col-md-9">
+                                    <input type="date" name="start_date" class="form-control" required />
+                                </div>
+                            </div>
+
+
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <p class="text-left">End Date</p>
+                                </div>
+
+                                <div class="form-group col-md-9">
+                                    <input type="date" name="end_date" class="form-control" required />
+                                </div>
+                                <button class="btn btn-primary" style="width: 200px;" type="submit">Add Post</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+{% include 'customers/foundation_footer.html' %}
+
+
+
+{% if error == 'no' %}
+<script>
+    alert('Add Post Successfully!');
+    window.location = ('{% url "customers:foundation_food_posts" %}')
+</script>
+{% endif %}
+
+{% if error == 'yes' %}
+<script>
+    alert('Something went wrong! Try again....');
+</script>
+{% endif %}
