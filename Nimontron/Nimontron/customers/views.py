@@ -859,5 +859,21 @@ def foundation_delete_post(request, id):
      return render(request, 'customers/foundation_food_posts.html', temp)
 
 
+def accept_post(request,id):
+    if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+    user=request.user
+    cs=Customer.objects.get(user=user)
+    post=Foundation_Post.objects.get(id=id)
+    post.status="Accepted"
+    post.contact_no=cs.contact_no
+    post.fname=cs.user.first_name
+    post.save()
+
+    post = Foundation_Post.objects.all()
+    temp['post'] = post
+    return render(request, 'customers/donate.html', temp)
+
+
 
      
