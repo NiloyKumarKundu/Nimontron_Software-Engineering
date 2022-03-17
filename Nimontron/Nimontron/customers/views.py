@@ -700,3 +700,61 @@ def foundation_profile(request):
     return render(request, 'customers/restaurant_profile.html', temp)
 
 
+
+#Foundation
+
+
+def foundation_login(request):
+    temp['title'] = 'Foundation LogIn'
+    temp['sub_title'] = 'Foundation Login'
+    temp['error'] = ''
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(username=email, password=password)
+        if user:
+            try:
+                user1 = Foundation.objects.get(user=user)
+                if user1.type == "foundation" and user1.status != 'pending' :
+                    login(request, user)
+                    temp['error'] = 'no'
+                else:
+                    temp['error'] = 'not'
+            except:
+                temp['error'] = 'yes'
+        else:
+            temp['error'] = 'yes'
+    return render(request, 'customers/foundation_login.html', temp)
+
+
+
+def foundation_home(request):
+    temp['title'] = 'Nimontron'
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    return render(request, 'customers/foundation_home.html', temp)
+
+
+def foundation_signup(request):
+    temp['title'] = 'Sign Up As a Foundation'
+    temp['sub_title'] = 'Sign Up'
+    temp['error'] = ''
+    if request.method == 'POST':
+        first_name = request.POST['rname']
+        email = request.POST['email']
+        address = request.POST['address']
+        image = request.FILES['image']
+        password = request.POST['password']
+        contact_no = request.POST['contact']
+        description = request.POST['description']
+        ngo_code=request.POST['ngo_code']
+        Date_of_Establishment=request.POST['Date_of_Establishment']
+    
+        user = User.objects.create_user(first_name=first_name, username=email, password=password)
+        Foundation.objects.create(user=user, contact_no=contact_no,description = description,address=address, image=image, code_no= ngo_code, Doe=Date_of_Establishment, type='foundation', status='pending')
+        temp['error'] = 'no'
+
+    return render(request, 'customers/foundation_signup.html', temp)
+
+
+
