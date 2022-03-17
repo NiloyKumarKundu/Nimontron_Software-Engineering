@@ -1,7 +1,6 @@
 
-{% include 'customers/customer_header.html' %}
+{% include 'customers/restaurants_header.html' %}
 
-{% load static %}
 {% csrf_token %}
 {% load static %}
 
@@ -14,7 +13,7 @@
 
         {% comment %} {% include 'includes/navigation.html' %} {% endcomment %}
 
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST"  enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
                 <div class="col-12 col-xl-8">
@@ -91,11 +90,8 @@
             </div>
       </form>
 
-        {% include 'customers/customer_footer.html' %}
-
+      
     </main>
+    {% include 'customers/restaurants_footer.html' %}
 
 {% endblock content %}
-
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
