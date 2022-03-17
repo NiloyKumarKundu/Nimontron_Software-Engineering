@@ -796,3 +796,68 @@ def foundation_food_posts(request):
     post = Foundation_Post.objects.filter(foundation=foundation)
     temp['post'] = post
     return render(request, 'customers/foundation_food_posts.html', temp)
+
+
+
+
+
+
+def foundation_edit_post(request,id):
+    if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+    temp['error'] = ''
+    post = Foundation_Post.objects.get(id=id)
+
+
+    if request.method == 'POST':
+    
+        title=request.POST['post_title']
+        description = request.POST['description']
+        items=request.POST['items']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date'] 
+
+
+        post.title=title
+        post.description=description
+        post.items=items
+        
+
+        try:
+            post.save()
+            temp['error'] = 'no'
+        except:
+            temp['error'] = 'yes'
+  
+
+        if start_date:
+            try:
+                post.start_date = start_date
+                post.save()
+            except:
+                pass
+
+        if end_date:
+            try:
+                post.end_date = end_date
+                post.save()
+            except:
+                pass
+
+    temp['post'] = post
+        
+    
+    return render(request, 'customers/foundation_edit_post.html', temp)
+
+
+
+def foundation_delete_post(request, id):
+     if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+     post=Foundation_Post.objects.filter(id=id)
+     post.delete()
+     return render(request, 'customers/foundation_food_posts.html', temp)
+
+
+
+     
