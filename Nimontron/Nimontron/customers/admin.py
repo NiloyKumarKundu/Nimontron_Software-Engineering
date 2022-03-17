@@ -8,4 +8,5 @@ admin.site.register(Restaurant)
 admin.site.register(Post)
 admin.site.register(Category)
 admin.site.register(Cart)
-
+admin.site.register(Foundation)
+admin.site.register(Foundation_Post)

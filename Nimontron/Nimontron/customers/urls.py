@@ -49,6 +49,7 @@ urlpatterns = [
     path('foundation_edit_post/<int:id>', views.foundation_edit_post, name='foundation_edit_post'),
     path('foundation_delete_post/<int:id>', views.foundation_delete_post, name='foundation_delete_post'),
     path('accept_post/<int:id>', views.accept_post, name='accept_post'),
+    
 #foundation_profile
      path('foundation_profile', views.foundation_profile, name='foundation_profile'),
 
