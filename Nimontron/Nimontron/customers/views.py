@@ -21,31 +21,31 @@ temp = {'name': 'Nimontron', 'title': 'Nimontron', 'sub_title': '', 'error': '',
 # Normal View
 
 def index(request):
-    return render(request, 'customers/index.html', temp)
+    return render(request, 'visitors/index.html', temp)
 
 
 def about(request):
     temp['title'] = 'About Us'
     temp['sub_title'] = 'About'
-    return render(request, 'customers/about.html', temp)
+    return render(request, 'visitors/about.html', temp)
 
 
 def service(request):
     temp['title'] = 'Services'
     temp['sub_title'] = 'Service'
-    return render(request, 'customers/service.html', temp)
+    return render(request, 'visitors/service.html', temp)
 
 
 def restaurant_lists(request):
     temp['title'] = 'Restaurants'
     temp['sub_title'] = 'Restaurants'
-    return render(request, 'customers/restaurant_lists.html', temp)
+    return render(request, 'visitors/restaurant_lists.html', temp)
 
 
 def contact(request):
     temp['title'] = 'Contact Us'
     temp['sub_title'] = 'Contact'
-    return render(request, 'customers/contact.html', temp)
+    return render(request, 'visitors/contact.html', temp)
 
 
 
@@ -54,13 +54,13 @@ def donate(request):
     temp['sub_title'] = 'Donate Others'
     post = Foundation_Post.objects.all()
     temp['post'] = post
-    return render(request, 'customers/donate.html', temp)
+    return render(request, 'visitors/donate.html', temp)
 
 
 def login_as(request):
     temp['title'] = 'Log In As'
     temp['sub_title'] = 'Log In As'
-    return render(request, 'customers/login_as.html', temp)
+    return render(request, 'visitors/login_as.html', temp)
 
 
 # For All User
@@ -95,7 +95,7 @@ def signup(request):
         except:
             temp['error'] = 'yes'
 
-    return render(request, 'customers/signup.html', temp)
+    return render(request, 'visitors/signup.html', temp)
 
 
 
@@ -113,14 +113,14 @@ def customer_login(request):
                 if user1.type == "customer":
                     login(request, user)
                     messages.warning(request, 'Something went wrong! Please try again...')
-                    return render(request, 'customers/customer_home.html', temp)
+                    return redirect('customers:customer_home')
                 else:
                     messages.warning(request, 'Something went wrong! Please try again...')
             except:
                 messages.warning(request, 'Something went wrong! Please try again...')
         else:
             messages.error(request, 'Email or password is wrong!')
-    return render(request, 'customers/login.html', temp)
+    return render(request, 'visitors/login.html', temp)
 
 
 
@@ -356,7 +356,7 @@ def restaurants_signup(request):
             messages.warning(request, 'Something went wrong! Please try again...')
         except:
             messages.error(request, 'Email or password is wrong!')
-    return render(request, 'customers/restaurants_signup.html', temp)
+    return render(request, 'visitors/restaurants_signup.html', temp)
 
 
 
@@ -374,14 +374,14 @@ def restaurants_login(request):
                 if user1.type == "restaurant" and user1.status != 'pending':
                     login(request, user)
                     temp['error'] = 'no'
-                    return redirect('../restaurants_home')
+                    return redirect('customers:restaurants_home')
                 else:
                     messages.error(request, 'Please wait for the Admin approval.')
             except:
                 messages.error(request, 'Email is not identified. Please sign up first.')
         else:
             messages.error(request, 'Email or password is wrong!')
-    return render(request, 'customers/restaurants_login.html', temp)
+    return render(request, 'visitors/restaurants_login.html', temp)
 
 
 
@@ -392,7 +392,7 @@ def restaurants_home(request):
 
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
-    return render(request, 'customers/restaurants_home.html', temp)
+    return render(request, 'restaurants/restaurants_home.html', temp)
 
 
 def restaurants_change_password(request):
@@ -412,7 +412,7 @@ def restaurants_change_password(request):
                 temp['error'] = 'not'
         except:
             error = 'yes'
-    return render(request, 'customers/restaurants_change_password.html', temp)
+    return render(request, 'restaurants/restaurants_change_password.html', temp)
 
 
 def restaurants_add_post(request):
@@ -444,7 +444,7 @@ def restaurants_add_post(request):
             messages.success(request, 'Item has been added successfully.')
         except:
             messages.error(request, 'Something went wrong. Please try again!')
-    return render(request, 'customers/restaurants_add_post.html', temp)
+    return render(request, 'restaurants/restaurants_add_post.html', temp)
 
 
 def restaurant_all_post(request):
@@ -532,7 +532,7 @@ def restaurants_food_posts(request):
     restaurant = Restaurant.objects.get(user=user)
     post = Post.objects.filter(restaurant=restaurant)
     temp['post'] = post
-    return render(request, 'customers/restaurants_food_posts.html', temp)
+    return render(request, 'restaurants/restaurants_food_posts.html', temp)
 
 
 
@@ -578,7 +578,7 @@ def restaurants_edit_post(request, id):
                 pass
 
     temp['post'] = post
-    return render(request, 'customers/restaurants_edit_post.html', temp)
+    return render(request, 'restaurants/restaurants_edit_post.html', temp)
 
 
 
@@ -601,7 +601,7 @@ def restaurants_pending_order(request):
     active_order = Cart.objects.filter(restaurant=res, status='Active')
     temp['pending_order'] = len(active_order)
     temp['active_order'] = active_order
-    return render(request, 'customers/restaurants_pending_order.html', temp)
+    return render(request, 'restaurants/restaurants_pending_order.html', temp)
 
 
 def restaurants_update_status(request, id):
@@ -617,7 +617,7 @@ def restaurants_update_status(request, id):
         messages.success(request, 'Status has been updated successfully!')
     temp['post'] = post
 
-    return render(request, 'customers/restaurants_update_status.html', temp)
+    return render(request, 'restaurants/restaurants_update_status.html', temp)
         
 
 
@@ -632,7 +632,7 @@ def restaurants_delivered_order(request):
     delivered_order = Cart.objects.filter(restaurant=res, status='Delivered')
     temp['delivered_order'] = delivered_order
     temp['size'] = len(delivered_order)
-    return render(request, 'customers/restaurants_delivered_order.html', temp)
+    return render(request, 'restaurants/restaurants_delivered_order.html', temp)
 
 
 
@@ -650,7 +650,7 @@ def autosuggest(request):
 #customer_profile
 def customer_profile(request):
     temp['title'] = 'Profile'
-    temp['sub-title'] = 'Profile'
+    temp['sub_title'] = 'Profile'
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
     user=request.user
@@ -683,7 +683,20 @@ def restaurant_profile(request):
     except:
         data=Customer.objects.all().first
     temp['info'] = data
-    return render(request, 'customers/restaurant_profile.html', temp) 
+    return render(request, 'restaurants/restaurant_profile.html', temp) 
+
+
+
+# Restaurant Donation Part
+
+#Restaurants Donation Post
+def restaurants_donation_post(request):
+    return render(request, 'restaurants/restaurants_donation_post.html', temp)
+
+
+
+
+
 
 #foundation_profile
 def foundation_profile(request):
@@ -718,13 +731,14 @@ def foundation_login(request):
                 if user1.type == "foundation" and user1.status != 'pending' :
                     login(request, user)
                     temp['error'] = 'no'
+                    return redirect('customers:foundation_home')
                 else:
                     temp['error'] = 'not'
             except:
                 temp['error'] = 'yes'
         else:
             temp['error'] = 'yes'
-    return render(request, 'customers/foundation_login.html', temp)
+    return render(request, 'visitors/foundation_login.html', temp)
 
 
 
@@ -732,7 +746,7 @@ def foundation_home(request):
     temp['title'] = 'Nimontron'
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
-    return render(request, 'customers/foundation_home.html', temp)
+    return render(request, 'foundations/foundation_home.html', temp)
 
 
 def foundation_signup(request):
@@ -754,7 +768,7 @@ def foundation_signup(request):
         Foundation.objects.create(user=user, contact_no=contact_no,description = description,address=address, image=image, code_no= ngo_code, Doe=Date_of_Establishment, type='foundation', status='pending')
         temp['error'] = 'no'
 
-    return render(request, 'customers/foundation_signup.html', temp)
+    return render(request, 'visitors/foundation_signup.html', temp)
 
 
 
@@ -786,7 +800,7 @@ def foundation_add_post(request):
         temp['error'] = 'no'
         
     
-    return render(request, 'customers/foundation_add_post.html', temp)
+    return render(request, 'foundations/foundation_add_post.html', temp)
 
 def foundation_food_posts(request):
     if not request.user.is_authenticated:
@@ -795,7 +809,7 @@ def foundation_food_posts(request):
     foundation = Foundation.objects.get(user=user)
     post = Foundation_Post.objects.filter(foundation=foundation)
     temp['post'] = post
-    return render(request, 'customers/foundation_food_posts.html', temp)
+    return render(request, 'foundations/foundation_food_posts.html', temp)
 
 
 
@@ -847,7 +861,7 @@ def foundation_edit_post(request,id):
     temp['post'] = post
         
     
-    return render(request, 'customers/foundation_edit_post.html', temp)
+    return render(request, 'foundations/foundation_edit_post.html', temp)
 
 
 
@@ -856,7 +870,7 @@ def foundation_delete_post(request, id):
         return redirect('customer:login_as')
      post=Foundation_Post.objects.filter(id=id)
      post.delete()
-     return render(request, 'customers/foundation_food_posts.html', temp)
+     return render(request, 'foundations/foundation_food_posts.html', temp)
 
 
 def accept_post(request,id):

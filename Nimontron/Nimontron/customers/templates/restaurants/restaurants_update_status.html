@@ -1,0 +1,72 @@
+{% include 'restaurants/restaurants_header.html' %}
+{% load static %}
+
+<div class="container">
+    <div class="title">
+        <div class="row">
+            <div class="col">
+                <h4 class="text-secondary"><b>Order Details</b></h4>
+            </div>
+        </div>
+    </div>
+    
+    <div class="p-4">
+        {% include 'customers/messages.html' %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Food Name</th>
+                    <th>Customer's Name</th>
+                    <th>Order/Deliver Date</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <form method="POST">
+                    {% csrf_token %}
+                    <tr>
+                        <th> <img height="50px" width="50px" src="{{ post.post.image.url }}" alt=""></th>
+                        <th>{{ post.title }}</th>
+                        <td>{{ post.user.first_name }} {{ post.user.last_name }}</td>
+                        <td>{{ post.delivery_date }}</td>
+                        <td>{{ post.address }}</td>
+                        <td>
+                            <div class="form-group">
+                                <div class="dropdown">
+                                    <select name="status" class="btn btn-sm btn-secondary dropdown-toggle">
+                                        <option class="dropdown-item" 
+                                        {% if post.status == 'Active' %}
+                                        selected
+                                        {% endif %}
+                                             value="Active">
+                                            Pending
+                                        </option>
+                                        <option class="dropdown-item"
+                                        
+                                        {% if post.status == 'Delivered' %}
+                                        selected
+                                        {% endif %}
+                                            
+                                        value="Delivered">
+                                            Delivered
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-small btn-primary">Update</button>
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+{% include 'restaurants/restaurants_footer.html' %}

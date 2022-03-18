@@ -1,0 +1,97 @@
+
+{% include 'restaurants/restaurants_header.html' %}
+
+{% csrf_token %}
+{% load static %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <main class="content">
+
+        {% comment %} {% include 'includes/navigation.html' %} {% endcomment %}
+
+        <form method="POST"  enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-12 col-xl-8">
+                    <div class="card card-body bg-white border-light shadow-sm mb-4">
+                        <h2 class="h5 mb-4">Profile information</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div>
+                                    <label for="first_name">First Name</label>
+                                    <input name="first_name" class="form-control" id="first_name" type="text"
+                                           placeholder="Enter your first name" value="{{ request.user.first_name}}"
+                                           required>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input name="email" class="form-control" id="email" type="email"
+                                               placeholder="name@company.com" value="{{ request.user.username }}" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-9 mb-3">
+                                <div class="form-group">
+                                    <label for="phone">Phone No</label>
+                                    <input name="phone" class="form-control" id="phone" type="number"
+                                    placeholder="+12-345 678 910" value="{{ info.contact_no }}" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-9 mb-3">
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input name="address" class="form-control" id="address" type="number"
+                                           placeholder="address" value="{{ info.address }}" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-9 mb-3">
+                                <div class="form-group">
+                                    <label for="phone">Description</label>
+                                    <input name="phone" class="form-control" id="phone" type="number"
+                                           placeholder="description" value="{{ info.description }}" required>
+                                </div>
+                            </div>
+    
+                    </div>
+                </div>
+            <div class="col-12 col-xl-4">
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card border-light text-center p-0">
+                            <div class="profile-cover rounded-top"
+                                   data-background="/static/assets/img/profile-cover.jpg"></div>
+                                <div class="card-body pb-5">
+                                  <img src="{{ info.image.url }}"
+                                       alt="Neil Portrait" height="200" width="200">
+                                  <h4 class="h3">{{ request.user.name}}</h4>
+                                  <h4 class="font-weight-normal">{{ request.user.name}}</h4>
+                                  <h5 class="font-weight-normal">
+                                    {{request.user.username}}
+                                  </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </form>
+
+      
+    </main>
+    {% include 'restaurants/restaurants_footer.html' %}
+
+{% endblock content %}

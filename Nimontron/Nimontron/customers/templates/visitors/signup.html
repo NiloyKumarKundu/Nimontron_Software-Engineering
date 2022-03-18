@@ -1,0 +1,107 @@
+{% include 'visitors/header.html' %}
+
+{% block body %}
+
+{% load static %}
+<section>
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="form-group col-6">
+                <div class="card card-registration" style="border-radius: 5px;">
+                    <div class="card-body p-4 text-center">
+                        <form onsubmit="return checkPass();" name="signup" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-outline mb-4">
+                                <input type="text" name="fname" class="form-control" placeholder="First Name" required/>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="text" name="lname" class="form-control" placeholder="Last Name" required/>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="text" name="contact" class="form-control" placeholder="Contact" />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="email" name="email" class="form-control" placeholder="Email" required/>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="password" name="password" id="typePasswordX-2" class="form-control"
+                                    placeholder="Password" required/>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="password" name="cpassword" id="typePasswordX-2" class="form-control"
+                                    placeholder="Confirm Password" required/>
+                            </div>
+
+                            <div class="d-md-flex justify-content-start align-items-center mb-4 py-2">
+
+                                <h6 class="mb-0 me-4 text-muted">Gender: </h6>
+                                <div class="form-check form-check-inline mb-0 me-4">
+                                    <input class="form-check-input" type="radio" name="gender" value="Female" />
+                                    <label class="form-check-label" for="maleGender">Male</label>
+                                </div>
+
+                                <div class="form-check form-check-inline mb-0 me-4">
+                                    <input class="form-check-input" type="radio" name="gender" value="Female" />
+                                    <label class="form-check-label" for="femaleGender">Female</label>
+                                </div>
+
+                                <div class="form-check form-check-inline mb-0">
+                                    <input class="form-check-input" type="radio" name="gender" value="Others" />
+                                    <label class="form-check-label" for="otherGender">Others</label>
+                                </div>
+                            </div>
+
+                            <div class="d-md-flex justify-content-start align-items-center mb-4 py-2">
+                                <h6 class="mb-0 me-4 text-muted">Image: </h6>
+                                <div class="form-check form-check-inline mb-0">
+                                    <input class="form-control" type="file" name="image"/>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" style="width: 200px;" type="submit">Sign Up</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<script>
+    function checkPass() {
+        if (document.signup.password.value != document.signup.cpassword.value) {
+            alert('Password and Confirmed Password field does not match');
+            document.signup.cpassword.focus();
+            return false;
+        }
+        return true;
+    }
+</script>
+
+{% include 'visitors/footer.html' %}
+
+
+{% if error == 'no' %} 
+<script>
+    alert('Sign Up successful!');
+    window.location = ( '{% url "customers:login_as" %}' )
+</script>
+{% endif %}
+    
+
+{% if error == 'yes' %} 
+<script>
+    alert('Something went wrong! Try again....');
+</script>
+{% endif %}
+
+{% endblock body %}

@@ -39,6 +39,9 @@ urlpatterns = [
     path('restaurants_delivered_order', views.restaurants_delivered_order, name='restaurants_delivered_order'),
     path('restaurants_update_status/<int:id>', views.restaurants_update_status, name='restaurants_update_status'),
 
+    # Restaurants Donation Part
+    path('restaurants_donation_post', views.restaurants_donation_post, name='restaurants_donation_post'),
+
 
  # Foundations
     path('foundation_login', views.foundation_login, name='foundation_login'),
