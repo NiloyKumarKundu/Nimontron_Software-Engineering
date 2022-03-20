@@ -890,4 +890,7 @@ def accept_post(request,id):
 
 
 
-     
+# For testing api
+def api_customer_post(request):
+    data = list(Post.objects.all().values())
+    return JsonResponse(data, safe=False)

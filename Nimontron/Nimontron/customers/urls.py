@@ -75,5 +75,12 @@ urlpatterns = [
     
 
     path('customer_delete_cart_item/<int:id>', views.customer_delete_cart_item, name='customer_delete_cart_item'),
+    
+    
+    # For testing api
+    
+    path('api/customer_post', views.api_customer_post),
+
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
