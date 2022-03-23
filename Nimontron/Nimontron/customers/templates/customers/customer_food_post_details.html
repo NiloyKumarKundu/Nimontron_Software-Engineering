@@ -1,32 +1,72 @@
 {% include 'customers/customer_header.html' %}
 {% load static %}
+{% load cart %}
 
 <div class="container">
-    <div class="row px-4">
-        <div class="col-md-8">
-            {% include 'customers/messages.html' %}
+    <div class="row" style="margin: 70px;">
+        {% include 'customers/messages.html' %}
+        <div class="col-md-5">
             <div class="card p-2 mb-3">
                 <div style="display: flex; justify-content: center; height: auto; width: 100%;">
                     <img class="card-img-top" style="width: 100%; height: auto; border-radius: 4px 4px 4px 4px;"
                         src="{{ post.image.url }}" alt="Card image cap">
                 </div>
+            </div>
+        </div>
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-5">
+            <div class="card-body pt-0">
+                <h1 class="card-title"> {{ post.title }} </h1>
+                <hr>
 
-                <div class="card-body">
-                    <h5 class="card-title"> {{ post.title }} </h5>
-                    <p class="card-text"> <del>{{ post.prev_price }} TK</del> <span>{{ post.new_price }} TK</span> </p>
-                    <p class="card-text" style="margin-top: -15px;"><small
-                            class="text-muted">{{ post.location }}</small></p>
-                    <p class="card-text"> {{ post.description }} </p>
-                </div>
+                <p class="card-text" style="margin-top: -15px;">
+                    <small class="text-muted"> {{ post.location }} </small>
+                </p>
+
+                <p class="card-text"> 
+                    <span class="h5">{{ post.new_price }} TK</span> 
+                    <del>{{ post.prev_price }} TK</del> 
+                </p>
+
+                {% if post|is_in_cart:request.user  %}
+                <div class="col-md-5">
+                    <div class="row">
+                        
+                        <form action="{% url 'customers:cart_item_decrease' post.id %}" class="col-2" method="post"> 
+                        {% if post|cart_quantity:request.user <= 1 %}
+                        <input type="submit" class="col-2 btn btn-primary" disabled value="-">
+                        {% else %}
+                        {% csrf_token %}
+                            <input type="submit" class="btn btn-primary" value="-">
+                        {% endif %}
+                        </form>
+
+                        <div class="text-center mt-2 col bg-gray">
+                            {{ post|cart_quantity:request.user }} in cart
+                        </div>
+                        <form action="{% url 'customers:customer_food_post_details' post.id %}" class="col-2" method="post"> 
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-primary" value="+">
+                        </form>
+                    </div>
+                </div> 
+                {% else %}
+
                 <form method="POST">
                     {% csrf_token %}
-                    <div class="col-md-12 mb-4">
-                        <div class="d-flex justify-content-center">
+                    <div class="col-md-12">
+                        <div class="pl-4">
                             <input type="submit" style="border-radius: 5px !important;" value="Add To Cart"
                                 class="btn btn-primary">
                         </div>
                     </div>
                 </form>
+                {% endif %}            
+
+                <p class="card-text pt-4"> 
+                    {{ post.description }} 
+                </p>
             </div>
         </div>
     </div>

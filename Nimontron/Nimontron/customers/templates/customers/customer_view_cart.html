@@ -179,9 +179,24 @@
                     <div class="col">
                         <div class="row text-muted">{{ i.post.title }}</div>
                         <div class="row">{{ i.restaurant.name }}</div>
+                        
+                    </div>
+                    <div class="col">
+                        {% if i.quantity <= 1 %}
+                        <a style="cursor: default;" href="javascript:void(0)">-</a>
+                        {% else %}
+                        <a href="{% url 'customers:item_decrease' i.id %}">-</a>
+                        {% endif %}
+                            
+                        <span style="padding: 0px 5px 0px 5px;" class="border">{{ i.quantity }}
+                        </span>
+                        <a href="{% url 'customers:item_increase' i.id %}">+</a> 
                     </div>
 
-                    <div class="col">&#2547; {{ i.post.new_price }} </div>
+                    <div class="col">
+                        &#2547; {{ i.post.new_price }}
+                        <span class="close">&#10005; {{ i.quantity }}</span>
+                    </div>
                     <div class="col">
                         <a href="{% url 'customers:customer_delete_cart_item' i.id %}" class="delete"><i
                                 class="fa fa-trash text-secondary"></i></a>

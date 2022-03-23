@@ -253,6 +253,14 @@ def customer_food_post_details(request, id):
     if request.method == 'POST':
         post = Post.objects.get(id=id)
         user = request.user
+
+        cart = Cart.objects.filter(user=user, post = post).exists()
+        if cart:
+            product = Cart.objects.get(user=user, post = post)
+            product.quantity = product.quantity + 1
+            product.save()
+            return redirect('../customer_food_post_details/' + str(id))
+
         restaurant = Post.objects.get(id=id).restaurant
         ordered_date = post.creation_date
         status = "Cart"
@@ -267,6 +275,45 @@ def customer_food_post_details(request, id):
 
         return redirect('../customer_food_post_details/' + str(id))
     return render(request, 'customers/customer_food_post_details.html', temp)
+
+
+
+def cart_item_decrease(request, id):
+    temp['cart'] = navCart(request)
+    temp['title'] = 'Food Post'
+    temp['sub_title'] = 'Food Post'
+    post = Post.objects.get(id=id)
+    temp['post'] = post
+    temp['error'] = ''
+
+    if request.method == 'POST':
+        post = Post.objects.get(id=id)
+        user = request.user
+
+        cart = Cart.objects.filter(user=user, post = post).exists()
+        if cart:
+            product = Cart.objects.get(user=user, post = post)
+            if product.quantity > 1:
+                product.quantity = product.quantity - 1
+                product.save()
+                return redirect('../customer_food_post_details/' + str(id))
+    return render(request, 'customers/customer_food_post_details.html', temp)
+
+
+
+def item_increase(request, id):
+    product = Cart.objects.get(id = id)
+    product.quantity = product.quantity + 1
+    product.save()
+    return redirect('../customer_view_cart')
+
+def item_decrease(request, id):
+    product = Cart.objects.get(id=id)
+    if product.quantity > 1:
+        product.quantity = product.quantity - 1
+        product.save()
+    return redirect('../customer_view_cart')
+
 
 #customer_view_cart
 def customer_view_cart(request):
