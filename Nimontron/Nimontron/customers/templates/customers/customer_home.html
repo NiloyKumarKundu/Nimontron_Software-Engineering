@@ -55,7 +55,6 @@
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
                     <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>{{ name }}</h1>
-                    <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
@@ -65,9 +64,16 @@
                         <a href="{% url 'customers:customer_home' %}" class="nav-item nav-link active">Home</a>
                         <a href="{% url 'customers:customer_all_post' %}" class="nav-item nav-link">All Posts</a>
                         <a href="{% url 'customers:customer_all_restaurants' %}" class="nav-item nav-link">Restaurants</a>
-                        <a href="{% url 'customers:customer_order' %}" class="nav-item nav-link">Orders</a>
-                        <a href="{% url 'customers:customer_view_cart' %}" class="nav-item nav-link">Cart</a>
-                        <a href="{% url 'customers:Logout' %}" class="nav-item nav-link">Log Out</a>
+                        <li class="nav-item">
+                            <a href="{% url 'customers:customer_view_cart' %}" class="nav-item nav-link {% if request.path == '/customer_view_cart' %} active {% endif %}">Cart
+                                {% if request.season.cart.keys != 0 %}
+                                    <span class="badge badge-primary bg-primary" style="padding: 2.5px 2.7px 0.7px 2.5px;"> 
+                                        {{request.season.cart.keys|length}}
+                                    </span>
+                                {% endif %}
+                                
+                            </a>
+                        </li>
 
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">More</a>
@@ -77,6 +83,7 @@
                                 <a href="" class="dropdown-item">About</a>
                                 <a href="" class="dropdown-item">Change Password</a>
                                 <a href="" class="dropdown-item">Contact</a>
+                                <a href="{% url 'customers:Logout' %}" class="dropdown-item">Log out</a>
                             </div>
                         </div>
                     </div>
