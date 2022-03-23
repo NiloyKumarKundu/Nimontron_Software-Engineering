@@ -1,3 +1,4 @@
+from ctypes import sizeof
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from .models import *
@@ -123,11 +124,16 @@ def customer_login(request):
     return render(request, 'visitors/login.html', temp)
 
 
+def navCart(request):
+    user=request.user
+    cart = Cart.objects.filter(user=user, status='Cart').count()
+    return cart
 
 def customer_home(request):
     temp['title'] = 'Nilomtron'
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
+    temp['cart'] = navCart(request)
     return render(request, 'customers/customer_home.html', temp)
 
 def customer_all_post(request):
@@ -135,6 +141,7 @@ def customer_all_post(request):
         return redirect('customers:login_as')
     temp['title'] = 'All Posts'
     temp['sub_title'] = 'All Posts'
+    temp['cart'] = navCart(request)
     nums='a'
     if 'search' in request.GET:
         q=request.GET['search']
@@ -213,6 +220,7 @@ def customer_all_restaurants(request):
         return redirect('customer:login_as')
     temp['title'] = 'All Restaurants'
     temp['sub_title'] = 'All Restaurants'
+    temp['cart'] = navCart(request)
     if 'search' in request.GET:
         q2=request.GET['search']
         restaurant=Restaurant.objects.filter(Q(ratting__icontains=q2) | Q(description__icontains=q2)
@@ -230,10 +238,12 @@ def customer_cart(request):
         return redirect('customer:login_as')
     temp['title'] = 'Shopping Cart'
     temp['sub_title'] = 'cart'
+    temp['cart'] = navCart(request)
     return render(request, 'customers/customer_cart.html', temp)
 
 
 def customer_food_post_details(request, id):
+    temp['cart'] = navCart(request)
     temp['title'] = 'Food Post'
     temp['sub_title'] = 'Food Post'
     post = Post.objects.get(id=id)
@@ -255,6 +265,7 @@ def customer_food_post_details(request, id):
         except:
             messages.error(request, "Something went wrong")
 
+        return redirect('../customer_food_post_details/' + str(id))
     return render(request, 'customers/customer_food_post_details.html', temp)
 
 #customer_view_cart
@@ -267,6 +278,7 @@ def customer_view_cart(request):
     temp['title'] = 'Food Cart'
     temp['sub_title'] = 'Cart'
     temp['cart_items']= cart_items
+    temp['cart'] = navCart(request)
 
     price = 0
     for i in cart_items:
@@ -295,6 +307,7 @@ def customer_delete_cart_item(request, id):
     if not request.user.is_authenticated:
         return redirect('customer:login_as')
 
+    temp['cart'] = navCart(request)
     item = Cart.objects.get(id=id)
     item.delete()
     return redirect('../customer_view_cart')
@@ -312,6 +325,7 @@ def customer_order(request):
     
     temp['title'] = 'Order Details'
     temp['sub_title'] = 'Orders'
+    temp['cart'] = navCart(request)
 
     active_orders = Cart.objects.filter(user=request.user, status='Active')
     prev_orders = Cart.objects.filter(user=request.user, status='Delivered')
