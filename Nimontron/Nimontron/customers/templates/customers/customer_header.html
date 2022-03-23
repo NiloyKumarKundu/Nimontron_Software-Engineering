@@ -63,9 +63,15 @@
                         <a href="{% url 'customers:customer_all_post' %}" class="nav-item nav-link {% if request.path == '/customer_all_post' %} active {% endif %}">All Posts</a>
                         <a href="{% url 'customers:customer_all_restaurants' %}" class="nav-item nav-link {% if request.path == '/customer_all_restaurants' %} active {% endif %}">Restaurants</a>
 
+
                         <li class="nav-item">
                             <a href="{% url 'customers:customer_view_cart' %}" class="nav-item nav-link">Cart
                                 <span class="badge badge-primary bg-secondary" style="padding: 2px 2.7px 1.5px 2.7px; margin-left: 1px">{{ cart }}</span>
+
+                        <li class="nav-item">
+                            <a href="{% url 'customers:customer_view_cart' %}" class="nav-item nav-link {% if request.path == '/customer_view_cart' %} active {% endif %}">Cart
+                                <span class="badge badge-primary bg-primary" style="padding: 2.5px 2.7px 0.7px 2.5px;">{{request.season.cart.keys|length}}</span>
+
                             </a>
                         </li>
 

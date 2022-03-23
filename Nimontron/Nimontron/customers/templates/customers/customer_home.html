@@ -55,7 +55,6 @@
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
                     <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>{{ name }}</h1>
-                    <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
@@ -66,8 +65,18 @@
                         <a href="{% url 'customers:customer_all_post' %}" class="nav-item nav-link">All Posts</a>
                         <a href="{% url 'customers:customer_all_restaurants' %}" class="nav-item nav-link">Restaurants</a>
                         <li class="nav-item">
+<<<<<<< HEAD
                             <a href="{% url 'customers:customer_view_cart' %}" class="nav-item nav-link">Cart
                                 <span class="badge badge-primary bg-secondary" style="padding: 2px 2.7px 1.5px 2.7px; margin-left: 1px">{{cart}}</span>
+=======
+                            <a href="{% url 'customers:customer_view_cart' %}" class="nav-item nav-link {% if request.path == '/customer_view_cart' %} active {% endif %}">Cart
+                                {% if request.season.cart.keys != 0 %}
+                                    <span class="badge badge-primary bg-primary" style="padding: 2.5px 2.7px 0.7px 2.5px;"> 
+                                        {{request.season.cart.keys|length}}
+                                    </span>
+                                {% endif %}
+                                
+>>>>>>> development
                             </a>
                         </li>
 
@@ -79,7 +88,11 @@
                                 <a href="" class="dropdown-item">About</a>
                                 <a href="" class="dropdown-item">Change Password</a>
                                 <a href="" class="dropdown-item">Contact</a>
+<<<<<<< HEAD
                                 <a href="{% url 'customers:Logout' %}" class="dropdown-item">Log Out</a>
+=======
+                                <a href="{% url 'customers:Logout' %}" class="dropdown-item">Log out</a>
+>>>>>>> development
                             </div>
                         </div>
                     </div>
