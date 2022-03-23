@@ -62,19 +62,22 @@
                         <a href="{% url 'customers:customer_home' %}" class="nav-item nav-link {% if request.path == '/' %} active {% endif %}">Home</a>
                         <a href="{% url 'customers:customer_all_post' %}" class="nav-item nav-link {% if request.path == '/customer_all_post' %} active {% endif %}">All Posts</a>
                         <a href="{% url 'customers:customer_all_restaurants' %}" class="nav-item nav-link {% if request.path == '/customer_all_restaurants' %} active {% endif %}">Restaurants</a>
-                        
-                        <a href="{% url 'customers:customer_profile' %}" class="nav-item nav-link {% if request.path == '/customer_profile' %} active {% endif %}">Profile</a>
-                        
-                        <a href="{% url 'customers:Logout' %}" class="nav-item nav-link {% if request.path == '/login_as' %} active {% endif %}">Log Out</a>
+
+                        <li class="nav-item">
+                            <a href="{% url 'customers:customer_view_cart' %}" class="nav-item nav-link">Cart
+                                <span class="badge badge-primary bg-secondary" style="padding: 2px 2.7px 1.5px 2px; margin-left: 1px">12</span>
+                            </a>
+                        </li>
 
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">More</a>
                             <div class="dropdown-menu m-0">
-                                <a href="{% url 'customers:customer_view_cart' %}" class="dropdown-item">Cart</a>
+                                <a href="{% url 'customers:customer_profile' %}" class="dropdown-item">Profile</a>
                                 <a href="{% url 'customers:customer_order' %}" class="dropdown-item">Orders</a>
                                 <a href="" class="dropdown-item">About</a>
                                 <a href="" class="dropdown-item">Change Password</a>
                                 <a href="" class="dropdown-item">Contact</a>
+                                <a href="{% url 'customers:Logout' %}" class="dropdown-item">Log Out</a>
                             </div>
                         </div>
                     </div>

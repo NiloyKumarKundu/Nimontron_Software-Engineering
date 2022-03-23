@@ -127,7 +127,7 @@ def customer_login(request):
 def customer_home(request):
     temp['title'] = 'Nilomtron'
     if not request.user.is_authenticated:
-        return redirect('customer:login_as')
+        return redirect('customers:login_as')
     return render(request, 'customers/customer_home.html', temp)
 
 def customer_all_post(request):
