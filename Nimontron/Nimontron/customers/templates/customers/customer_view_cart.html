@@ -1,144 +1,9 @@
-{% include 'customers/customer_header.html' %}
 {% load static %}
+{% include 'customers/customer_header.html' %}
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700">
 
-
-<style>
-    .title {
-        margin-bottom: 5vh
-    }
-
-    .card {
-        margin: auto;
-        max-width: 950px;
-        width: 90%;
-        box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        border-radius: 1rem;
-        border: transparent
-    }
-
-    @media(max-width:767px) {
-        .card {
-            margin: 3vh auto
-        }
-    }
-
-    .cart {
-        background-color: #fff;
-        padding: 4vh 5vh;
-    }
-
-    @media(max-width:767px) {
-        .cart {
-            padding: 4vh;
-            border-bottom-left-radius: unset;
-        }
-    }
-
-    .summary {
-        background-color: #ddd;
-        padding: 4vh;
-        color: rgb(65, 65, 65)
-    }
-
-    @media(max-width:767px) {
-        .summary {
-            border-top-right-radius: unset;
-        }
-    }
-
-    .summary .col-2 {
-        padding: 0
-    }
-
-    .summary .col-10 {
-        padding: 0
-    }
-
-    .row {
-        margin: 0
-    }
-
-    .title b {
-        font-size: 1.5rem
-    }
-
-    .main {
-        margin: 0;
-        padding: 2vh 0;
-        width: 100%
-    }
-
-    .col-2,
-    .col {
-        padding: 0 1vh
-    }
-
-    a {
-        padding: 0 1vh
-    }
-
-    .close {
-        margin-left: auto;
-        font-size: 0.7rem
-    }
-
-    img {
-        width: 3.5rem
-    }
-
-    .back-to-shop {
-        margin-top: 4.5rem
-    }
-
-    h5 {
-        margin-top: 4vh
-    }
-
-    hr {
-        margin-top: 1.25rem
-    }
-
-    form {
-        padding: 2vh 0
-    }
-
-    select {
-        border: 1px solid rgba(0, 0, 0, 0.137);
-        padding: 1.5vh 1vh;
-        margin-bottom: 4vh;
-        outline: none;
-        width: 100%;
-        background-color: rgb(247, 247, 247)
-    }
-
-    input {
-        border: 1px solid rgba(0, 0, 0, 0.137);
-        padding: 1vh;
-        margin-bottom: 4vh;
-        outline: none;
-        width: 100%;
-        background-color: rgb(247, 247, 247)
-    }
-
-    input:focus::-webkit-input-placeholder {
-        color: transparent
-    }
-
-    .link {
-        color: black
-    }
-
-    link:hover {
-        color: black;
-        text-decoration: none
-    }
-
-    .close {
-        margin-left: auto;
-        font-size: 0.7rem
-    }
-</style>
+<link rel="stylesheet" href="{% static 'customers/css/style.default.css' %}">
 
 
 
@@ -259,6 +124,127 @@
         </div>
     </div>
 </div>
+
+
+<div id="all">
+    <div id="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <!-- breadcrumb-->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li aria-current="page" class="breadcrumb-item active">Shopping cart</li>
+              </ol>
+            </nav>
+          </div>
+
+          
+          <div id="basket" class="col-lg-9">
+            <div class="box">
+              <form method="post" action="checkout1.html">
+                <h1>Shopping cart</h1>
+                <p class="text-muted">You currently have 3 item(s) in your cart.</p>
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th colspan="2">Product</th>
+                        <th style="padding-left: 23px">Quantity</th>
+                        <th>Unit price</th>
+                        <th>Discount</th>
+                        <th colspan="2">Total</th>
+                      </tr>
+                    </thead>
+                    {% for i in cart_items %}
+                    <tbody class="p-4">
+                      <tr>
+                        <td>
+                            <a href="#">
+                                <img style="width: 60px; height: 50px;" src="{{ i.post.image.url }}" alt="White Blouse Armani">
+                            </a>
+                        </td>
+                        <td><a href="#">{{ i.post.title }}</a></td>
+
+
+                        <td class="col">
+                            {% if i.quantity <= 1 %}
+                            <a style="cursor: default;" href="javascript:void(0)">-</a>
+                            {% else %}
+                            <a href="#">-</a>
+                            {% endif %}
+                                
+                            <span style="padding: 0px 5px 0px 5px;" class="border">{{ i.quantity }}
+                            </span>
+                            <a href="#">+</a> 
+                        </td>
+
+                        <td>{{ i.post.new_price }}</td>
+                        <td>$0.00</td>
+                        <td>{{ i.post.new_price }}</td>
+                        <td>
+                            <a href="{% url 'customers:customer_delete_cart_item' i.id %}" class="delete">
+                                <i class="fa fa-trash text-secondary"></i>
+                            </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                    {% endfor %}
+                    <tfoot>
+                      <tr>
+                        <th colspan="5">Total</th>
+                        <th colspan="2">{{ total_price }}</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <!-- /.table-responsive-->
+                <div class="box-footer d-flex justify-content-between flex-column flex-lg-row">
+                  <div class="left"><a href="category.html" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i> Continue shopping</a></div>
+                  <div class="right">
+                    <button type="submit" class="btn btn-primary">Proceed to checkout <i class="fa fa-chevron-right"></i></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- /.col-lg-9-->
+          <div class="col-lg-3">
+            <div id="order-summary" class="box">
+              <div class="box-header">
+                <h3 class="mb-0">Order summary</h3>
+              </div>
+              <p class="text-muted">Shipping and additional costs are calculated based on the values you have entered.</p>
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td>Order subtotal</td>
+                      <th>$446.00</th>
+                    </tr>
+                    <tr>
+                      <td>Shipping and handling</td>
+                      <th>$10.00</th>
+                    </tr>
+                    <tr>
+                      <td>Tax</td>
+                      <th>$0.00</th>
+                    </tr>
+                    <tr class="total">
+                      <td>Total</td>
+                      <th>$456.00</th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- /.col-md-3-->
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endif %}
 
