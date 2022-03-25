@@ -32,13 +32,13 @@
             <div class="box">
               <form method="post" action="checkout1.html">
                 <h1>Shopping cart</h1>
-                <p class="text-muted">You currently have 3 item(s) in your cart.</p>
+                <p class="text-muted">You currently have {{ cart }} item(s) in your cart.</p>
                 <div class="table-responsive">
                   <table class="table">
                     <thead>
                       <tr>
                         <th colspan="2">Product</th>
-                        <th style="padding-left: 23px">Quantity</th>
+                        <th>Quantity</th>
                         <th>Unit price</th>
                         <th>Discount</th>
                         <th colspan="2">Total</th>
@@ -59,17 +59,17 @@
                             {% if i.quantity <= 1 %}
                             <a style="cursor: default;" href="javascript:void(0)">-</a>
                             {% else %}
-                            <a href="#">-</a>
+                            <a href="{% url 'customers:item_decrease' i.id %}">-</a>
                             {% endif %}
                                 
                             <span style="padding: 0px 5px 0px 5px;" class="border">{{ i.quantity }}
                             </span>
-                            <a href="#">+</a> 
+                            <a href="{% url 'customers:item_increase' i.id %}">+</a> 
                         </td>
 
                         <td>{{ i.post.new_price }}</td>
                         <td>&#2547; 0.00</td>
-                        <td>{{ i.post.new_price }}</td>
+                        <td>{{ i.total_sub_price }}</td>
                         <td>
                             <a href="{% url 'customers:customer_delete_cart_item' i.id %}" class="delete">
                                 <i class="fa fa-trash text-secondary"></i>
@@ -81,7 +81,7 @@
                     <tfoot>
                       <tr>
                         <th colspan="5">Total</th>
-                        <th colspan="2">{{ total_price }}</th>
+                        <th colspan="2">{{ price }}</th>
                       </tr>
                     </tfoot>
                   </table>
@@ -89,7 +89,7 @@
 
                 
                 <div class="box-footer d-flex justify-content-between flex-column flex-lg-row">
-                  <div class="left"><a href="category.html" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i> Continue shopping</a></div>
+                  <div class="left"><a href="{% url 'customers:customer_all_post' %}" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i> Continue shopping</a></div>
                   <div class="right">
                     <button type="submit" class="btn btn-primary">Proceed to checkout <i class="fa fa-chevron-right"></i></button>
                   </div>
@@ -110,11 +110,11 @@
                   <tbody>
                     <tr>
                       <td>Order subtotal</td>
-                      <th>&#2547; 446.00</th>
+                      <th>&#2547; {{ price }}</th>
                     </tr>
                     <tr>
                       <td>Shipping and handling</td>
-                      <th>&#2547; 10.00</th>
+                      <th>&#2547; 60.00 </th>
                     </tr>
                     <tr>
                       <td>Tax</td>
@@ -122,7 +122,7 @@
                     </tr>
                     <tr class="total">
                       <td>Total</td>
-                      <th>&#2547; 456.00</th>
+                      <th>&#2547; {{ total_price }}</th>
                     </tr>
                   </tbody>
                 </table>

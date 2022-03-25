@@ -253,11 +253,13 @@ def customer_food_post_details(request, id):
     if request.method == 'POST':
         post = Post.objects.get(id=id)
         user = request.user
+        
 
         cart = Cart.objects.filter(user=user, post = post).exists()
         if cart:
-            product = Cart.objects.get(user=user, post = post)
+            product = Cart.objects.get(user=user, post=post)
             product.quantity = product.quantity + 1
+            product.total_sub_price = post.new_price * product.quantity
             product.save()
             return redirect('../customer_food_post_details/' + str(id))
 
@@ -265,10 +267,11 @@ def customer_food_post_details(request, id):
         ordered_date = post.creation_date
         status = "Cart"
         title = post.title
+        price = post.new_price
         address = Customer.objects.get(user=user).address
 
         try:
-            Cart.objects.create(address=address, title=title, post=post, restaurant=restaurant, user=user, ordered_date=ordered_date, status=status)
+            Cart.objects.create(address=address, title=title, post=post, restaurant=restaurant, user=user, ordered_date=ordered_date, status=status, total_sub_price=price)
             messages.success(request, "Post Added in your cart successfully")
         except:
             messages.error(request, "Something went wrong")
@@ -295,6 +298,7 @@ def cart_item_decrease(request, id):
             product = Cart.objects.get(user=user, post = post)
             if product.quantity > 1:
                 product.quantity = product.quantity - 1
+                product.total_sub_price = post.new_price * product.quantity
                 product.save()
                 return redirect('../customer_food_post_details/' + str(id))
     return render(request, 'customers/customer_food_post_details.html', temp)
@@ -303,14 +307,19 @@ def cart_item_decrease(request, id):
 
 def item_increase(request, id):
     product = Cart.objects.get(id = id)
+    post = Post.objects.get(id=product.post.id)
     product.quantity = product.quantity + 1
+    product.total_sub_price = post.new_price * product.quantity
     product.save()
     return redirect('../customer_view_cart')
 
+
 def item_decrease(request, id):
     product = Cart.objects.get(id=id)
+    post = Post.objects.get(id=product.post.id)
     if product.quantity > 1:
         product.quantity = product.quantity - 1
+        product.total_sub_price = post.new_price * product.quantity
         product.save()
     return redirect('../customer_view_cart')
 
@@ -329,10 +338,10 @@ def customer_view_cart(request):
 
     price = 0
     for i in cart_items:
-        price = price + i.post.new_price
+        price = price + i.total_sub_price
 
     temp['price'] = price
-    temp['total_price'] = 40 + price
+    temp['total_price'] = 60 + price
     temp['total_items'] = len(cart_items)
 
     if request.method == 'POST':

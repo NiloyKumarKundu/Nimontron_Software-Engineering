@@ -77,6 +77,7 @@ class Cart(models.Model):
     status = models.CharField(max_length=20, choices=ORDER_STATUS, default='Cart')
     delivery_date = models.DateField(default=timezone.now)
     transaction_id = models.CharField(max_length=50, null=True)
+    total_sub_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 
     def __str__(self):
         return self.title
