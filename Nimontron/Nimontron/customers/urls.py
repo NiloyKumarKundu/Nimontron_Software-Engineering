@@ -26,6 +26,16 @@ urlpatterns = [
     path('customer_food_post_details/<int:id>', views.customer_food_post_details, name='customer_food_post_details'),
     path('cart_item_decrease/<int:id>', views.cart_item_decrease, name='cart_item_decrease'),
 
+    #customer_view_cart
+    path('customer_view_cart', views.customer_view_cart, name='customer_view_cart'),
+    path('customer_checkout_address', views.customer_checkout_address, name='customer_checkout_address'),
+    path('customer_payment_method', views.customer_payment_method, name='customer_payment_method'),
+    path('customer_order_review', views.customer_order_review, name='customer_order_review'),
+    path('customer_order', views.customer_order, name='customer_order'),
+    path('item_increase/<int:id>', views.item_increase, name='item_increase'),
+    path('item_decrease/<int:id>', views.item_decrease, name='item_decrease'),
+    path('customer_delete_cart_item/<int:id>', views.customer_delete_cart_item, name='customer_delete_cart_item'),
+
     # Restaurants
     path('restaurants_signup', views.restaurants_signup, name='restaurants_signup'),
     path('restaurants_login', views.restaurants_login, name='restaurants_login'),
@@ -70,14 +80,7 @@ urlpatterns = [
     
     
 
-    #customer_view_cart
-    path('customer_view_cart', views.customer_view_cart, name='customer_view_cart'),
-    path('customer_order', views.customer_order, name='customer_order'),
-    path('item_increase/<int:id>', views.item_increase, name='item_increase'),
-    path('item_decrease/<int:id>', views.item_decrease, name='item_decrease'),
     
-
-    path('customer_delete_cart_item/<int:id>', views.customer_delete_cart_item, name='customer_delete_cart_item'),
     
     
     # For testing api

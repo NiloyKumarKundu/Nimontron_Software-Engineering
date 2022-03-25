@@ -341,17 +341,6 @@ def customer_view_cart(request):
     temp['price'] = price
     temp['total_price'] = 60 + price
     temp['total_items'] = len(cart_items)
-
-    if request.method == 'POST':
-        transaction_id = request.POST['trxid']
-
-        for i in cart_items:
-            cartItem = Cart.objects.get(id=i.id)
-            cartItem.transaction_id = transaction_id
-            cartItem.status = 'Active'
-            cartItem.save()
-        messages.success(request, "Order submitted successfully")
-        return redirect('../customer_view_cart')
     return render(request, 'customers/customer_view_cart.html', temp)
 
 
@@ -367,7 +356,25 @@ def customer_delete_cart_item(request, id):
     return redirect('../customer_view_cart')
 
 
+def customer_checkout_address(request):
+    if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+    
+    temp['title'] = 'Checkout'
+    temp['sub_title'] = 'checkout address'
+    customer = Customer.objects.filter(user=request.user)
+    print(customer)
+    temp['customer'] = customer
 
+    return render(request, 'customers/customer_checkout_address.html', temp)
+
+
+
+def customer_payment_method(request):
+    return render(request, 'customers/customer_payment_method.html', temp)
+
+def customer_order_review(request):
+    return render(request, 'customers/customer_order_review.html', temp)
 
 
 
@@ -381,26 +388,11 @@ def customer_order(request):
     temp['sub_title'] = 'Orders'
     temp['cart'] = navCart(request)
 
-    active_orders = Cart.objects.filter(user=request.user, status='Active')
-    prev_orders = Cart.objects.filter(user=request.user, status='Delivered')
-
-    total_money = 0
-    for i in active_orders:
-        total_money = total_money + i.post.new_price
-
-    prev_total = 0
-    for i in prev_orders:
-        prev_total = prev_total + i.post.new_price
-
-
-    temp['orders'] = active_orders
-    temp['size'] = len(active_orders)
-    temp['past_order'] = len(prev_orders)
-    temp['prev_order'] = prev_orders
-    temp['prev_total'] = prev_total
-    temp['total_amount'] = total_money
-
     return render(request, 'customers/customer_order.html', temp)
+
+
+
+
 
 
 
