@@ -126,7 +126,7 @@ def customer_login(request):
 
 def navCart(request):
     user=request.user
-    cart = Cart.objects.filter(user=user, status='Cart').count()
+    cart = Cart.objects.filter(user=user).count()
     return cart
 
 def customer_home(request):
@@ -265,13 +265,11 @@ def customer_food_post_details(request, id):
 
         restaurant = Post.objects.get(id=id).restaurant
         ordered_date = post.creation_date
-        status = "Cart"
         title = post.title
         price = post.new_price
-        address = Customer.objects.get(user=user).address
 
         try:
-            Cart.objects.create(address=address, title=title, post=post, restaurant=restaurant, user=user, ordered_date=ordered_date, status=status, total_sub_price=price)
+            Cart.objects.create(title=title, post=post, restaurant=restaurant, user=user, ordered_date=ordered_date, total_sub_price=price)
             messages.success(request, "Post Added in your cart successfully")
         except:
             messages.error(request, "Something went wrong")
@@ -329,7 +327,7 @@ def customer_view_cart(request):
     if not request.user.is_authenticated:
         return redirect('customer:login_as')
     user=request.user
-    cart_items = Cart.objects.filter(user=user, status='Cart')
+    cart_items = Cart.objects.filter(user=user)
 
     temp['title'] = 'Food Cart'
     temp['sub_title'] = 'Cart'

@@ -62,25 +62,35 @@ class Post(models.Model):
 
 
 class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    quantity = models.IntegerField(default=1)
+    title = models.CharField(max_length=150, null=True)
+    ordered_date = models.DateField(default=timezone.now)
+    total_sub_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+
+    def __str__(self):
+        return self.title
+
+class Order(models.Model):
     ORDER_STATUS = (
-        ('Cart', 'Cart'),
-        ('Active', 'Active'),
+        ('Pending', 'Pending'),
+        ('Packed', 'Packed'),
+        ('On The Way', 'On The Way'),
         ('Delivered', 'Delivered')
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
-    address = models.CharField(max_length=100, null=True)
-    quantity = models.IntegerField(default=1)
-    title = models.CharField(max_length=150, null=True)
     ordered_date = models.DateField(default=timezone.now)
     status = models.CharField(max_length=20, choices=ORDER_STATUS, default='Cart')
     delivery_date = models.DateField(default=timezone.now)
     transaction_id = models.CharField(max_length=50, null=True)
-    total_sub_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    rand_order_id = models.CharField(max_length=50, null=True)
 
     def __str__(self):
-        return self.title
+        return self.user
 
 
 
