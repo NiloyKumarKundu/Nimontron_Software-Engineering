@@ -378,34 +378,6 @@ def customer_checkout_address(request):
 
 
 
-def customer_payment_method(request):
-    if not request.user.is_authenticated:
-        return redirect('customer:login_as')
-    temp['title'] = 'Checkout'
-    temp['sub_title'] = 'payment method'
-
-    if request.method == 'POST':
-        temp['fName'] = request.POST['firstname']
-        temp['lName'] = request.POST['lastname']
-        temp['address'] = request.POST['address']
-        temp['phone'] = request.POST['phone']
-
-        customer = Customer.objects.filter(user=request.user)
-        cart_items = Cart.objects.filter(user=request.user)
-
-        price = 0
-        for i in cart_items:
-            price = price + i.total_sub_price
-
-        temp['customer'] = customer
-        temp['cart'] = navCart(request)
-        temp['price'] = price
-        temp['total_price'] = 60 + price
-
-    return render(request, 'customers/customer_payment_method.html', temp)
-
-
-
 
 
 
