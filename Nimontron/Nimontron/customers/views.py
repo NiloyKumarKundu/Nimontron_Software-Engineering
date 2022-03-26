@@ -498,6 +498,26 @@ def customer_order(request):
     return render(request, 'customers/customer_order.html', temp)
 
 
+def customer_order_details(request, rand_order_id):
+    orders = Order.objects.filter(rand_order_id=rand_order_id)
+    temp['orders'] = orders
+    temp['random_number'] = rand_order_id
+
+    status = ''
+    order_date = ''
+    for i in orders:
+        status = i.status
+        order_date = i.ordered_date
+        break
+    temp['order_date'] = order_date
+    temp['status'] = status
+
+    return render(request, 'customers/customer_order_details.html', temp)
+
+
+
+
+
 # Restaurants View
 
 def restaurants_signup(request):

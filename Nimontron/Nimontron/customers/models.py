@@ -90,7 +90,7 @@ class Order(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     ordered_date = models.DateField(default=timezone.now)
-    status = models.CharField(max_length=20, choices=ORDER_STATUS, default='Cart')
+    status = models.CharField(max_length=20, choices=ORDER_STATUS, default='Pending')
     delivery_date = models.DateField(default=timezone.now)
     transaction_id = models.CharField(max_length=50, null=True)
     rand_order_id = models.CharField(max_length=50, null=True)
