@@ -35,6 +35,7 @@ urlpatterns = [
     path('item_increase/<int:id>', views.item_increase, name='item_increase'),
     path('item_decrease/<int:id>', views.item_decrease, name='item_decrease'),
     path('customer_delete_cart_item/<int:id>', views.customer_delete_cart_item, name='customer_delete_cart_item'),
+    path('customer_order_successfull', views.customer_order_successfull, name='customer_order_successfull'),
 
     # Restaurants
     path('restaurants_signup', views.restaurants_signup, name='restaurants_signup'),

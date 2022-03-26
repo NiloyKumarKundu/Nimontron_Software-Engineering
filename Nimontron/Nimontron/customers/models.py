@@ -80,7 +80,13 @@ class Order(models.Model):
         ('On The Way', 'On The Way'),
         ('Delivered', 'Delivered')
     )
+    first_name = models.CharField(max_length=50, null=True)
+    last_name = models.CharField(max_length=50, null=True)
+    address = models.CharField(max_length=50, null=True)
+    phone_no = models.CharField(max_length=50, null=True)
+    quantity = models.IntegerField(default=1)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    total_sub_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     ordered_date = models.DateField(default=timezone.now)
@@ -89,8 +95,9 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length=50, null=True)
     rand_order_id = models.CharField(max_length=50, null=True)
 
+
     def __str__(self):
-        return self.user
+        return self.first_name + " " + self.last_name
 
 
 
