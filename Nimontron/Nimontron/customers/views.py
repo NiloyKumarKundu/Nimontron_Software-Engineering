@@ -438,6 +438,49 @@ def customer_order_review(request):
 
 
 
+def customer_order_successfull(request):
+    if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+    temp['title'] = 'Order'
+    temp['sub_title'] = 'Order'
+
+    if request.method == 'POST':
+        temp['fName'] = request.POST['firstname']
+        temp['lName'] = request.POST['lastname']
+        temp['address'] = request.POST['address']
+        temp['phone'] = request.POST['phone']
+        temp['payment'] = request.POST['payment']
+
+        customer = Customer.objects.filter(user=request.user)
+        cart_items = Cart.objects.filter(user=request.user)
+        random_num = random.randint(10000, 99999)
+
+        uniqe_confirm = Order.objects.filter(order_id=random_num)
+        while uniqe_confirm:
+            random_num =  random.randint(10000, 99999)
+            if not Order.objects.filter(order_id=random_num):
+                break
+            
+        price = 0
+        for i in cart_items:
+            Order.objects.create(first_name=temp['fName'], last_name=temp['lName'], address=temp['address'], phone_no=temp['phone'], quantity=i.quantity, restaurant=i.restaurant, rand_order_id=random_num, post=i.post, user=i.user, total_sub_price=i.total_sub_price)
+            i.delete()
+
+        orders = Order.objects.filter(user=request.user, rand_order_id=random_num)
+
+        for i in orders:
+            price = price + i.total_sub_price
+
+        temp['customer'] = customer
+        temp['cart'] = navCart(request)
+        temp['price'] = price
+        temp['total_price'] = 60 + price
+        temp['orders']= orders
+        temp['random_number'] = random_num
+    return render(request, 'customers/customer_order_successfull.html', temp)
+
+
+
 
 
 
