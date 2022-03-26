@@ -960,7 +960,7 @@ def api_customer_post(request):
 # Devliver Man
 
 def delivery_man_signup(request):
-    temp['title'] = 'Sign Up'
+    temp['title'] = 'Sign Up for Delivery Man'
     temp['sub_title'] = 'Sign Up'
     temp['error'] = ''
     if request.method == 'POST':
@@ -981,8 +981,8 @@ def delivery_man_signup(request):
     return render(request, 'visitors/signup.html', temp)
 
 def delivery_man_login(request):
-    temp['title'] = 'Customer LogIn'
-    temp['sub_title'] = 'Customer Login'
+    temp['title'] = 'Delivery Man LogIn'
+    temp['sub_title'] = 'Delivery Man Login'
     temp['error'] = ''
     if request.method == 'POST':
         email = request.POST['email']
