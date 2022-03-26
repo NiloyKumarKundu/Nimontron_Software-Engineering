@@ -964,21 +964,21 @@ def delivery_man_signup(request):
     temp['sub_title'] = 'Sign Up'
     temp['error'] = ''
     if request.method == 'POST':
-        first_name = request.POST['fname']
-        last_name = request.POST['lname']
+        name = request.POST['rname']
+        email = request.POST['email']
+        address = request.POST['address']
         image = request.FILES['image']
         password = request.POST['password']
-        email = request.POST['email']
         contact_no = request.POST['contact']
-        gender = request.POST['gender']
+        description = request.POST['description']
         try:
-            user = User.objects.create_user(first_name=first_name, last_name=last_name, username=email, password=password)
-            Customer.objects.create(user=user, contact_no=contact_no, image=image, gender=gender, type='customer')
-            temp['error'] = 'no'
+            user = User.objects.create_user(first_name=name, username=email, password=password)
+            Restaurant.objects.create(user=user, name=name, contact_no=contact_no, image=image, address=address, type='restaurant', description = description, status='pending')              # will be edited!
+            messages.warning(request, 'Something went wrong! Please try again...')
         except:
-            temp['error'] = 'yes'
+            messages.error(request, 'Email or password is wrong!')
 
-    return render(request, 'visitors/signup.html', temp)
+    return render(request, 'visitors/delivery_man_signup.html', temp)
 
 def delivery_man_login(request):
     temp['title'] = 'Delivery Man LogIn'
@@ -990,15 +990,15 @@ def delivery_man_login(request):
         user = authenticate(username=email, password=password)
         if user:
             try:
-                user1 = Customer.objects.get(user=user)
-                if user1.type == "customer":
+                user1 = Restaurant.objects.get(user=user)
+                if user1.type == "restaurant" and user1.status != 'pending':
                     login(request, user)
-                    messages.warning(request, 'Something went wrong! Please try again...')
-                    return redirect('customers:customer_home')
+                    temp['error'] = 'no'
+                    return redirect('customers:restaurants_home')
                 else:
-                    messages.warning(request, 'Something went wrong! Please try again...')
+                    messages.error(request, 'Please wait for the Admin approval.')
             except:
-                messages.warning(request, 'Something went wrong! Please try again...')
+                messages.error(request, 'Email is not identified. Please sign up first.')
         else:
             messages.error(request, 'Email or password is wrong!')
-    return render(request, 'visitors/login.html', temp)
+    return render(request, 'visitors/delivery_man_login.html', temp)
