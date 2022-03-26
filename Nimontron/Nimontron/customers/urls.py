@@ -14,6 +14,11 @@ urlpatterns = [
     path('donate_others', views.donate, name='donate'),
     path('contact', views.contact, name='contact'),
     path('restaurants', views.restaurant_lists, name='restaurant_lists'),
+
+
+    # Delivery_Man
+    path('delivery_man_signup', views.signup, name='delivery_man_signup'),
+    path('delivery_man_login', views.customer_login, name='delivery_man_login'),
     
     # Customer
     path('signup', views.signup, name='signup'),

@@ -955,3 +955,50 @@ def accept_post(request,id):
 def api_customer_post(request):
     data = list(Post.objects.all().values())
     return JsonResponse(data, safe=False)
+
+
+# Devliver Man
+
+def delivery_man_signup(request):
+    temp['title'] = 'Sign Up'
+    temp['sub_title'] = 'Sign Up'
+    temp['error'] = ''
+    if request.method == 'POST':
+        first_name = request.POST['fname']
+        last_name = request.POST['lname']
+        image = request.FILES['image']
+        password = request.POST['password']
+        email = request.POST['email']
+        contact_no = request.POST['contact']
+        gender = request.POST['gender']
+        try:
+            user = User.objects.create_user(first_name=first_name, last_name=last_name, username=email, password=password)
+            Customer.objects.create(user=user, contact_no=contact_no, image=image, gender=gender, type='customer')
+            temp['error'] = 'no'
+        except:
+            temp['error'] = 'yes'
+
+    return render(request, 'visitors/signup.html', temp)
+
+def delivery_man_login(request):
+    temp['title'] = 'Customer LogIn'
+    temp['sub_title'] = 'Customer Login'
+    temp['error'] = ''
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(username=email, password=password)
+        if user:
+            try:
+                user1 = Customer.objects.get(user=user)
+                if user1.type == "customer":
+                    login(request, user)
+                    messages.warning(request, 'Something went wrong! Please try again...')
+                    return redirect('customers:customer_home')
+                else:
+                    messages.warning(request, 'Something went wrong! Please try again...')
+            except:
+                messages.warning(request, 'Something went wrong! Please try again...')
+        else:
+            messages.error(request, 'Email or password is wrong!')
+    return render(request, 'visitors/login.html', temp)
