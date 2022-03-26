@@ -970,10 +970,10 @@ def delivery_man_signup(request):
         image = request.FILES['image']
         password = request.POST['password']
         contact_no = request.POST['contact']
-        description = request.POST['description']
+
         try:
             user = User.objects.create_user(first_name=name, username=email, password=password)
-            Restaurant.objects.create(user=user, name=name, contact_no=contact_no, image=image, address=address, type='restaurant', description = description, status='pending')              # will be edited!
+            Delivery_Man.objects.create(user=user, name=name, contact_no=contact_no, image=image, address=address, type='delivery_man', status='pending')              # will be edited!
             messages.warning(request, 'Something went wrong! Please try again...')
         except:
             messages.error(request, 'Email or password is wrong!')
@@ -990,8 +990,8 @@ def delivery_man_login(request):
         user = authenticate(username=email, password=password)
         if user:
             try:
-                user1 = Restaurant.objects.get(user=user)
-                if user1.type == "restaurant" and user1.status != 'pending':
+                user1 = Delivery_Man.objects.get(user=user)
+                if user1.type == "delivery_man" and user1.status != 'pending':
                     login(request, user)
                     temp['error'] = 'no'
                     return redirect('customers:restaurants_home')
