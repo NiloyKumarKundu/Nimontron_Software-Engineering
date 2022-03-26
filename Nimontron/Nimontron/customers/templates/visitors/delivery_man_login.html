@@ -45,14 +45,14 @@
 {% if error == 'no' %}
 <script>
   alert('LogIn successful!');
-  window.location = ('{% url "customers:foundation_home" %}')
+  window.location = ('{% url "customers:delivery_man_home" %}')
 </script>
 {% endif %}
 
 
 {% if error == 'yes' %}
 <script>
-  alert('Invalid Login Credentials! Try again....');
+  alert('Invalid Login Credentials or Admin approval is pending! Please try again later....');
 </script>
 {% endif %}
 

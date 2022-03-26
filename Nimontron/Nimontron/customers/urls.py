@@ -19,6 +19,7 @@ urlpatterns = [
     # Delivery_Man
     path('delivery_man_signup', views.delivery_man_signup, name='delivery_man_signup'),
     path('delivery_man_login', views.delivery_man_login, name='delivery_man_login'),
+    path('delivery_man_home', views.delivery_man_home, name='delivery_man_home'),
     
     # Customer
     path('signup', views.signup, name='signup'),

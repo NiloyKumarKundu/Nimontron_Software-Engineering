@@ -960,23 +960,24 @@ def api_customer_post(request):
 # Devliver Man
 
 def delivery_man_signup(request):
-    temp['title'] = 'Sign Up for Delivery Man'
+    temp['title'] = 'Sign Up As Delivery Man'
     temp['sub_title'] = 'Sign Up'
     temp['error'] = ''
     if request.method == 'POST':
-        name = request.POST['rname']
+        name = request.POST['dname']
         email = request.POST['email']
         address = request.POST['address']
         image = request.FILES['image']
         password = request.POST['password']
         contact_no = request.POST['contact']
+        gender = request.POST['gender']
 
         try:
             user = User.objects.create_user(first_name=name, username=email, password=password)
-            Delivery_Man.objects.create(user=user, name=name, contact_no=contact_no, image=image, address=address, type='delivery_man', status='pending')              # will be edited!
-            messages.warning(request, 'Something went wrong! Please try again...')
+            Delivery_Man.objects.create(user=user, name=name, gender=gender, contact_no=contact_no, image=image, address=address, type='delivery_man', status='pending')              # will be edited!
+            temp['error'] = 'no'
         except:
-            messages.error(request, 'Email or password is wrong!')
+            temp['error'] = 'yes'
 
     return render(request, 'visitors/delivery_man_signup.html', temp)
 
@@ -994,11 +995,20 @@ def delivery_man_login(request):
                 if user1.type == "delivery_man" and user1.status != 'pending':
                     login(request, user)
                     temp['error'] = 'no'
-                    return redirect('customers:restaurants_home')
+                    return redirect('customers:delivery_man_home')
                 else:
                     messages.error(request, 'Please wait for the Admin approval.')
+                    temp['error'] = 'yes'
             except:
                 messages.error(request, 'Email is not identified. Please sign up first.')
         else:
             messages.error(request, 'Email or password is wrong!')
     return render(request, 'visitors/delivery_man_login.html', temp)
+
+
+def delivery_man_home(request):
+    temp['title'] = 'Nilomtron'
+
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    return render(request, 'delivery_man/delivery_man_home.html', temp)
