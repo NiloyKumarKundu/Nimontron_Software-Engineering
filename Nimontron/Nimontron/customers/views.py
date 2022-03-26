@@ -455,12 +455,12 @@ def customer_order_successfull(request):
         cart_items = Cart.objects.filter(user=request.user)
         random_num = random.randint(10000, 99999)
 
-        uniqe_confirm = Order.objects.filter(order_id=random_num)
+        uniqe_confirm = Order.objects.filter(rand_order_id=random_num)
         while uniqe_confirm:
             random_num =  random.randint(10000, 99999)
             if not Order.objects.filter(order_id=random_num):
                 break
-            
+
         price = 0
         for i in cart_items:
             Order.objects.create(first_name=temp['fName'], last_name=temp['lName'], address=temp['address'], phone_no=temp['phone'], quantity=i.quantity, restaurant=i.restaurant, rand_order_id=random_num, post=i.post, user=i.user, total_sub_price=i.total_sub_price)
@@ -489,16 +489,13 @@ def customer_order(request):
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
     
-    temp['title'] = 'Order Details'
-    temp['sub_title'] = 'Orders'
+    temp['title'] = 'My Orders'
+    temp['sub_title'] = 'My Orders'
     temp['cart'] = navCart(request)
 
+    orders = Order.objects.filter(user=request.user).values('rand_order_id', 'first_name', 'last_name', 'ordered_date').distinct()
+    temp['orders'] = orders
     return render(request, 'customers/customer_order.html', temp)
-
-
-
-
-
 
 
 # Restaurants View

@@ -1,100 +1,57 @@
 {% include 'customers/customer_header.html' %}
 {% load static %}
 
-<div class="container-sm">
-    <div class="row">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700">
+<link rel="stylesheet" href="{% static 'customers/css/style.default.css' %}">
 
-        <div class="title">
-            <div class="row">
-                <div class="col">
-                    <h4 class="text-secondary"><b>Active Order</b></h4>
-                </div>
-            </div>
-        </div>
-        {% if size %}
-        <div class="p-4">
-            <table class="table table-striped">
-                <thead>
+
+<!-- Sweet Alert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+
+
+<div id="all">
+    <div id="content">
+      <div class="container">
+        <div class="row">
+
+          <div id="customer-orders" class="col-lg-10" style="margin: 0 auto">
+            <div class="box">
+              <h1>My orders</h1>
+              <p class="lead">Your orders on one place.</p>
+              <p class="text-muted">If you have any questions, please feel free to <a href="contact.html">contact us</a>, our customer service center is working for you 24/7.</p>
+              <hr>
+
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Food Name</th>
-                        <th scope="col">Ordered Date</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Price</th>
+                      <th>Order</th>
+                      <th>Name</th>
+                      <th>Date</th>
+                      <th>Action</th>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for i in orders %}
+                  </thead>
+                  <tbody>
+                    {% for order in orders %}
                     <tr>
-                        <th scope="row">{{ forloop.counter }}</th>
-                        <td>{{ i.title }}</td>
-                        <td>{{ i.ordered_date }}</td>
-                        <td>{{ i.status }}</td>
-                        <td>{{ i.post.new_price }}</td>
+                      <th># {{ order.rand_order_id }}</th>
+                      <th>{{ order.first_name }} {{ order.last_name }}</th>
+                      <td>{{ order.ordered_date }}</td>
+                      <td><a href="customer-order.html" class="btn btn-primary btn-sm">View</a></td>
                     </tr>
                     {% endfor %}
-                    <tr>
-                        <th colspan="4">Total: (without delivery charge) </th>
-                        <th>{{ total_amount }}</th>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
-
-        
-        {% if size == 0 %}
-        <p>No active order is available!</p>
-        {% endif %}
-            
-        <br>
-        <div class="title">
-            <div class="row">
-                <div class="col">
-                    <h4 class="text-secondary"><b>Past Order</b></h4>
-                </div>
+                  </tbody>
+                </table>
+              </div>
             </div>
+          </div>
         </div>
-        
-        {% if past_order %}
-        <div class="p-4">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Food Name</th>
-                        <th scope="col">Ordered Date</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for i in prev_order %}
-                    <tr>
-                        <th scope="row">{{ forloop.counter }}</th>
-                        <td>{{ i.title }}</td>
-                        <td>{{ i.ordered_date }}</td>
-                        <td>{{ i.status }}</td>
-                        <td>{{ i.post.new_price }}</td>
-                    </tr>
-                    {% endfor %}
-                    <tr>
-                        <th colspan="4">Total: (without delivery charge) </th>
-                        <th>{{ prev_total }}</th>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
-
-        
-        {% if past_order == 0 %}
-            <p>You haven't order yet.</p>
-        {% endif %}
+      </div>
     </div>
-</div>
-
-
+  </div>
 
 
 
