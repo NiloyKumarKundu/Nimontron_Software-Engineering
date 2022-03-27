@@ -1035,5 +1035,10 @@ def delivery_man_profile(request):
         data.address = address
         data.contact_no = contact_no
         data.gender = gender
-        
+        if len(request.FILES)!= 0:
+            if len(data.image)>0:
+                os.remove(data.image.path)
+            data.image = request.FILES['image']
+        user.save()
+        data.save()
     return render(request, 'delivery_man/delivery_man_profile.html', temp)
