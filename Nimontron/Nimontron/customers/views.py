@@ -1020,7 +1020,7 @@ def delivery_man_profile(request):
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
     user=request.user
-    data=Customer.objects.get(user=user)
+    data=Delivery_Man.objects.get(user=user)
     temp['info'] = data
     if request.method == 'POST':
         fname = request.POST['first_name']
@@ -1033,4 +1033,4 @@ def delivery_man_profile(request):
         data.gender = gender
         user.save()
         data.save()
-    return render(request, 'customers/delivery_man_profile.html', temp)
+    return render(request, 'delivery_man/delivery_man_profile.html', temp)
