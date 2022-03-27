@@ -1,4 +1,5 @@
 from ctypes import sizeof
+from lib2to3.pgen2.token import EQUAL
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from .models import *
@@ -503,8 +504,6 @@ def customer_order(request):
 
 def customer_order_details(request, rand_order_id):
     orders = Order.objects.filter(rand_order_id=rand_order_id)
-    
-
     price = 0
 
     for i in orders:
@@ -790,10 +789,26 @@ def restaurants_pending_order(request):
         return redirect('customers:login_as')
     res = Restaurant.objects.get(user=request.user.id)
 
-    active_order = Cart.objects.filter(restaurant=res, status='Active')
+    active_order = Order.objects.filter(restaurant=res).values('rand_order_id', 'first_name', 'last_name', 'ordered_date', 'status').distinct().exclude(status='Delivered')
+
+
     temp['pending_order'] = len(active_order)
     temp['active_order'] = active_order
     return render(request, 'restaurants/restaurants_pending_order.html', temp)
+
+
+def restaurant_pending_order_status(request, rand_order_id, status):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    res = Restaurant.objects.get(user=request.user.id)
+    order = Order.objects.filter(restaurant=res, rand_order_id=rand_order_id)
+    for i in order:
+        i.status = status
+        i.save()
+    return redirect('../../restaurants_pending_order')
+
+
+
 
 
 def restaurants_update_status(request, id):
@@ -821,7 +836,7 @@ def restaurants_delivered_order(request):
         return redirect('customers:login_as')
     res = Restaurant.objects.get(user=request.user.id)
 
-    delivered_order = Cart.objects.filter(restaurant=res, status='Delivered')
+    delivered_order = Order.objects.filter(restaurant=res, status='Delivered')
     temp['delivered_order'] = delivered_order
     temp['size'] = len(delivered_order)
     return render(request, 'restaurants/restaurants_delivered_order.html', temp)

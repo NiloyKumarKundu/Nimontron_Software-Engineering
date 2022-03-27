@@ -16,7 +16,8 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">No.</th>
+                    <th scope="col">Order ID</th>
                     <th>Food Name</th>
                     <th>Customer's Name</th>
                     <th>Order/Deliver Date</th>
@@ -27,8 +28,10 @@
                 {% for i in delivered_order %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
-                    <th>{{ i.title }}</th>
-                    <td>{{ i.user.first_name }} {{ i.user.last_name }}</td>
+                    <th># {{ i.rand_order_id }}</th>
+                    <th>{{ i.post.title }}</th>
+                    <th>{{ i.post.id }}</th>
+                    <td>{{ i.first_name }} {{ i.last_name }}</td>
                     <td>{{ i.delivery_date }}</td>
                     <td>
                         <a href="{% url 'customers:restaurants_update_status' i.id %}"
