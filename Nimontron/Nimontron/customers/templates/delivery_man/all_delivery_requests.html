@@ -2,34 +2,38 @@
 {% load static %}
 
 <div class="container">
-    <p>Manage Post Details</p>
+    <p>Manage All Delivery Requests Details</p>
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">No.</th>
-                <th scope="col">Donation Takers</th>
+                <th scope="col">Title</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Restaurant Name</th>
                 <th scope="col">Quantity</th>
-                <th scope="col">Items</th>
-                <th scope="col">Creation Date</th>
-                <th scope="col"> <span class="ml-4">Action</span> </th>
-                <th scope="col"> <span class="ml-5">Status</span> </th>
-                <th scope="col"> <span class="ml-5">Details</span> </th>
+                <th scope="col">Customer Address</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Delivery Date</th>
+                <th scope="col">Order Status</th>
+                <th scope="col"> <span class="ml-5">Action</span> </th>
                 
             </tr>
         </thead>
         <tbody>
 
-            {% for i in post %}
+            {% for i in all_requests %}
             <tr>
                 <th cope="row">{{forloop.counter}}</th>
-                <td>{{i.description}}</td>
+                <td>{{i.title}}</td>
+                <td>{{i.user}}</td>
+                <td>{{i.restaurant}}</td>
                 <td>{{i.quantity}}</td>
-                <td>{{i.items}}</td>
-                <td>{{i.creation_date}}</td>
+                <td>{{i.address}}</td>
+                <td>{{i.ordered_date}}</td>
+                <td>{{i.delivery_date}}</td>
+                <td>{{i.status}}</td>
                 <td><a href="{% url 'customers:foundation_edit_post' i.id %}" class="btn btn-success btn-sm">Accept Order</a>
                 <a href="{% url 'customers:foundation_delete_post' i.id %}" class="btn btn-danger ml-2 btn-sm" onclick="return confirm('Are You Sure?')">Update Order Status</a></td>
-                <td>{{i.status}}</td>
-                <td>{{i.fname}}<br>{{i.contact_no}}</td>
                 
 
             </tr>
@@ -40,4 +44,3 @@
 </div>
 
 
-{% include 'delivery_man/delivery_man_header.html' %}
