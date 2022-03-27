@@ -69,7 +69,7 @@ def login_as(request):
 def Logout(request):
     temp['name'] = 'Nimontron'
     logout(request)
-    return redirect('customers:index')
+    return redirect('customers:login_as')
 
 
 
