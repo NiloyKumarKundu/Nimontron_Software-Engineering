@@ -1024,15 +1024,13 @@ def delivery_man_profile(request):
     temp['info'] = data
     if request.method == 'POST':
         fname = request.POST['first_name']
-        lname = request.POST['last_name']
         address = request.POST['address']
         contact_no = request.POST['contact_no']
         gender = request.POST['gender']
         user.first_name = fname
-        user.last_name = lname
         data.address = address
         data.contact_no = contact_no
         data.gender = gender
         user.save()
         data.save()
-    return render(request, 'customers/customer_profile.html', temp)
+    return render(request, 'customers/delivery_man_profile.html', temp)
