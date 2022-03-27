@@ -31,16 +31,68 @@
                       <th>Order</th>
                       <th>Name</th>
                       <th>Date</th>
+                      <th style="padding-right: 100px;">Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {% for order in orders %}
                     <tr>
-                      <th># {{ order.rand_order_id }}</th>
-                      <th>{{ order.first_name }} {{ order.last_name }}</th>
+                      <td># {{ order.rand_order_id }}</td>
+                      <td>{{ order.first_name }} {{ order.last_name }}</td>
                       <td>{{ order.ordered_date }}</td>
-                      <td><a href="{% url 'customers:customer_order_details' order.rand_order_id %}" class="btn btn-primary btn-sm">View</a></td>
+                      
+                      {% if order.status == 'Pending' %}
+                      <td>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 25%; background-color: #0dcaf0;"></div>
+                        </div>
+                      </td>
+
+                      {% endif %}
+
+                      {% if order.status == 'Packed' %}
+                      <td>
+                        <div class="progress">
+                          <div class="progress-bar bg-blue progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 50%; background-color: #0d6efd"></div>
+                        </div>
+                      </td>
+
+                      {% endif %}
+
+                      {% if order.status == 'On The Way' %}
+
+                      <td>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%; background-color: #20c997"></div>
+                        </div>
+                      </td>
+
+                      {% endif %}
+
+
+                      {% if order.status == 'Delivered' %}
+
+                      <td>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%; background-color: #198754;"></div>
+                        </div>
+                      </td>
+
+                      {% endif %}
+
+                      {% if order.status == 'Cancelled' %}
+                      <td>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%; background-color: #dc3545;"></div>
+                        </div>
+                      </td>
+                      {% endif %}
+                        
+                      
+                      <td>
+                        <a href="{% url 'customers:customer_order_details' order.rand_order_id %}" class="btn btn-primary btn-sm">View</a>
+                      </td>
                     </tr>
                     {% endfor %}
                   </tbody>

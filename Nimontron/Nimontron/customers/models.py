@@ -75,6 +75,7 @@ class Cart(models.Model):
 
 class Order(models.Model):
     ORDER_STATUS = (
+        ('Cancelled', 'Cancelled'),
         ('Pending', 'Pending'),
         ('Packed', 'Packed'),
         ('On The Way', 'On The Way'),
