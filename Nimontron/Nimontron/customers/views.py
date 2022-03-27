@@ -1,4 +1,5 @@
 from ctypes import sizeof
+from re import I
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from .models import *
@@ -11,6 +12,9 @@ from django.db.models.functions import Concat
 from django.contrib import messages
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .models import Delivery_Man
+from django.core.files.storage import  FileSystemStorage
+import os
 
 
 
@@ -1031,6 +1035,5 @@ def delivery_man_profile(request):
         data.address = address
         data.contact_no = contact_no
         data.gender = gender
-        user.save()
-        data.save()
+        
     return render(request, 'delivery_man/delivery_man_profile.html', temp)
