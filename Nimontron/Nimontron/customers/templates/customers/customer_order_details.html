@@ -75,8 +75,8 @@
                     <div class="col-lg-6"></div>
                     <div class="col-lg-6">
                         <h2>Shipping address</h2>
-                        <p>{{ fName }} {{ lName }}<br>{{ address }} <br>{{ phone }} <br> 
-                        {% if payment == 'payment3' %}
+                        <p>{{ customer.first_name }} {{ customer.last_name }}<br>{{ customer.address }} <br>{{ customer.phone_no }} <br> 
+                        {% if customer.delivery_type == 'payment3' %}
                             Cash on Delivery
                         {% endif %}
                         </p>

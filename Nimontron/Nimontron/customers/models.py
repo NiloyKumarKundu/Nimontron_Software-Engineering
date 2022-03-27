@@ -81,6 +81,13 @@ class Order(models.Model):
         ('On The Way', 'On The Way'),
         ('Delivered', 'Delivered')
     )
+
+    DELIVERY_TYPE = {
+        ('payment1', 'payment1'),
+        ('payment2', 'payment2'),
+        ('payment3', 'payment3'),
+    }
+
     first_name = models.CharField(max_length=50, null=True)
     last_name = models.CharField(max_length=50, null=True)
     address = models.CharField(max_length=50, null=True)
@@ -90,6 +97,7 @@ class Order(models.Model):
     total_sub_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    delivery_type = models.CharField(max_length=20, choices=DELIVERY_TYPE, default='payment3')
     ordered_date = models.DateField(default=timezone.now)
     status = models.CharField(max_length=20, choices=ORDER_STATUS, default='Pending')
     delivery_date = models.DateField(default=timezone.now)

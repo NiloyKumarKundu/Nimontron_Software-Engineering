@@ -503,17 +503,24 @@ def customer_order(request):
 
 def customer_order_details(request, rand_order_id):
     orders = Order.objects.filter(rand_order_id=rand_order_id)
+    
+
+    price = 0
+
+    for i in orders:
+        price = price + i.total_sub_price
+
+    temp['cart'] = navCart(request)
+    temp['price'] = price
+    temp['total_price'] = 60 + price
     temp['orders'] = orders
     temp['random_number'] = rand_order_id
 
-    status = ''
-    order_date = ''
+    customer = ''
     for i in orders:
-        status = i.status
-        order_date = i.ordered_date
+        customer = i
         break
-    temp['order_date'] = order_date
-    temp['status'] = status
+    temp['customer'] = customer
 
     return render(request, 'customers/customer_order_details.html', temp)
 
