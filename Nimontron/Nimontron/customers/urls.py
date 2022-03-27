@@ -51,7 +51,9 @@ urlpatterns = [
     path('restaurants_pending_order', views.restaurants_pending_order, name='restaurants_pending_order'),
     path('restaurants_delivered_order', views.restaurants_delivered_order, name='restaurants_delivered_order'),
     path('restaurants_update_status/<int:id>', views.restaurants_update_status, name='restaurants_update_status'),
-    path('restaurants_order_details/<str:id>', views.restaurants_order_details, name='restaurants_order_details'),
+
+    path('restaurants_order_details/<str:rand_order_id>', views.restaurants_order_details, name='restaurants_order_details'),
+
     path('restaurant_pending_order_status/<str:rand_order_id>/<str:status>', views.restaurant_pending_order_status, name='restaurant_pending_order_status'),
 
     # Restaurants Donation Part

@@ -30,12 +30,11 @@
                     <th scope="row">{{ forloop.counter }}</th>
                     <th># {{ i.rand_order_id }}</th>
                     <th>{{ i.post.title }}</th>
-                    <th>{{ i.post.id }}</th>
                     <td>{{ i.first_name }} {{ i.last_name }}</td>
                     <td>{{ i.delivery_date }}</td>
                     <td>
-                        <a href="{% url 'customers:restaurants_update_status' i.id %}"
-                            class="btn btn-sm btn-primary">View</a>
+                        <a href="{% url 'customers:restaurants_order_details' i.rand_order_id %}"
+                                class="btn btn-sm btn-primary">View</a> 
                     </td>
                 </tr>
                 {% endfor %}

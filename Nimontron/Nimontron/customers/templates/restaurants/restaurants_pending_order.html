@@ -56,8 +56,8 @@
                             </form>
                         </td>
                         <td>
-                            {% comment %} <a href="{% url 'customers:restaurants_update_status' i.id %}"
-                                class="btn btn-sm btn-primary">View</a> {% endcomment %}
+                            <a href="{% url 'customers:restaurants_order_details' i.rand_order_id %}"
+                                class="btn btn-sm btn-primary">View</a> 
                         </td>
                     </tr>
                     {% endfor %}

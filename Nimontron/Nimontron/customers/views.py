@@ -507,6 +507,8 @@ def customer_order_details(request, rand_order_id):
     price = 0
 
     for i in orders:
+        order_date = i.ordered_date
+        status = i.status
         price = price + i.total_sub_price
 
     temp['cart'] = navCart(request)
@@ -514,6 +516,8 @@ def customer_order_details(request, rand_order_id):
     temp['total_price'] = 60 + price
     temp['orders'] = orders
     temp['random_number'] = rand_order_id
+    temp['order_date'] = order_date
+    temp['status'] = status
 
     customer = ''
     for i in orders:
@@ -806,6 +810,34 @@ def restaurant_pending_order_status(request, rand_order_id, status):
         i.status = status
         i.save()
     return redirect('../../restaurants_pending_order')
+
+
+def restaurants_order_details(request, rand_order_id):
+
+    orders = Order.objects.filter(rand_order_id=rand_order_id)
+    price = 0
+    order_date = ''
+    status = ''
+    for i in orders:
+        order_date = i.ordered_date
+        status = i.status
+        price = price + i.total_sub_price
+    print(status)
+    temp['price'] = price
+    temp['total_price'] = 60 + price
+    temp['orders'] = orders
+    temp['random_number'] = rand_order_id
+    temp['ordered_date'] = order_date
+    temp['status'] = status
+
+    customer = ''
+    for i in orders:
+        customer = i
+        break
+    temp['customer'] = customer
+
+    return render(request, 'restaurants/restaurants_order_details.html', temp)
+
 
 
 

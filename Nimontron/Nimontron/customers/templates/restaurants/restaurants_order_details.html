@@ -22,14 +22,6 @@
                 <h1>Order #{{ random_number }}</h1>
                 <p class="lead">Order #{{ random_number }} was placed on <strong>{{ order_date }}</strong> and is currently <strong>{{ status }}</strong>.
                 </p>
-                
-                {% if status == 'Pending' %}
-                <p>You will get a phone call soon to confirm your order.</p>    
-                {% endif %}
-                    
-
-                <p class="text-muted">If you have any questions, please feel free to <a href="contact.html">contact us</a>, our customer service center is working for you 24/7.</p>
-                <hr>
                 <div class="table-responsive mb-4">
                 <table class="table">
                     <thead>
