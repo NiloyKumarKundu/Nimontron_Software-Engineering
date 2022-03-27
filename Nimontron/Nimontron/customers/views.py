@@ -1048,7 +1048,6 @@ def all_delivery_requests(request):
     if not request.user.is_authenticated:
      return redirect('customer:login_as')
     user = request.user
-    foundation = Foundation.objects.get(user=user)
-    post = Foundation_Post.objects.filter(foundation=foundation)
-    temp['post'] = post
-    return render(request, 'foundations/foundation_food_posts.html', temp)
+    all_requests = Cart.objects.all()
+    temp['all_requests'] = all_requests
+    return render(request, 'delivery_man/all_delivery_requests.html', temp)
