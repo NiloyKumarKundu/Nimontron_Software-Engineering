@@ -955,3 +955,38 @@ def accept_post(request,id):
 def api_customer_post(request):
     data = list(Post.objects.all().values())
     return JsonResponse(data, safe=False)
+
+
+
+
+
+
+
+
+
+
+
+
+#admin_part
+def admin_home(request):
+    return render(request, 'admin/admin_home.html', temp)
+
+
+def admin_login(request):
+    error = ""
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        print(email, password)
+        user = authenticate(username=email, password = password)
+
+        try: 
+            if user.is_staff:
+                login(request, user)
+                error = "no"
+            else:
+                error="yes"
+        except:
+            error = "yes"
+        temp['error'] = error
+    return render(request, 'admin/admin_login.html', temp)

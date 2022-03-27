@@ -86,4 +86,14 @@ urlpatterns = [
 
 
 
+
+    #admin_part
+    path('admin_login', views.admin_login, name='admin_login'),
+
+    path('admin_home', views.admin_home, name='admin_home'),
+    
+
+
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
