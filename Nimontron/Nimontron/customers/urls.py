@@ -21,6 +21,7 @@ urlpatterns = [
     path('delivery_man_login', views.delivery_man_login, name='delivery_man_login'),
     path('delivery_man_home', views.delivery_man_home, name='delivery_man_home'),
     path('delivery_man_profile', views.delivery_man_profile, name='delivery_man_profile'),
+    path('all_delivery_requests', views.all_delivery_requests, name='all_delivery_requests'),
     
     # Customer
     path('signup', views.signup, name='signup'),

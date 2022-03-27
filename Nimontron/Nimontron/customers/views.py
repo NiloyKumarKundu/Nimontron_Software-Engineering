@@ -1042,3 +1042,13 @@ def delivery_man_profile(request):
         user.save()
         data.save()
     return render(request, 'delivery_man/delivery_man_profile.html', temp)
+
+
+def all_delivery_requests(request):
+    if not request.user.is_authenticated:
+     return redirect('customer:login_as')
+    user = request.user
+    foundation = Foundation.objects.get(user=user)
+    post = Foundation_Post.objects.filter(foundation=foundation)
+    temp['post'] = post
+    return render(request, 'foundations/foundation_food_posts.html', temp)
