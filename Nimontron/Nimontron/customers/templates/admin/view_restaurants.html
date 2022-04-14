@@ -1,0 +1,12 @@
+{% include 'admin/admin_navbar.html' %}
+
+
+
+
+{%for i in data%}
+{{i.user.first_name}} {{i.user.last_name}}
+{{i.contact_no  }}
+{% comment %} <a href="{% url 'delete_restaurant' i.id%}"> delete </a> {% endcomment %}
+
+
+{%endfor%}

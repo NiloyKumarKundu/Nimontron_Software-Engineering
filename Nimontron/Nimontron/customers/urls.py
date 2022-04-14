@@ -91,6 +91,10 @@ urlpatterns = [
     path('admin_login', views.admin_login, name='admin_login'),
 
     path('admin_home', views.admin_home, name='admin_home'),
+    path('view_restaurants', views.view_restaurants, name='view_restaurants'),
+    
+    path('view_specific_restaurant/<int:id>', views.view_specific_restaurant, name='view_specific_restaurant'),
+    
     
 
 

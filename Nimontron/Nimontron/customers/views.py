@@ -968,8 +968,13 @@ def api_customer_post(request):
 
 
 #admin_part
+
+
 def admin_home(request):
     return render(request, 'admin/admin_home.html', temp)
+
+
+
 
 
 def admin_login(request):
@@ -990,3 +995,21 @@ def admin_login(request):
             error = "yes"
         temp['error'] = error
     return render(request, 'admin/admin_login.html', temp)
+
+
+
+
+def view_restaurants(request):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    data = Restaurant.objects.all()
+    temp['data'] = data
+    return render(request, 'admin/view_restaurants.html', temp)
+
+
+
+def view_specific_restaurant(request, id):
+    restaurant = Restaurant.objects.filter(id=id)
+    
+    temp['restaurant'] = restaurant
+    return render(request, 'admin/view_specific_restaurant.html', temp)

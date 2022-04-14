@@ -1,0 +1,12 @@
+{% include 'admin/admin_navbar.html' %}
+
+
+{% for i in restaurant %}
+<p> {{ i.user.first_name }} </p>
+<p> {{ i.user.last_name }} </p>'
+<p> {{ i.user.username }} </p>
+
+
+{% endfor %}
+
+
