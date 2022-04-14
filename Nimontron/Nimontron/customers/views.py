@@ -494,7 +494,7 @@ def customer_order(request):
     temp['sub_title'] = 'My Orders'
     temp['cart'] = navCart(request)
 
-    orders = Order.objects.filter(user=request.user).values('rand_order_id', 'first_name', 'last_name', 'ordered_date', 'status').distinct()
+    orders = Order.objects.filter(user=request.user).values('rand_order_id', 'first_name', 'last_name', 'ordered_date', 'status').distinct().order_by('-ordered_date')
     temp['orders'] = orders
     print(orders)
     temp['Packed'] = 'Packed'
