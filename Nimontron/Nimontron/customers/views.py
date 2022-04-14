@@ -1226,7 +1226,7 @@ def all_delivery_requests(request):
     if not request.user.is_authenticated:
      return redirect('customer:login_as')
     user = request.user
-    all_requests = Order.objects.all().filter(status='On The Way')
+    all_requests = Order.objects.all().filter(status='Pending')
     temp['all_requests'] = all_requests
     return render(request, 'delivery_man/all_delivery_requests.html', temp)
 

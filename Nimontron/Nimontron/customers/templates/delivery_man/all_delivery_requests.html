@@ -7,7 +7,7 @@
         <thead>
             <tr>
                 <th scope="col">No.</th>
-                
+                <th scope="col">Title</th>
                 <th scope="col">Customer Name</th>
                 <th scope="col">Restaurant Name</th>
                 <th scope="col">Quantity</th>
@@ -26,7 +26,7 @@
             {% for i in all_requests %}
             <tr>
                 <th cope="row">{{forloop.counter}}</th>
-                
+                <td>{{i.post.title}}</td>
                 <td>{{i.user.first_name }} {{i.user.last_name }}</td>
                 <td>{{i.restaurant.user.first_name}}</td>
                 <td>{{i.quantity}}</td>
