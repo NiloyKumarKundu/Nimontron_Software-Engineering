@@ -1051,3 +1051,25 @@ def all_delivery_requests(request):
     all_requests = Cart.objects.all()
     temp['all_requests'] = all_requests
     return render(request, 'delivery_man/all_delivery_requests.html', temp)
+
+def accept_delivery_requests(request):
+    if not request.user.is_authenticated:
+     return redirect('customer:login_as')
+    user = request.user
+    all_requests = Cart.objects.all()
+    dm=Delivery_Man.objects.get(user=user)
+    post=Foundation_Post.objects.get(id=id)
+    post.status="Accepted"
+    post.contact_no=cs.contact_no
+    post.fname=cs.user.first_name
+    post.save()
+    temp['all_requests'] = all_requests
+    return render(request, 'delivery_man/all_delivery_requests.html', temp)
+
+def order_request_delivered(request):
+    if not request.user.is_authenticated:
+     return redirect('customer:login_as')
+    user = request.user
+    all_requests = Cart.objects.all()
+    temp['all_requests'] = all_requests
+    return render(request, 'delivery_man/all_delivery_requests.html', temp)
