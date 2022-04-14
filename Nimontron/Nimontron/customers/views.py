@@ -1,4 +1,5 @@
 from ctypes import sizeof
+from re import I
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from .models import *
@@ -11,6 +12,9 @@ from django.db.models.functions import Concat
 from django.contrib import messages
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .models import Delivery_Man
+from django.core.files.storage import  FileSystemStorage
+import os
 
 
 
@@ -69,7 +73,7 @@ def login_as(request):
 def Logout(request):
     temp['name'] = 'Nimontron'
     logout(request)
-    return redirect('customers:index')
+    return redirect('customers:login_as')
 
 
 
@@ -955,3 +959,117 @@ def accept_post(request,id):
 def api_customer_post(request):
     data = list(Post.objects.all().values())
     return JsonResponse(data, safe=False)
+
+
+# Devliver Man
+
+def delivery_man_signup(request):
+    temp['title'] = 'Sign Up As Delivery Man'
+    temp['sub_title'] = 'Sign Up'
+    temp['error'] = ''
+    if request.method == 'POST':
+        name = request.POST['dname']
+        email = request.POST['email']
+        address = request.POST['address']
+        image = request.FILES['image']
+        password = request.POST['password']
+        contact_no = request.POST['contact']
+        gender = request.POST['gender']
+
+        try:
+            user = User.objects.create_user(first_name=name, username=email, password=password)
+            Delivery_Man.objects.create(user=user, name=name, gender=gender, contact_no=contact_no, image=image, address=address, type='delivery_man', status='pending')              # will be edited!
+            temp['error'] = 'no'
+        except:
+            temp['error'] = 'yes'
+
+    return render(request, 'visitors/delivery_man_signup.html', temp)
+
+def delivery_man_login(request):
+    temp['title'] = 'Delivery Man LogIn'
+    temp['sub_title'] = 'Delivery Man Login'
+    temp['error'] = ''
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(username=email, password=password)
+        if user:
+            try:
+                user1 = Delivery_Man.objects.get(user=user)
+                if user1.type == "delivery_man" and user1.status != 'pending':
+                    login(request, user)
+                    temp['error'] = 'no'
+                    return redirect('customers:delivery_man_home')
+                else:
+                    messages.error(request, 'Please wait for the Admin approval.')
+                    temp['error'] = 'yes'
+            except:
+                messages.error(request, 'Email is not identified. Please sign up first.')
+        else:
+            messages.error(request, 'Email or password is wrong!')
+    return render(request, 'visitors/delivery_man_login.html', temp)
+
+
+def delivery_man_home(request):
+    temp['title'] = 'Nilomtron'
+
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    return render(request, 'delivery_man/delivery_man_home.html', temp)
+
+
+def delivery_man_profile(request):
+    temp['title'] = 'Profile'
+    temp['sub_title'] = 'Profile'
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    user=request.user
+    data=Delivery_Man.objects.get(user=user)
+    temp['info'] = data
+    if request.method == 'POST':
+        fname = request.POST['first_name']
+        address = request.POST['address']
+        contact_no = request.POST['contact_no']
+        gender = request.POST['gender']
+        user.first_name = fname
+        data.address = address
+        data.contact_no = contact_no
+        data.gender = gender
+        if len(request.FILES)!= 0:
+            if len(data.image)>0:
+                os.remove(data.image.path)
+            data.image = request.FILES['image']
+        user.save()
+        data.save()
+    return render(request, 'delivery_man/delivery_man_profile.html', temp)
+
+
+def all_delivery_requests(request):
+    if not request.user.is_authenticated:
+     return redirect('customer:login_as')
+    user = request.user
+    all_requests = Cart.objects.all()
+    temp['all_requests'] = all_requests
+    return render(request, 'delivery_man/all_delivery_requests.html', temp)
+
+def accept_delivery_requests(request):
+    if not request.user.is_authenticated:
+     return redirect('customer:login_as')
+    user = request.user
+    all_requests = Cart.objects.all()
+    dm=Delivery_Man.objects.get(user=user)
+    post=Foundation_Post.objects.get(id=id)
+    post.status="Accepted"
+    post.contact_no=cs.contact_no
+    post.fname=cs.user.first_name
+    post.save()
+    temp['all_requests'] = all_requests
+    return render(request, 'delivery_man/all_delivery_requests.html', temp)
+
+def order_request_delivered(request):
+    if not request.user.is_authenticated:
+     return redirect('customer:login_as')
+    user = request.user
+    all_requests = Cart.objects.all()
+    temp['all_requests'] = all_requests
+    return render(request, 'delivery_man/all_delivery_requests.html', temp)
