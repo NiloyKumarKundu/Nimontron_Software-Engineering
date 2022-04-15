@@ -15,10 +15,13 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th>Food Name</th>
+                    <th scope="col">No</th>
+                    <th scope="col">Order ID</th>
                     <th>Customer's Name</th>
                     <th>Order/Deliver Date</th>
+                    <th>
+                        Status
+                    </th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -28,12 +31,33 @@
                     {% for i in active_order %}
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
-                        <th>{{ i.title }}</th>
-                        <td>{{ i.user.first_name }} {{ i.user.last_name }}</td>
-                        <td>{{ i.delivery_date }}</td>
+                        <th># {{ i.rand_order_id }}</th>
+                        <td>{{ i.first_name }} {{ i.last_name }}</td>
+                        <td>{{ i.ordered_date }}</td>
                         <td>
-                            <a href="{% url 'customers:restaurants_update_status' i.id %}"
-                                class="btn btn-sm btn-primary">View</a>
+                            <form action="" method="post">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <!-- Example single danger button -->
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="True">
+                                                {{ i.status }}
+                                            </button>
+                                            <div class="dropdown-menu">
+                                            <a class="dropdown-item selected" href="{% url 'customers:restaurant_pending_order_status' i.rand_order_id 'Pending' %}">Pending</a>
+                                            <a class="dropdown-item" href="{% url 'customers:restaurant_pending_order_status' i.rand_order_id 'Packed' %}">Packed</a>
+                                            <a class="dropdown-item" href="{% url 'customers:restaurant_pending_order_status' i.rand_order_id 'On The Way' %}">On The Way</a>
+                                            <a class="dropdown-item" href="{% url 'customers:restaurant_pending_order_status' i.rand_order_id 'Delivered' %}">Delivered</a>
+                                            <a class="dropdown-item" href="{% url 'customers:restaurant_pending_order_status' i.rand_order_id 'Cancelled' %}">Cancelled</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{% url 'customers:restaurants_order_details' i.rand_order_id %}"
+                                class="btn btn-sm btn-primary">View</a> 
                         </td>
                     </tr>
                     {% endfor %}

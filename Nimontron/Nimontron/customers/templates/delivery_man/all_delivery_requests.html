@@ -1,0 +1,57 @@
+{% include 'delivery_man/delivery_man_header.html' %}
+{% load static %}
+
+<div class="container">
+    <p>Manage All Delivery Requests Details</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Order ID</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Restaurant Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Customer Address</th>
+                <th scope="col">Phone No</th>
+                <th scope="col">Total Price</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Delivery Date</th>
+                <th scope="col">Order Status</th>
+                <th scope="col"> <span class="ml-2">Update  Order Status</span> </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for i in all_requests %}
+            <tr>
+                <th cope="row">{{forloop.counter}}</th>
+                <td>{{i.rand_order_id}}</td>
+                <td>{{i.first_name }} {{i.last_name }}</td>
+                <td>{{i.first_name}}</td>
+                <td>{{i.total_quantity}}</td>
+                <td>{{i.address}}</td>
+                <td>{{i.phone_no}}</td>
+                <td>{{i.total_price}}</td>
+                <td>{{i.ordered_date}}</td>
+                <td>{{i.delivery_date}}</td>
+                <td>{{i.status}}</td>
+                <td>
+                    {% if i.status == 'Packed' %}
+                    <a href="{% url 'customers:accept_delivery_requests' i.rand_order_id 'On The Way' %}" class="btn btn-sm btn-outline-primary" onclick="return confirm('Are You Sure?')">Accept Order</a>
+                    {% endif %}
+                    {% if i.status == 'On The Way' %}
+                <a href="{% url 'customers:order_delivered' i.rand_order_id 'Delivered' %}" class="btn btn-outline-success" onclick="return confirm('Are You Sure?')">Delivered</a></td>
+                    {% endif %}
+                    
+
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+{% include 'delivery_man/delivery_man_footer.html' %}
+
+

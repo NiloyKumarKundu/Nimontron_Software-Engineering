@@ -14,6 +14,17 @@ urlpatterns = [
     path('donate_others', views.donate, name='donate'),
     path('contact', views.contact, name='contact'),
     path('restaurants', views.restaurant_lists, name='restaurant_lists'),
+
+
+    # Delivery_Man
+    path('delivery_man_signup', views.delivery_man_signup, name='delivery_man_signup'),
+    path('delivery_man_login', views.delivery_man_login, name='delivery_man_login'),
+    path('delivery_man_home', views.delivery_man_home, name='delivery_man_home'),
+    path('delivery_man_profile', views.delivery_man_profile, name='delivery_man_profile'),
+    path('all_delivery_requests', views.all_delivery_requests, name='all_delivery_requests'),
+    path('accept_delivery_requests/<str:rand_order_id>/<str:status>', views.accept_delivery_requests, name='accept_delivery_requests'),
+    path('order_delivered/<str:rand_order_id>/<str:status>', views.order_delivered, name='order_delivered'),
+    path('delivery_details', views.delivery_details, name='delivery_details'),
     
     # Customer
     path('signup', views.signup, name='signup'),
@@ -25,6 +36,18 @@ urlpatterns = [
     path('Logout', views.Logout, name='Logout'),
     path('customer_food_post_details/<int:id>', views.customer_food_post_details, name='customer_food_post_details'),
     path('cart_item_decrease/<int:id>', views.cart_item_decrease, name='cart_item_decrease'),
+
+    #customer_view_cart
+    path('customer_view_cart', views.customer_view_cart, name='customer_view_cart'),
+    path('customer_checkout_address', views.customer_checkout_address, name='customer_checkout_address'),
+    path('customer_payment_method', views.customer_payment_method, name='customer_payment_method'),
+    path('customer_order_review', views.customer_order_review, name='customer_order_review'),
+    path('customer_order', views.customer_order, name='customer_order'),
+    path('item_increase/<int:id>', views.item_increase, name='item_increase'),
+    path('item_decrease/<int:id>', views.item_decrease, name='item_decrease'),
+    path('customer_delete_cart_item/<int:id>', views.customer_delete_cart_item, name='customer_delete_cart_item'),
+    path('customer_order_successfull', views.customer_order_successfull, name='customer_order_successfull'),
+    path('customer_order_details/<str:rand_order_id>', views.customer_order_details, name='customer_order_details'),
 
     # Restaurants
     path('restaurants_signup', views.restaurants_signup, name='restaurants_signup'),
@@ -39,6 +62,10 @@ urlpatterns = [
     path('restaurants_pending_order', views.restaurants_pending_order, name='restaurants_pending_order'),
     path('restaurants_delivered_order', views.restaurants_delivered_order, name='restaurants_delivered_order'),
     path('restaurants_update_status/<int:id>', views.restaurants_update_status, name='restaurants_update_status'),
+
+    path('restaurants_order_details/<str:rand_order_id>', views.restaurants_order_details, name='restaurants_order_details'),
+
+    path('restaurant_pending_order_status/<str:rand_order_id>/<str:status>', views.restaurant_pending_order_status, name='restaurant_pending_order_status'),
 
     # Restaurants Donation Part
     path('restaurants_donation_post', views.restaurants_donation_post, name='restaurants_donation_post'),
@@ -70,14 +97,7 @@ urlpatterns = [
     
     
 
-    #customer_view_cart
-    path('customer_view_cart', views.customer_view_cart, name='customer_view_cart'),
-    path('customer_order', views.customer_order, name='customer_order'),
-    path('item_increase/<int:id>', views.item_increase, name='item_increase'),
-    path('item_decrease/<int:id>', views.item_decrease, name='item_decrease'),
     
-
-    path('customer_delete_cart_item/<int:id>', views.customer_delete_cart_item, name='customer_delete_cart_item'),
     
     
     # For testing api

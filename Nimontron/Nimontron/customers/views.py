@@ -1,4 +1,6 @@
 from ctypes import sizeof
+from lib2to3.pgen2.token import EQUAL
+from re import I
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from .models import *
@@ -11,6 +13,10 @@ from django.db.models.functions import Concat
 from django.contrib import messages
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import random
+from .models import Delivery_Man
+from django.core.files.storage import  FileSystemStorage
+import os
 
 
 
@@ -69,7 +75,7 @@ def login_as(request):
 def Logout(request):
     temp['name'] = 'Nimontron'
     logout(request)
-    return redirect('customers:index')
+    return redirect('customers:login_as')
 
 
 
@@ -126,7 +132,7 @@ def customer_login(request):
 
 def navCart(request):
     user=request.user
-    cart = Cart.objects.filter(user=user, status='Cart').count()
+    cart = Cart.objects.filter(user=user).count()
     return cart
 
 def customer_home(request):
@@ -253,22 +259,23 @@ def customer_food_post_details(request, id):
     if request.method == 'POST':
         post = Post.objects.get(id=id)
         user = request.user
+        
 
         cart = Cart.objects.filter(user=user, post = post).exists()
         if cart:
-            product = Cart.objects.get(user=user, post = post)
+            product = Cart.objects.get(user=user, post=post)
             product.quantity = product.quantity + 1
+            product.total_sub_price = post.new_price * product.quantity
             product.save()
             return redirect('../customer_food_post_details/' + str(id))
 
         restaurant = Post.objects.get(id=id).restaurant
         ordered_date = post.creation_date
-        status = "Cart"
         title = post.title
-        address = Customer.objects.get(user=user).address
+        price = post.new_price
 
         try:
-            Cart.objects.create(address=address, title=title, post=post, restaurant=restaurant, user=user, ordered_date=ordered_date, status=status)
+            Cart.objects.create(title=title, post=post, restaurant=restaurant, user=user, ordered_date=ordered_date, total_sub_price=price)
             messages.success(request, "Post Added in your cart successfully")
         except:
             messages.error(request, "Something went wrong")
@@ -295,6 +302,7 @@ def cart_item_decrease(request, id):
             product = Cart.objects.get(user=user, post = post)
             if product.quantity > 1:
                 product.quantity = product.quantity - 1
+                product.total_sub_price = post.new_price * product.quantity
                 product.save()
                 return redirect('../customer_food_post_details/' + str(id))
     return render(request, 'customers/customer_food_post_details.html', temp)
@@ -303,14 +311,19 @@ def cart_item_decrease(request, id):
 
 def item_increase(request, id):
     product = Cart.objects.get(id = id)
+    post = Post.objects.get(id=product.post.id)
     product.quantity = product.quantity + 1
+    product.total_sub_price = post.new_price * product.quantity
     product.save()
     return redirect('../customer_view_cart')
 
+
 def item_decrease(request, id):
     product = Cart.objects.get(id=id)
+    post = Post.objects.get(id=product.post.id)
     if product.quantity > 1:
         product.quantity = product.quantity - 1
+        product.total_sub_price = post.new_price * product.quantity
         product.save()
     return redirect('../customer_view_cart')
 
@@ -320,7 +333,7 @@ def customer_view_cart(request):
     if not request.user.is_authenticated:
         return redirect('customer:login_as')
     user=request.user
-    cart_items = Cart.objects.filter(user=user, status='Cart')
+    cart_items = Cart.objects.filter(user=user)
 
     temp['title'] = 'Food Cart'
     temp['sub_title'] = 'Cart'
@@ -329,22 +342,11 @@ def customer_view_cart(request):
 
     price = 0
     for i in cart_items:
-        price = price + i.post.new_price
+        price = price + i.total_sub_price
 
     temp['price'] = price
-    temp['total_price'] = 40 + price
+    temp['total_price'] = 60 + price
     temp['total_items'] = len(cart_items)
-
-    if request.method == 'POST':
-        transaction_id = request.POST['trxid']
-
-        for i in cart_items:
-            cartItem = Cart.objects.get(id=i.id)
-            cartItem.transaction_id = transaction_id
-            cartItem.status = 'Active'
-            cartItem.save()
-        messages.success(request, "Order submitted successfully")
-        return redirect('../customer_view_cart')
     return render(request, 'customers/customer_view_cart.html', temp)
 
 
@@ -360,6 +362,128 @@ def customer_delete_cart_item(request, id):
     return redirect('../customer_view_cart')
 
 
+def customer_checkout_address(request):
+    if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+
+    temp['title'] = 'Checkout'
+    temp['sub_title'] = 'checkout address'
+    customer = Customer.objects.filter(user=request.user)
+    cart_items = Cart.objects.filter(user=request.user)
+    temp['customer'] = customer
+    temp['cart'] = navCart(request)
+
+    price = 0
+    for i in cart_items:
+        price = price + i.total_sub_price
+
+    temp['price'] = price
+    temp['total_price'] = 60 + price
+    return render(request, 'customers/customer_checkout_address.html', temp)
+
+
+
+def customer_payment_method(request):
+    if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+    temp['title'] = 'Checkout'
+    temp['sub_title'] = 'payment method'
+
+    if request.method == 'POST':
+        temp['fName'] = request.POST['firstname']
+        temp['lName'] = request.POST['lastname']
+        temp['address'] = request.POST['address']
+        temp['phone'] = request.POST['phone']
+
+        customer = Customer.objects.filter(user=request.user)
+        cart_items = Cart.objects.filter(user=request.user)
+
+        price = 0
+        for i in cart_items:
+            price = price + i.total_sub_price
+
+        temp['customer'] = customer
+        temp['cart'] = navCart(request)
+        temp['price'] = price
+        temp['total_price'] = 60 + price
+
+    return render(request, 'customers/customer_payment_method.html', temp)
+
+
+
+def customer_order_review(request):
+    if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+
+    temp['title'] = 'Checkout'
+    temp['sub_title'] = 'Order review'
+
+    if request.method == 'POST':
+        temp['fName'] = request.POST['firstname']
+        temp['lName'] = request.POST['lastname']
+        temp['address'] = request.POST['address']
+        temp['phone'] = request.POST['phone']
+        temp['payment'] = request.POST['payment']
+
+        customer = Customer.objects.filter(user=request.user)
+        cart_items = Cart.objects.filter(user=request.user)
+        
+
+        price = 0
+        for i in cart_items:
+            price = price + i.total_sub_price
+
+        temp['customer'] = customer
+        temp['cart'] = navCart(request)
+        temp['price'] = price
+        temp['total_price'] = 60 + price
+        temp['cart_items']= cart_items
+
+    return render(request, 'customers/customer_order_review.html', temp)
+
+
+
+def customer_order_successfull(request):
+    if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+    temp['title'] = 'Order'
+    temp['sub_title'] = 'Order'
+
+    if request.method == 'POST':
+        temp['fName'] = request.POST['firstname']
+        temp['lName'] = request.POST['lastname']
+        temp['address'] = request.POST['address']
+        temp['phone'] = request.POST['phone']
+        temp['payment'] = request.POST['payment']
+
+        customer = Customer.objects.filter(user=request.user)
+        cart_items = Cart.objects.filter(user=request.user)
+        random_num = random.randint(10000, 99999)
+
+        uniqe_confirm = Order.objects.filter(rand_order_id=random_num)
+        while uniqe_confirm:
+            random_num =  random.randint(10000, 99999)
+            if not Order.objects.filter(order_id=random_num):
+                break
+
+        price = 0
+        for i in cart_items:
+            Order.objects.create(first_name=temp['fName'], last_name=temp['lName'], address=temp['address'], phone_no=temp['phone'], quantity=i.quantity, restaurant=i.restaurant, rand_order_id=random_num, post=i.post, user=i.user, total_sub_price=i.total_sub_price)
+            i.delete()
+
+        orders = Order.objects.filter(user=request.user, rand_order_id=random_num)
+
+        for i in orders:
+            price = price + i.total_sub_price
+
+        temp['customer'] = customer
+        temp['cart'] = navCart(request)
+        temp['price'] = price
+        temp['total_price'] = 60 + price
+        temp['orders']= orders
+        temp['random_number'] = random_num
+    return render(request, 'customers/customer_order_successfull.html', temp)
+
 
 
 
@@ -370,30 +494,44 @@ def customer_order(request):
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
     
-    temp['title'] = 'Order Details'
-    temp['sub_title'] = 'Orders'
+    temp['title'] = 'My Orders'
+    temp['sub_title'] = 'My Orders'
     temp['cart'] = navCart(request)
 
-    active_orders = Cart.objects.filter(user=request.user, status='Active')
-    prev_orders = Cart.objects.filter(user=request.user, status='Delivered')
-
-    total_money = 0
-    for i in active_orders:
-        total_money = total_money + i.post.new_price
-
-    prev_total = 0
-    for i in prev_orders:
-        prev_total = prev_total + i.post.new_price
-
-
-    temp['orders'] = active_orders
-    temp['size'] = len(active_orders)
-    temp['past_order'] = len(prev_orders)
-    temp['prev_order'] = prev_orders
-    temp['prev_total'] = prev_total
-    temp['total_amount'] = total_money
+    orders = Order.objects.filter(user=request.user).values('rand_order_id', 'first_name', 'last_name', 'ordered_date', 'status').distinct().order_by('-ordered_date')
+    temp['orders'] = orders
+    print(orders)
+    temp['Packed'] = 'Packed'
 
     return render(request, 'customers/customer_order.html', temp)
+
+
+def customer_order_details(request, rand_order_id):
+    orders = Order.objects.filter(rand_order_id=rand_order_id)
+    price = 0
+
+    for i in orders:
+        order_date = i.ordered_date
+        status = i.status
+        price = price + i.total_sub_price
+
+    temp['cart'] = navCart(request)
+    temp['price'] = price
+    temp['total_price'] = 60 + price
+    temp['orders'] = orders
+    temp['random_number'] = rand_order_id
+    temp['order_date'] = order_date
+    temp['status'] = status
+
+    customer = ''
+    for i in orders:
+        customer = i
+        break
+    temp['customer'] = customer
+
+    return render(request, 'customers/customer_order_details.html', temp)
+
+
 
 
 
@@ -659,10 +797,54 @@ def restaurants_pending_order(request):
         return redirect('customers:login_as')
     res = Restaurant.objects.get(user=request.user.id)
 
-    active_order = Cart.objects.filter(restaurant=res, status='Active')
+    active_order = Order.objects.filter(restaurant=res).values('rand_order_id', 'first_name', 'last_name', 'ordered_date', 'status').distinct().exclude(status='Delivered')
+
+
     temp['pending_order'] = len(active_order)
     temp['active_order'] = active_order
     return render(request, 'restaurants/restaurants_pending_order.html', temp)
+
+
+def restaurant_pending_order_status(request, rand_order_id, status):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    res = Restaurant.objects.get(user=request.user.id)
+    order = Order.objects.filter(restaurant=res, rand_order_id=rand_order_id)
+    for i in order:
+        i.status = status
+        i.save()
+    return redirect('../../restaurants_pending_order')
+
+
+def restaurants_order_details(request, rand_order_id):
+
+    orders = Order.objects.filter(rand_order_id=rand_order_id)
+    price = 0
+    order_date = ''
+    status = ''
+    for i in orders:
+        order_date = i.ordered_date
+        status = i.status
+        price = price + i.total_sub_price
+    print(status)
+    temp['price'] = price
+    temp['total_price'] = 60 + price
+    temp['orders'] = orders
+    temp['random_number'] = rand_order_id
+    temp['ordered_date'] = order_date
+    temp['status'] = status
+
+    customer = ''
+    for i in orders:
+        customer = i
+        break
+    temp['customer'] = customer
+
+    return render(request, 'restaurants/restaurants_order_details.html', temp)
+
+
+
+
 
 
 def restaurants_update_status(request, id):
@@ -690,7 +872,7 @@ def restaurants_delivered_order(request):
         return redirect('customers:login_as')
     res = Restaurant.objects.get(user=request.user.id)
 
-    delivered_order = Cart.objects.filter(restaurant=res, status='Delivered')
+    delivered_order = Order.objects.filter(restaurant=res, status='Delivered')
     temp['delivered_order'] = delivered_order
     temp['size'] = len(delivered_order)
     return render(request, 'restaurants/restaurants_delivered_order.html', temp)
@@ -955,6 +1137,7 @@ def accept_post(request,id):
 def api_customer_post(request):
     data = list(Post.objects.all().values())
 
+
     return JsonResponse(data, safe=False)
 
 
@@ -1047,4 +1230,172 @@ def view_specific_foundation(request, id):
 
 
 
+
+
+
+# Devliver Man
+
+def delivery_man_signup(request):
+    temp['title'] = 'Sign Up As Delivery Man'
+    temp['sub_title'] = 'Sign Up'
+    temp['error'] = ''
+    if request.method == 'POST':
+        name = request.POST['dname']
+        email = request.POST['email']
+        address = request.POST['address']
+        image = request.FILES['image']
+        password = request.POST['password']
+        contact_no = request.POST['contact']
+        gender = request.POST['gender']
+
+        try:
+            user = User.objects.create_user(first_name=name, username=email, password=password)
+            Delivery_Man.objects.create(user=user, name=name, gender=gender, contact_no=contact_no, image=image, address=address, type='delivery_man', status='pending')              # will be edited!
+            temp['error'] = 'no'
+        except:
+            temp['error'] = 'yes'
+
+    return render(request, 'visitors/delivery_man_signup.html', temp)
+
+def delivery_man_login(request):
+    temp['title'] = 'Delivery Man LogIn'
+    temp['sub_title'] = 'Delivery Man Login'
+    temp['error'] = ''
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(username=email, password=password)
+        if user:
+            try:
+                user1 = Delivery_Man.objects.get(user=user)
+                if user1.type == "delivery_man" and user1.status != 'pending':
+                    login(request, user)
+                    temp['error'] = 'no'
+                    return redirect('customers:delivery_man_home')
+                else:
+                    messages.error(request, 'Please wait for the Admin approval.')
+                    temp['error'] = 'yes'
+            except:
+                messages.error(request, 'Email is not identified. Please sign up first.')
+        else:
+            messages.error(request, 'Email or password is wrong!')
+    return render(request, 'visitors/delivery_man_login.html', temp)
+
+
+def delivery_man_home(request):
+    temp['title'] = 'Nilomtron'
+
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    return render(request, 'delivery_man/delivery_man_home.html', temp)
+
+
+def delivery_man_profile(request):
+    temp['title'] = 'Profile'
+    temp['sub_title'] = 'Profile'
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    user=request.user
+    data=Delivery_Man.objects.get(user=user)
+    temp['info'] = data
+    if request.method == 'POST':
+        fname = request.POST['first_name']
+        address = request.POST['address']
+        contact_no = request.POST['contact_no']
+        gender = request.POST['gender']
+        user.first_name = fname
+        data.address = address
+        data.contact_no = contact_no
+        data.gender = gender
+        if len(request.FILES)!= 0:
+            if len(data.image)>0:
+                os.remove(data.image.path)
+            data.image = request.FILES['image']
+        user.save()
+        data.save()
+    return render(request, 'delivery_man/delivery_man_profile.html', temp)
+
+
+def all_delivery_requests(request):
+    if not request.user.is_authenticated:
+     return redirect('customer:login_as')
+    user = request.user
+
+    all_requests = Order.objects.filter(Q(status='Packed')|Q(status='On The Way')).values('rand_order_id', 'first_name', 'last_name', 'restaurant','address', 'phone_no', 'ordered_date', 'delivery_date', 'status').distinct()
+
+    for i in all_requests:
+        x = i['rand_order_id']
+        item = Order.objects.filter(rand_order_id=x)
+        price = 0
+        quantity=0
+        for j in item:
+            price += j.total_sub_price
+            quantity += j.quantity
+        i['total_price'] = price + 60
+        i['total_quantity'] = quantity
+    temp['all_requests'] = all_requests
+    
+    return render(request, 'delivery_man/all_delivery_requests.html', temp)
+
+def accept_delivery_requests(request,rand_order_id,status):
+    if not request.user.is_authenticated:
+     return redirect('customer:login_as')
+    order = Order.objects.filter(rand_order_id=rand_order_id)
+    for i in order:
+        i.status = status
+        i.save()
+    all_requests = Order.objects.filter(Q(status='Packed')|Q(status='On The Way')).values('rand_order_id', 'first_name', 'last_name', 'restaurant','address', 'phone_no', 'ordered_date', 'delivery_date', 'status').distinct()
+    for i in all_requests:
+        x = i['rand_order_id']
+        item = Order.objects.filter(rand_order_id=x)
+        price = 0
+        quantity=0
+        for j in item:
+            price += j.total_sub_price
+            quantity += j.quantity
+        i['total_price'] = price + 60
+        i['total_quantity'] = quantity
+    temp['all_requests'] = all_requests
+    return render(request, 'delivery_man/all_delivery_requests.html', temp)
+
+def order_delivered(request,rand_order_id,status):
+    if not request.user.is_authenticated:
+     return redirect('customer:login_as')
+    order = Order.objects.filter(rand_order_id=rand_order_id)
+    for i in order:
+     if i.status == "On The Way":
+        i.status = status
+        i.save()
+    all_requests = Order.objects.filter(Q(status='Packed')|Q(status='On The Way')).values('rand_order_id', 'first_name', 'last_name', 'restaurant','address', 'phone_no', 'ordered_date', 'delivery_date', 'status').distinct()
+    for i in all_requests:
+        x = i['rand_order_id']
+        item = Order.objects.filter(rand_order_id=x)
+        price = 0
+        quantity=0
+        for j in item:
+            price += j.total_sub_price
+            quantity += j.quantity
+        i['total_price'] = price + 60
+        i['total_quantity'] = quantity
+    temp['all_requests'] = all_requests
+    return render(request, 'delivery_man/all_delivery_requests.html', temp)
+
+def delivery_details(request):
+    if not request.user.is_authenticated:
+     return redirect('customer:login_as')
+    user = request.user
+    all_requests = Order.objects.filter(Q(status='Delivered')).values('rand_order_id', 'first_name', 'last_name', 'restaurant','address', 'phone_no', 'ordered_date', 'delivery_date', 'status').distinct()
+    for i in all_requests:
+        x = i['rand_order_id']
+        item = Order.objects.filter(rand_order_id=x)
+        price = 0
+        quantity=0
+        for j in item:
+            price += j.total_sub_price
+            quantity += j.quantity
+        i['total_price'] = price + 60
+        i['total_quantity'] = quantity
+    temp['all_requests'] = all_requests
+    
+    return render(request, 'delivery_man/delivery_details.html', temp)
 
