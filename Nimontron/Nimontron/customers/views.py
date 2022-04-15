@@ -1245,10 +1245,10 @@ def order_delivered(request,rand_order_id,status):
     if not request.user.is_authenticated:
      return redirect('customer:login_as')
     order = Order.objects.filter(rand_order_id=rand_order_id)
-    if order.status== "On The Way":
-        for i in order:
-         i.status = status
-         i.save()
+    for i in order:
+     if i.status == "On The Way":
+        i.status = status
+        i.save()
     all_requests = Order.objects.all().filter(Q(status='Packed')|Q(status='On The Way'))
     temp['all_requests'] = all_requests
     return render(request, 'delivery_man/all_delivery_requests.html', temp)
