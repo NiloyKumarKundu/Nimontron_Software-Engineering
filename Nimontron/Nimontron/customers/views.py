@@ -1241,7 +1241,7 @@ def accept_delivery_requests(request,rand_order_id,status):
     temp['all_requests'] = all_requests
     return render(request, 'delivery_man/all_delivery_requests.html', temp)
 
-def order_delivered(request):
+def order_delivered(request,rand_order_id,status):
     if not request.user.is_authenticated:
      return redirect('customer:login_as')
     order = Order.objects.filter(rand_order_id=rand_order_id)
