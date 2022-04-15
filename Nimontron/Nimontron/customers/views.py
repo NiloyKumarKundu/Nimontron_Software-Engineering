@@ -975,8 +975,6 @@ def admin_home(request):
 
 
 
-
-
 def admin_login(request):
     error = ""
     if request.method == 'POST':
@@ -1007,9 +1005,41 @@ def view_restaurants(request):
     return render(request, 'admin/view_restaurants.html', temp)
 
 
+def delete_restaurant(request,id):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    restaurant = Restaurant.objects.get(id=id)
+    restaurant.delete()
+    return redirect('customers:view_restaurants')
+    
+
 
 def view_specific_restaurant(request, id):
     restaurant = Restaurant.objects.filter(id=id)
-    
     temp['restaurant'] = restaurant
     return render(request, 'admin/view_specific_restaurant.html', temp)
+
+
+
+
+
+def view_foundations(request):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    data = Foundation.objects.all()
+    temp['data'] = data
+    return render(request, 'admin/view_foundations.html', temp)
+
+
+def delete_foundation(request,id):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    foundation = Foundation.objects.get(id=id)
+    foundation.delete()
+    return redirect('customers:view_foundations')
+
+
+def view_specific_foundation(request, id):
+    foundation = Foundation.objects.filter(id=id)
+    temp['foundation'] = foundation
+    return render(request, 'admin/view_specific_foundation.html', temp)
