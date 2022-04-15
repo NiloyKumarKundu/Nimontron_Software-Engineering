@@ -23,6 +23,7 @@ urlpatterns = [
     path('delivery_man_profile', views.delivery_man_profile, name='delivery_man_profile'),
     path('all_delivery_requests', views.all_delivery_requests, name='all_delivery_requests'),
     path('accept_delivery_requests/<str:rand_order_id>/<str:status>', views.accept_delivery_requests, name='accept_delivery_requests'),
+    path('order_delivered/<str:rand_order_id>/<str:status>', views.order_delivered, name='accept_delivery_requests'),
     
     # Customer
     path('signup', views.signup, name='signup'),
