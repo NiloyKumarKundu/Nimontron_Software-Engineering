@@ -39,7 +39,7 @@
                 <td>{{i.delivery_date}}</td>
                 <td>{{i.status}}</td>
                 <td><a href="{% url 'customers:accept_delivery_requests' i.rand_order_id 'On The Way' %}" class="btn btn-sm btn-outline-primary" onclick="return confirm('Are You Sure?')">Accept Order</a>
-                <a href="{% url 'customers:all_delivery_requests' %}" class="btn btn-outline-success" onclick="return confirm('Are You Sure?')">Delivered</a></td>
+                <a href="{% url 'customers:all_delivery_requests' i.rand_order_id 'Deliveredy' %}" class="btn btn-outline-success" onclick="return confirm('Are You Sure?')">Delivered</a></td>
                 
 
             </tr>
