@@ -16,7 +16,7 @@
     <td>{{forloop.counter}}</td>
     <td>{{i.user.first_name}}{{i.user.last_name}}</td>
     <td>{{i.contact_no }}</td>
-    <td><a href="{% url 'customers:delete_foundation' i.id%}"> Delete </a></td>
+    <td><a href="{% url 'customers:delete_foundation' i.id%}" class="btn btn-danger btn-sm" onclick="return confirm('Are You Sure?')"> Delete </a></td>
     <td><a href="{% url 'customers:view_specific_foundation' i.id%}"> View </a></td>
 
 {%endfor%}
