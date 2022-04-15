@@ -86,4 +86,20 @@ urlpatterns = [
 
 
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    #admin_part
+    path('admin_login', views.admin_login, name='admin_login'),
+    path('admin_home', views.admin_home, name='admin_home'),
+    
+    path('view_restaurants', views.view_restaurants, name='view_restaurants'),
+    path('delete_restaurant/<int:id>',views.delete_restaurant, name="delete_restaurant"),
+    path('view_specific_restaurant/<int:id>', views.view_specific_restaurant, name='view_specific_restaurant'),
+    
+
+    path('view_foundations', views.view_foundations, name='view_foundations'),
+    path('delete_foundation/<int:id>',views.delete_foundation, name="delete_foundation"),
+    path('view_specific_foundation/<int:id>', views.view_specific_foundation, name='view_specific_foundation'),
+    
+
+ ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

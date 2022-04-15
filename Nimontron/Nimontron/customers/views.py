@@ -954,4 +954,97 @@ def accept_post(request,id):
 # For testing api
 def api_customer_post(request):
     data = list(Post.objects.all().values())
+
     return JsonResponse(data, safe=False)
+
+
+
+
+
+
+
+
+
+
+
+
+#admin_part
+
+
+def admin_home(request):
+    return render(request, 'admin/admin_home.html', temp)
+
+
+
+def admin_login(request):
+    error = ""
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        print(email, password)
+        user = authenticate(username=email, password = password)
+
+        try: 
+            if user.is_staff:
+                login(request, user)
+                error = "no"
+            else:
+                error="yes"
+        except:
+            error = "yes"
+        temp['error'] = error
+    return render(request, 'admin/admin_login.html', temp)
+
+
+
+
+def view_restaurants(request):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    data = Restaurant.objects.all()
+    temp['data'] = data
+    return render(request, 'admin/view_restaurants.html', temp)
+
+
+def delete_restaurant(request,id):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    restaurant = Restaurant.objects.get(id=id)
+    restaurant.delete()
+    return redirect('customers:view_restaurants')
+    
+
+
+def view_specific_restaurant(request, id):
+    restaurant = Restaurant.objects.filter(id=id)
+    temp['restaurant'] = restaurant
+    return render(request, 'admin/view_specific_restaurant.html', temp)
+
+
+
+
+
+def view_foundations(request):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    data = Foundation.objects.all()
+    temp['data'] = data
+    return render(request, 'admin/view_foundations.html', temp)
+
+
+def delete_foundation(request,id):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    foundation = Foundation.objects.get(id=id)
+    foundation.delete()
+    return redirect('customers:view_foundations')
+
+
+def view_specific_foundation(request, id):
+    foundation = Foundation.objects.filter(id=id)
+    temp['foundation'] = foundation
+    return render(request, 'admin/view_specific_foundation.html', temp)
+
+
+
+
