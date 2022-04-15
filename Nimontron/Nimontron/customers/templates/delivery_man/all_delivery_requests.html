@@ -8,14 +8,17 @@
             <tr>
                 <th scope="col">No.</th>
                 <th scope="col">Title</th>
-                <th scope="col">Customer</th>
+                <th scope="col">Order ID</th>
+                <th scope="col">Customer Name</th>
                 <th scope="col">Restaurant Name</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Customer Address</th>
+                <th scope="col">Phone No</th>
+                <th scope="col">Total Price</th>
                 <th scope="col">Order Date</th>
                 <th scope="col">Delivery Date</th>
                 <th scope="col">Order Status</th>
-                <th scope="col"> <span class="ml-2">Update Order Status</span> </th>
+                <th scope="col"> <span class="ml-2">Update  Order Status</span> </th>
                 
             </tr>
         </thead>
@@ -24,16 +27,19 @@
             {% for i in all_requests %}
             <tr>
                 <th cope="row">{{forloop.counter}}</th>
-                <td>{{i.title}}</td>
-                <td>{{i.user.first_name}}</td>
+                <td>{{i.post.title}}</td>
+                <td>{{i.rand_order_id}}</td>
+                <td>{{i.user.first_name }} {{i.user.last_name }}</td>
                 <td>{{i.restaurant.user.first_name}}</td>
                 <td>{{i.quantity}}</td>
                 <td>{{i.address}}</td>
+                <td>{{i.phone_no}}</td>
+                <td>{{i.total_sub_price}}</td>
                 <td>{{i.ordered_date}}</td>
                 <td>{{i.delivery_date}}</td>
                 <td>{{i.status}}</td>
-                <td><a href="{% url 'customers:all_delivery_requests' %}" class="btn btn-sm btn-outline-primary" onclick="return confirm('Are You Sure?')">Accept Order</a>
-                <a href="{% url 'customers:all_delivery_requests' %}" class="btn btn-outline-success" onclick="return confirm('Are You Sure?')">Delivered</a></td>
+                <td><a href="{% url 'customers:accept_delivery_requests' i.rand_order_id 'On The Way' %}" class="btn btn-sm btn-outline-primary" onclick="return confirm('Are You Sure?')">Accept Order</a>
+                <a href="{% url 'customers:order_delivered' i.rand_order_id 'Deliveredy' %}" class="btn btn-outline-success" onclick="return confirm('Are You Sure?')">Delivered</a></td>
                 
 
             </tr>
@@ -42,5 +48,7 @@
         </tbody>
     </table>
 </div>
+
+{% include 'delivery_man/delivery_man_footer.html' %}
 
 
