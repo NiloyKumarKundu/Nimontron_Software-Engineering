@@ -1,10 +1,34 @@
 {% include 'admin/admin_navbar.html' %}
 
 
-{% for i in restaurant %}
-<p> {{ i.user.first_name }} </p>
-<p> {{ i.user.last_name }} </p>'
-<p> {{ i.user.username }} </p>
 
+<table class="table table-hover container">
+    <thead>
+        <tr>
+           
+           <th> Image </th>
+           <th> Name </th>
+           <th> Email </th>
+           <th> Password </th>
+           <th> Address</th>
+           <th> Contact_no </th>
+           <th> Description </th>
+        </tr>
+    </thead>
 
-{% endfor %}
+    <tbody>
+    {% for i in restaurant %}
+ <tr> 
+    
+    <td><img src = "{{i.image.url }}" style = "width:150px ; height : 150px; border-radius: 7%"></td>
+    <td>{{i.user.first_name}}{{i.user.last_name}}</td>
+    <td>{{i.user.username }}</td>
+    <td>{{i.password }}</td>
+    <td>{{i.address }}</td>
+    <td>{{i.contact_no }}</td>
+    <td>{{i.description }}</td>
+   
+{%endfor%}
+</tr>
+</table>
+
