@@ -552,7 +552,8 @@ def restaurants_signup(request):
         try:
             user = User.objects.create_user(first_name=name, username=email, password=password)
             Restaurant.objects.create(user=user, name=name, contact_no=contact_no, image=image, address=address, type='restaurant', description = description, status='approved')              # will be edited!
-            messages.warning(request, 'Something went wrong! Please try again...')
+            messages.warning(request, 'Log in successful')
+            print(user)
         except:
             messages.error(request, 'Email or password is wrong!')
     return render(request, 'visitors/restaurants_signup.html', temp)

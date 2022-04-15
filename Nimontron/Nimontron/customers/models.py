@@ -149,14 +149,14 @@ class Foundation_Post(models.Model):
 
 class Delivery_Man(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    contact_no = models.CharField(max_length=15, null=True)
-    address = models.CharField(max_length=100)
-    name = models.CharField(max_length=100, null=True)
-    image = models.FileField(null=True)
+    contact_no = models.CharField(max_length=15, null=True, blank=True)
+    address = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=100, null=True, blank=True)
+    image = models.FileField(null=True, blank=True)
     ratting = models.IntegerField(blank=True, null=True)
-    gender = models.CharField(max_length=10, null=True)
-    status = models.CharField(max_length=20, null=True)
-    type = models.CharField(max_length=15, null=True)
+    gender = models.CharField(max_length=10, null=True, blank=True)
+    status = models.CharField(max_length=20, null=True, blank=True)
+    type = models.CharField(max_length=20, null=True, blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.name

@@ -9,7 +9,7 @@
             <div class="form-group col-6">
                 <div class="card card-registration" style="border-radius: 5px;">
                     <div class="card-body p-4 text-center">
-                        <form onsubmit="return checkPass();" name="signup" method="post" enctype="multipart/form-data">
+                        <form onclick="checkPass()" name="signup" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="form-outline mb-4">
                                 <input type="text" name="rname" class="form-control" placeholder="Restaurant's Name" required/>
