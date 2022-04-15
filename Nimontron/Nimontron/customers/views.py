@@ -1043,3 +1043,10 @@ def view_specific_foundation(request, id):
     foundation = Foundation.objects.filter(id=id)
     temp['foundation'] = foundation
     return render(request, 'admin/view_specific_foundation.html', temp)
+
+
+
+
+
+hello
+hello2

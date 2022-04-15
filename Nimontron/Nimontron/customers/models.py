@@ -118,3 +118,8 @@ class Foundation_Post(models.Model):
     def __str__(self):
         return self.title
 
+
+
+
+hello
+hello2
