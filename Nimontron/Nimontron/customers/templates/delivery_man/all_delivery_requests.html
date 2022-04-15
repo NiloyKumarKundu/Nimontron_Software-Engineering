@@ -7,7 +7,6 @@
         <thead>
             <tr>
                 <th scope="col">No.</th>
-                <th scope="col">Title</th>
                 <th scope="col">Order ID</th>
                 <th scope="col">Customer Name</th>
                 <th scope="col">Restaurant Name</th>
@@ -27,20 +26,24 @@
             {% for i in all_requests %}
             <tr>
                 <th cope="row">{{forloop.counter}}</th>
-                <td>{{i.post.title}}</td>
                 <td>{{i.rand_order_id}}</td>
-                <td>{{i.user.first_name }} {{i.user.last_name }}</td>
-                <td>{{i.restaurant.user.first_name}}</td>
-                <td>{{i.quantity}}</td>
+                <td>{{i.first_name }} {{i.last_name }}</td>
+                <td>{{i.first_name}}</td>
+                <td>{{i.total_quantity}}</td>
                 <td>{{i.address}}</td>
                 <td>{{i.phone_no}}</td>
-                <td>{{i.total_sub_price}}</td>
+                <td>{{i.total_price}}</td>
                 <td>{{i.ordered_date}}</td>
                 <td>{{i.delivery_date}}</td>
                 <td>{{i.status}}</td>
-                <td><a href="{% url 'customers:accept_delivery_requests' i.rand_order_id 'On The Way' %}" class="btn btn-sm btn-outline-primary" onclick="return confirm('Are You Sure?')">Accept Order</a>
+                <td>
+                    {% if i.status == 'Packed' %}
+                    <a href="{% url 'customers:accept_delivery_requests' i.rand_order_id 'On The Way' %}" class="btn btn-sm btn-outline-primary" onclick="return confirm('Are You Sure?')">Accept Order</a>
+                    {% endif %}
+                    {% if i.status == 'On The Way' %}
                 <a href="{% url 'customers:order_delivered' i.rand_order_id 'Delivered' %}" class="btn btn-outline-success" onclick="return confirm('Are You Sure?')">Delivered</a></td>
-                
+                    {% endif %}
+                    
 
             </tr>
             {% endfor %}
