@@ -1226,7 +1226,8 @@ def all_delivery_requests(request):
     if not request.user.is_authenticated:
      return redirect('customer:login_as')
     user = request.user
-    all_requests = Order.objects.filter(Q(status='Packed')|Q(status='On The Way')).values('rand_order_id', 'first_name', 'last_name', 'restaurant',  'quantity','address', 'phone_no', 'ordered_date', 'delivery_date', 'status').distinct()
+    all_requests = Order.objects.filter(Q(status='Packed')|Q(status='On The Way')).values('rand_order_id', 'first_name', 'last_name', 'restaurant', 'address', 'phone_no', 'ordered_date', 'delivery_date', 'status').distinct()
+    print(all_requests)
     for i in all_requests:
         x = i['rand_order_id']
         item = Order.objects.filter(rand_order_id=x)
