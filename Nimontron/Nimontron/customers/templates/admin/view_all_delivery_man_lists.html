@@ -36,7 +36,7 @@
     <td>{{i.gender }}</td>
     <td>{{i.ratting }}</td>
     <td><img src = "{{i.image.url }}" style = "width:70px ; height : 70px; border-radius: 50%"></td>
-    <td><a href="{% url 'customers:delete_restaurant' i.id%} " class="btn btn-outline-warning" onclick="return confirm('Are You Sure?')"> Delete </a> <a href="{% url 'customers:view_specific_restaurant' i.id%}"class="btn btn-outline-success"> View </a></td>
+    <td><a href="{% url 'customers:delete_delivery_man' i.id%} " class="btn btn-outline-warning" onclick="return confirm('Are You Sure?')"> Delete </a> <a href="{% url 'customers:view_specific_delivery_man' i.id%}"class="btn btn-outline-success"> View </a></td>
 
 {%endfor%}
 </tr>
