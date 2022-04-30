@@ -120,7 +120,7 @@ urlpatterns = [
     path('view_specific_foundation/<int:id>', views.view_specific_foundation, name='view_specific_foundation'),
 
 
-    path('view_view_all_delivery_man_lists', views.view_view_all_delivery_man_lists, name='view_view_all_delivery_man_lists'),
+    path('view_all_delivery_man_lists', views.view_all_delivery_man_lists, name='view_all_delivery_man_lists'),
     
 
  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
