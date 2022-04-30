@@ -118,6 +118,9 @@ urlpatterns = [
     path('view_foundations', views.view_foundations, name='view_foundations'),
     path('delete_foundation/<int:id>',views.delete_foundation, name="delete_foundation"),
     path('view_specific_foundation/<int:id>', views.view_specific_foundation, name='view_specific_foundation'),
+
+
+    path('view_view_all_delivery_man_lists', views.view_view_all_delivery_man_lists, name='view_view_all_delivery_man_lists'),
     
 
  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
