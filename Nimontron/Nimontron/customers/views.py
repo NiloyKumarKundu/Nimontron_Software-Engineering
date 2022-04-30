@@ -1247,6 +1247,13 @@ def view_all_delivery_man_lists(request):
 
 
 
+def view_specific_delivery_man(request, id):
+    foundation = Foundation.objects.filter(id=id)
+    temp['foundation'] = foundation
+    return render(request, 'admin/view_specific_delivery_man.html', temp)
+
+
+
 
 
 
