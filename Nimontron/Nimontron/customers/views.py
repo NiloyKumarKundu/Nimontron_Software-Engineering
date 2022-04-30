@@ -1160,6 +1160,7 @@ def admin_home(request):
 
 
 
+
 def admin_login(request):
     error = ""
     if request.method == 'POST':
@@ -1190,6 +1191,8 @@ def view_restaurants(request):
     return render(request, 'admin/view_restaurants.html', temp)
 
 
+
+
 def delete_restaurant(request,id):
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
@@ -1197,6 +1200,7 @@ def delete_restaurant(request,id):
     restaurant.delete()
     return redirect('customers:view_restaurants')
     
+
 
 
 def view_specific_restaurant(request, id):
@@ -1216,6 +1220,8 @@ def view_foundations(request):
     return render(request, 'admin/view_foundations.html', temp)
 
 
+
+
 def delete_foundation(request,id):
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
@@ -1224,10 +1230,26 @@ def delete_foundation(request,id):
     return redirect('customers:view_foundations')
 
 
+
 def view_specific_foundation(request, id):
     foundation = Foundation.objects.filter(id=id)
     temp['foundation'] = foundation
     return render(request, 'admin/view_specific_foundation.html', temp)
+
+
+
+def view_all_delivery_man_lists(request):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    data = Delivery_Man.objects.all()
+    temp['data'] = data
+    return render(request, 'admin/view_all_delivery_man_lists.html', temp)
+
+
+
+
+
+
 
 
 
