@@ -1265,6 +1265,30 @@ def delete_specific_delivery_man_account(request,id):
 
 
 
+def edit_delivery_man_profile(request):
+    temp['title'] = 'Profile'
+    temp['sub_title'] = 'Profile'
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    user=request.user
+    data=Delivery_Man.objects.get(user=user)
+    temp['info'] = data
+    if request.method == 'POST':
+        fname = request.POST['first_name']
+        address = request.POST['address']
+        contact_no = request.POST['contact_no']
+        gender = request.POST['gender']
+        user.first_name = fname
+        data.address = address
+        data.contact_no = contact_no
+        data.gender = gender
+        if len(request.FILES)!= 0:
+            if len(data.image)>0:
+                os.remove(data.image.path)
+            data.image = request.FILES['image']
+        user.save()
+        data.save()
+    return render(request, 'delivery_man/delivery_man_profile.html', temp)
 
 
 
