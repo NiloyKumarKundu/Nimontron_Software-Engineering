@@ -1240,7 +1240,7 @@ def view_specific_foundation(request, id):
 
 def view_all_delivery_man_lists(request):
     if not request.user.is_authenticated:
-        return redirect('customers:login_as')
+        return redirect('customers:admin_login')
     data = Delivery_Man.objects.all()
     temp['data'] = data
     return render(request, 'admin/view_all_delivery_man_lists.html', temp)
@@ -1248,6 +1248,8 @@ def view_all_delivery_man_lists(request):
 
 
 def view_specific_delivery_man(request, id):
+    if not request.user.is_authenticated:
+        return redirect('customers:admin_login')
     delivery_man = Delivery_Man.objects.filter(id=id)
     temp['delivery_man'] = delivery_man
     return render(request, 'admin/view_specific_delivery_man.html', temp)
@@ -1256,10 +1258,10 @@ def view_specific_delivery_man(request, id):
 
 def delete_specific_delivery_man_account(request,id):
     if not request.user.is_authenticated:
-        return redirect('customers:login_as')
-    foundation = Foundation.objects.get(id=id)
-    foundation.delete()
-    return redirect('customers:view_foundations')
+        return redirect('customers:admin_login')
+    delivery_man = Delivery_Man.objects.filter(id=id)
+    delivery_man.delete()
+    return redirect('customers:view_all_delivery_man_lists')
 
 
 
