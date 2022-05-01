@@ -1254,6 +1254,15 @@ def view_specific_delivery_man(request, id):
 
 
 
+def delete_specific_delivery_man_account(request,id):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    foundation = Foundation.objects.get(id=id)
+    foundation.delete()
+    return redirect('customers:view_foundations')
+
+
+
 
 
 
