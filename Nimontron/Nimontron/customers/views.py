@@ -1288,7 +1288,7 @@ def edit_delivery_man_profile(request):
             data.image = request.FILES['image']
         user.save()
         data.save()
-    return render(request, 'delivery_man/delivery_man_profile.html', temp)
+    return render(request, 'admin/edit_delivery_man_profile.html', temp)
 
 
 
