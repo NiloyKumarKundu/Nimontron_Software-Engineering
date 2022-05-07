@@ -23,7 +23,6 @@ class Customer_Post(models.Model):
     title=models.TextField(max_length=100)
     description = models.TextField(max_length=255)
     quantity=models.TextField(max_length=100)
-    contact=models.TextField(max_length=100)
     area=models.TextField(max_length=100)
     start_date = models.DateField()
     end_date = models.DateField()

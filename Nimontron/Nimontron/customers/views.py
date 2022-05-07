@@ -547,6 +547,8 @@ def customer_add_donate_post(request):
 
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
+
+    
     return render(request, 'customers/customer_add_donate_post.html', temp)
 
 
