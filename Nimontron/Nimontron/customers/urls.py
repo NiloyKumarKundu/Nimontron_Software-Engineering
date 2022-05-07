@@ -36,6 +36,7 @@ urlpatterns = [
     path('Logout', views.Logout, name='Logout'),
     path('customer_food_post_details/<int:id>', views.customer_food_post_details, name='customer_food_post_details'),
     path('cart_item_decrease/<int:id>', views.cart_item_decrease, name='cart_item_decrease'),
+    path('customer_add_donate_post', views.customer_add_donate_post, name='customer_add_donate_post'),
 
     #customer_view_cart
     path('customer_view_cart', views.customer_view_cart, name='customer_view_cart'),

@@ -539,6 +539,30 @@ def customer_order_details(request, rand_order_id):
 
 
 
+# Customer Food Donate
+
+def customer_add_donate_post(request):
+    temp['title'] = 'Donate Others'
+
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    return render(request, 'customers/customer_add_donate_post.html', temp)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Restaurants View
 
 def restaurants_signup(request):
