@@ -68,7 +68,7 @@ urlpatterns = [
     path('restaurant_pending_order_status/<str:rand_order_id>/<str:status>', views.restaurant_pending_order_status, name='restaurant_pending_order_status'),
 
     # Restaurants Donation Part
-    path('restaurants_donation_post', views.restaurants_donation_post, name='restaurants_donation_post'),
+    path('restaurants_add_donation_post', views.restaurants_add_donation_post, name='restaurants_add_donation_post'),
 
 
  # Foundations

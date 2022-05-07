@@ -9,7 +9,7 @@
                 {% include 'customers/messages.html' %}
                 <div class="card card-registration" style="border-radius: 5px;">
                     <div class="card-body p-4 text-center">
-                        <form name="signup" action="{% url 'restaurants:restaurants_add_post' %}" method="post" enctype="multipart/form-data">
+                        <form name="signup" action="{% url 'customers:restaurants_add_post' %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <h3>Donate Food for others!</h3>
                             <div class="form-outline mb-4">

@@ -482,6 +482,8 @@ def customer_order_successfull(request):
         temp['total_price'] = 60 + price
         temp['orders']= orders
         temp['random_number'] = random_num
+        temp['order_date'] = orders[0].ordered_date
+        print(orders[0].ordered_date)
     return render(request, 'customers/customer_order_successfull.html', temp)
 
 
@@ -934,8 +936,8 @@ def restaurant_profile(request):
 # Restaurant Donation Part
 
 #Restaurants Donation Post
-def restaurants_donation_post(request):
-    return render(request, 'restaurants/restaurants_donation_post.html', temp)
+def restaurants_add_donation_post(request):
+    return render(request, 'restaurants/restaurants_add_donation_post.html', temp)
 
 
 
