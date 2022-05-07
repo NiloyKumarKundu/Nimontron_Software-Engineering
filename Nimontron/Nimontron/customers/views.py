@@ -1,6 +1,7 @@
 from ctypes import sizeof
 from lib2to3.pgen2.token import EQUAL
 from re import I
+from socket import create_connection
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from .models import *
@@ -548,7 +549,26 @@ def customer_add_donate_post(request):
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
 
-    
+    if request.method == 'POST':
+        post_title = request.POST['title']
+        description = request.POST['description']
+        contact = request.POST['contact']
+        quantity = request.POST['quantity']
+        image = request.FILES['image']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        area = request.POST['area']
+        user = request.user
+        creation_date = date.today()
+        status = 'pending'
+
+        try:
+            print(post_title, description, contact, quantity, start_date, end_date, area, user, image, status, creation_date)
+            CustomerPost.objects.create(customer=user, title=post_title, start_date=start_date, end_date=end_date, description=description, area=area, contact=contact, quantity=quantity, image=image, creation_date=creation_date, status=status)
+
+            messages.success(request, 'Item has been added successfully.')
+        except:
+            messages.error(request, 'Something went wrong. Please try again!')
     return render(request, 'customers/customer_add_donate_post.html', temp)
 
 
