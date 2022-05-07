@@ -18,6 +18,23 @@ class Customer(models.Model):
     def __str__(self):
         return self.user.username
 
+class Customer_Post(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    title=models.TextField(max_length=100)
+    description = models.TextField(max_length=255)
+    quantity=models.TextField(max_length=100)
+    contact=models.TextField(max_length=100)
+    area=models.TextField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    creation_date = models.DateField()
+    status = models.CharField(max_length=20, null=True)
+    contact_no = models.CharField(max_length=15, null=True)
+    image = models.FileField()
+
+    def __str__(self):
+        return self.title
+
 
 class Restaurant(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

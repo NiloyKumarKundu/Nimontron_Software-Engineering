@@ -543,6 +543,7 @@ def customer_order_details(request, rand_order_id):
 
 def customer_add_donate_post(request):
     temp['title'] = 'Donate Others'
+    temp['sub_title'] = 'Donate Others'
 
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
