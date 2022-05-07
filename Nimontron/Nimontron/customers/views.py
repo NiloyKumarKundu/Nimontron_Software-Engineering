@@ -57,11 +57,13 @@ def contact(request):
 
 
 def donate(request):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
     temp['title'] = 'Donate Others'
     temp['sub_title'] = 'Donate Others'
     post = Foundation_Post.objects.all()
     temp['post'] = post
-    return render(request, 'visitors/donate.html', temp)
+    return render(request, 'customers/donate.html', temp)
 
 
 def login_as(request):
