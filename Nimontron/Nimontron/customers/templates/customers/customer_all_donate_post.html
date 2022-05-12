@@ -2,12 +2,17 @@
 {% load static %}
 
 
+
+
+
 <!-- Sweet Alert -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-<div class="container">
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+<div class="container" id="app">
     <table class="table">
         <thead>
             <tr>
@@ -22,27 +27,70 @@
             </tr>
         </thead>
         <tbody>
-            {% for i in post %}
-            <tr>
-                <td cope="row">{{forloop.counter}}</td>
-                <td>{{i.title}}</td>
-                <td>{{i.area}}</td>
-                <td>{{i.quantity}}</td>
-                <td>{{i.contact}}</td>
-                <td>{{i.end_date}}</td>
-                <td>{{i.status}}</td>
+            <tr v-for="(i, count) in stories">
+                <td>[[ (count + 1) ]] </td>
+                <td>[[ i.title ]]</td>
+                <td>[[ i.area ]]</td>
+                <td>[[ i.quantity ]]</td>
+                <td>[[ i.contact ]]</td>
+                <td>[[ i.end_date | formatDate ]] </td>
+                <td>[[ i.status ]]</td>
                 <td>
-                    <a href="{% url 'customers:customer_edit_donate_post' i.id %}" class="btn btn-success btn-sm">Edit
-                    </a>
+                    <a href="{% url 'customers:customer_all_post'%}" class="btn btn-success btn-sm">Edit</a>
                 </td>
+
                 <td>
-                    <a href="{% url 'customers:customer_delete_donate_post' i.id %}" class="btn btn-danger btn-sm delete">Delete
-                    </a>
+                    <a href="#" @click="deleteStories([[i.id]])"  class="btn btn-danger btn-sm delete">Delete</a>
                 </td>
             </tr>
-            {% endfor %}
         </tbody>
     </table>
+   
+
+
+    <script type="text/javascript">
+        let app = new Vue({
+            el: '#app',
+            data: {
+                stories: [],
+            },
+            delimiters: ['[[', ']]'],
+            methods: {
+                getStories: function() {
+                    fetch('http://127.0.0.1:8000/api/customer_donate_post')
+                    .then(ret => ret.json())
+                    .then(res => {
+                        this.stories = (res);
+                    });
+                },
+
+                deleteStories: function(id) {
+                    fetch('http://127.0.0.1:8000/api/customer_delete_specific_donate_post/' + id)
+                    .then(ret => ret.json())
+                    .then(res => {
+                        this.getStories();
+                    });
+                },
+
+                editStories: function(id) {
+                    fetch('http://127.0.0.1:8000/api/customer_delete_specific_donate_post/' + id)
+                    .then(ret => ret.json())
+                    .then(res => {
+                        this.getStories();
+                    });
+                }
+            },
+            created: function() {
+                this.getStories();
+            }
+        });
+
+        Vue.filter('formatDate', function(value) {
+            if (value) {
+              return moment(String(value)).format('MMM DD, YYYY')
+            }
+        });
+    </script>
 </div>
 
 {% include 'customers/customer_footer.html' %}

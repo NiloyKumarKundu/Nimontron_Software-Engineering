@@ -7,6 +7,7 @@ from django.shortcuts import redirect, render
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from datetime import date
 import os
 from django.db.models import Q
@@ -572,19 +573,30 @@ def customer_add_donate_post(request):
 
 
 
-
 def customer_all_donate_post(request):
     temp['title'] = 'My Donations'
     temp['sub_title'] = 'My Donations'
 
-    if not request.user.is_authenticated:
-        return redirect('customers:login_as')
+    # if not request.user.is_authenticated:
+    #     return redirect('customers:login_as')
 
     posts = CustomerPost.objects.filter(customer=request.user)
     temp['post'] = posts
 
     return render(request, 'customers/customer_all_donate_post.html', temp)
 
+
+def customer_donate_post(request):
+    post = list(CustomerPost.objects.filter(customer=request.user).values())
+    return JsonResponse(post, safe=False)
+
+
+
+
+
+
+def vue(request):
+    return render(request, 'customers/vue.html', temp)
 
 
 
