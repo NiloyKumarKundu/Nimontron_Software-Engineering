@@ -1264,11 +1264,11 @@ def delete_specific_delivery_man_account(request,id):
     return redirect('customers:view_all_delivery_man_lists')
 
 
-def edit_delivery_man_profile(request):
+def edit_delivery_man_profile(request, id):
     if not request.user.is_authenticated:
         return redirect('customers:admin_login')
     user=request.user
-    data=Delivery_Man.objects.get(user=user)
+    data=Delivery_Man.objects.filter(id=id)
     temp['info'] = data
     if request.method == 'POST':
         fname = request.POST['first_name']
