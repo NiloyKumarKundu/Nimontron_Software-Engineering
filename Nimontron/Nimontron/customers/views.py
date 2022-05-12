@@ -1264,12 +1264,9 @@ def delete_specific_delivery_man_account(request,id):
     return redirect('customers:view_all_delivery_man_lists')
 
 
-
 def edit_delivery_man_profile(request):
-    temp['title'] = 'Profile'
-    temp['sub_title'] = 'Profile'
     if not request.user.is_authenticated:
-        return redirect('customers:login_as')
+        return redirect('customers:admin_login')
     user=request.user
     data=Delivery_Man.objects.get(user=user)
     temp['info'] = data
@@ -1289,9 +1286,6 @@ def edit_delivery_man_profile(request):
         user.save()
         data.save()
     return render(request, 'admin/edit_delivery_man_profile.html', temp)
-
-
-
 
 
 
