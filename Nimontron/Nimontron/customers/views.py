@@ -591,6 +591,19 @@ def customer_donate_post(request):
     return JsonResponse(post, safe=False)
 
 
+def customer_delete_specific_donate_post(request, id):
+    data = CustomerPost.objects.get(id=id)
+    data.delete()
+    post = list(CustomerPost.objects.filter(customer=request.user).values())
+    return JsonResponse(post, safe=False)
+
+
+def customer_edit_specific_donate_post(request, id):
+    if request.method == 'POST':
+        pass
+
+    post = list(CustomerPost.objects.filter(customer=request.user).values())
+    return JsonResponse(post, safe=False)
 
 
 
