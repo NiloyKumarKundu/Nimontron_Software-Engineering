@@ -1268,7 +1268,7 @@ def edit_delivery_man_profile(request, id):
     if not request.user.is_authenticated:
         return redirect('customers:admin_login')
     user=request.user
-    data=Delivery_Man.objects.filter(id=id)
+    data=Delivery_Man.objects.get(id=id)
     temp['info'] = data
     if request.method == 'POST':
         fname = request.POST['first_name']
