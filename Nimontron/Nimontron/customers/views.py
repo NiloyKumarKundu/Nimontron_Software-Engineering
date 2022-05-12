@@ -588,10 +588,48 @@ def customer_all_donate_post(request):
 
 
 
+def customer_edit_donate_post(request, id):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    post = CustomerPost.objects.get(id=id)
+    temp['error'] = ''
 
+    if request.method == 'POST':
+        post_title = request.POST['post_title']
+        description = request.POST['description']
+        area = request.POST['area']
+        quantity = request.POST['quantity']
+        contact = request.POST['contact']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        
+        post.title = post_title
+        post.description = description
+        post.quantity = quantity
+        post.area = area
+        post.contact = contact
 
+        try:
+            post.save()
+            temp['error'] = 'no'
+        except:
+            temp['error'] = 'yes'
 
+        if start_date:
+            try:
+                post.start_date = start_date
+                post.save()
+            except:
+                pass
 
+        if end_date:
+            try:
+                post.end_date = end_date
+                post.save()
+            except:
+                pass
+    temp['post'] = post
+    return render(request, 'customers/customer_edit_donate_post.html', temp)
 
 
 
