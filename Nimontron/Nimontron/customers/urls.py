@@ -39,6 +39,7 @@ urlpatterns = [
     path('customer_add_donate_post', views.customer_add_donate_post, name='customer_add_donate_post'),
     path('customer_all_donate_post', views.customer_all_donate_post, name='customer_all_donate_post'),
     path('customer_edit_donate_post/<int:id>', views.customer_edit_donate_post, name='customer_edit_donate_post'),
+    path('customer_delete_donate_post/<int:id>', views.customer_delete_donate_post, name='customer_delete_donate_post'),
 
     #customer_view_cart
     path('customer_view_cart', views.customer_view_cart, name='customer_view_cart'),

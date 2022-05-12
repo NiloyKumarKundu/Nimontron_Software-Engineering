@@ -633,6 +633,13 @@ def customer_edit_donate_post(request, id):
 
 
 
+def customer_delete_donate_post(request, id):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    posts = CustomerPost.objects.get(id=id)
+    posts.delete()
+    return redirect('../customer_all_donate_post')
+
 
 
 # Restaurants View
