@@ -605,12 +605,9 @@ def customer_edit_specific_donate_post(request, id):
     post = list(CustomerPost.objects.filter(customer=request.user).values())
     return JsonResponse(post, safe=False)
 
-
-
-
-def vue(request):
-    return render(request, 'customers/vue.html', temp)
-
+def customer_specific_donate_post(request, id):
+    post = list(CustomerPost.objects.filter(id=id).values())
+    return JsonResponse(post, safe=False)
 
 
 def customer_edit_donate_post(request, id):
