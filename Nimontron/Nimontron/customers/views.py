@@ -1257,7 +1257,7 @@ def view_specific_delivery_man(request, id):
     return render(request, 'admin/view_specific_delivery_man.html', temp)
 
 
-@csrf_exempt
+
 def delete_specific_delivery_man_account(request):
     if not request.user.is_authenticated:
         return redirect('customers:admin_login')
