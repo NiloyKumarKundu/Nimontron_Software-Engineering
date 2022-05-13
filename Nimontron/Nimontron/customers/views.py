@@ -17,6 +17,8 @@ import random
 from .models import Delivery_Man
 from django.core.files.storage import  FileSystemStorage
 import os
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -1255,13 +1257,19 @@ def view_specific_delivery_man(request, id):
     return render(request, 'admin/view_specific_delivery_man.html', temp)
 
 
-
-def delete_specific_delivery_man_account(request,id):
+@csrf_exempt
+def delete_specific_delivery_man_account(request):
     if not request.user.is_authenticated:
         return redirect('customers:admin_login')
-    delivery_man = Delivery_Man.objects.filter(id=id)
-    delivery_man.delete()
-    return redirect('customers:view_all_delivery_man_lists')
+    if request.method == "POST":
+        d_id = request.POST.get('sid')
+        print(id)
+        deliver_man = Delivery_Man.objects.get(id=d_id)
+        deliver_man.delete()
+        return JsonResponse({'status':1})
+    else:
+        return JsonResponse({'status':0})
+    
 
 
 def edit_delivery_man_profile(request, id):
