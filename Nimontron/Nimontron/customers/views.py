@@ -1262,7 +1262,7 @@ def delete_specific_delivery_man_account(request):
     if not request.user.is_authenticated:
         return redirect('customers:admin_login')
     if request.method == "POST":
-        d_id = request.POST.get('sid')f
+        d_id = request.POST.get('sid')
         print(id)
         deliver_man = Delivery_Man.objects.get(id=d_id)
         deliver_man.delete()
