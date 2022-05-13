@@ -1,0 +1,25 @@
+<script>
+
+
+    $("tbody").on("click", ".btn-delete", function (){
+        console.log("Delete Button Clicked");
+        let id = $(this).attr("data-sid");
+        console.log(id);
+        mydata = {sid:id}
+        mythis = this;
+        $.ajax({
+            url: "{% url 'customers:delete_specific_delivery_man_account' %}",
+            method: "POST",
+            data: mydata,
+            success:function(data){
+                console.log(data);
+                if(data.status == 1){
+                    console.log("Data Deleted Successfully");
+                    $(mythis).closest("tr").fadeOut();
+                }
+            },
+        });
+    });
+
+
+</script>

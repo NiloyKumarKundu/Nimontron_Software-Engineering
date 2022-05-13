@@ -17,6 +17,8 @@ import random
 from .models import Delivery_Man
 from django.core.files.storage import  FileSystemStorage
 import os
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -1160,6 +1162,7 @@ def admin_home(request):
 
 
 
+
 def admin_login(request):
     error = ""
     if request.method == 'POST':
@@ -1190,6 +1193,8 @@ def view_restaurants(request):
     return render(request, 'admin/view_restaurants.html', temp)
 
 
+
+
 def delete_restaurant(request,id):
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
@@ -1197,6 +1202,7 @@ def delete_restaurant(request,id):
     restaurant.delete()
     return redirect('customers:view_restaurants')
     
+
 
 
 def view_specific_restaurant(request, id):
@@ -1216,6 +1222,8 @@ def view_foundations(request):
     return render(request, 'admin/view_foundations.html', temp)
 
 
+
+
 def delete_foundation(request,id):
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
@@ -1224,10 +1232,70 @@ def delete_foundation(request,id):
     return redirect('customers:view_foundations')
 
 
+
 def view_specific_foundation(request, id):
     foundation = Foundation.objects.filter(id=id)
     temp['foundation'] = foundation
     return render(request, 'admin/view_specific_foundation.html', temp)
+
+
+
+def view_all_delivery_man_lists(request):
+    if not request.user.is_authenticated:
+        return redirect('customers:admin_login')
+    data = Delivery_Man.objects.all()
+    temp['data'] = data
+    return render(request, 'admin/view_all_delivery_man_lists.html', temp)
+
+
+
+def view_specific_delivery_man(request, id):
+    if not request.user.is_authenticated:
+        return redirect('customers:admin_login')
+    delivery_man = Delivery_Man.objects.filter(id=id)
+    temp['delivery_man'] = delivery_man
+    return render(request, 'admin/view_specific_delivery_man.html', temp)
+
+
+@csrf_exempt
+def delete_specific_delivery_man_account(request):
+    if not request.user.is_authenticated:
+        return redirect('customers:admin_login')
+    if request.method == "POST":
+        d_id = request.POST.get('sid')
+        print(id)
+        deliver_man = Delivery_Man.objects.get(id=d_id)
+        deliver_man.delete()
+        return JsonResponse({'status':1})
+    else:
+        return JsonResponse({'status':0})
+    
+
+
+def edit_delivery_man_profile(request, id):
+    if not request.user.is_authenticated:
+        return redirect('customers:admin_login')
+    user=request.user
+    data=Delivery_Man.objects.get(id=id)
+    temp['info'] = data
+    if request.method == 'POST':
+        fname = request.POST['first_name']
+        address = request.POST['address']
+        contact_no = request.POST['contact_no']
+        gender = request.POST['gender']
+        status = request.POST['status']
+        user.first_name = fname
+        data.address = address
+        data.contact_no = contact_no
+        data.gender = gender
+        data.status = status
+        if len(request.FILES)!= 0:
+            if len(data.image)>0:
+                os.remove(data.image.path)
+            data.image = request.FILES['image']
+        user.save()
+        data.save()
+    return render(request, 'admin/edit_delivery_man_profile.html', temp)
 
 
 
