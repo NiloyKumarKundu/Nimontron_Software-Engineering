@@ -1283,10 +1283,12 @@ def edit_delivery_man_profile(request, id):
         address = request.POST['address']
         contact_no = request.POST['contact_no']
         gender = request.POST['gender']
+        status = request.POST['status']
         user.first_name = fname
         data.address = address
         data.contact_no = contact_no
         data.gender = gender
+        data.status = status
         if len(request.FILES)!= 0:
             if len(data.image)>0:
                 os.remove(data.image.path)

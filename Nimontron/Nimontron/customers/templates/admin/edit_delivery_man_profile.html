@@ -55,6 +55,7 @@
                                         <p class="text-secondary mb-1">{{ info.user.username }}</p>
                                         <p class="text-secondary mb-1">{{ info.contact_no }}</p>
                                         <p class="text-secondary mb-1">{{ info.gender }}</p>
+                                        <p class="text-secondary mb-1"> Status: {{ info.status }}</p>
                                         <p class="text-muted font-size-sm">{{ info.address }}</p>
                                         <input class="btn btn-outline-primary whiteText" type="button"
                                             onclick="editProfile()" value="Edit Profile">
@@ -75,7 +76,7 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="text" class="form-control" name="first_name"
-                                            value="{{ request.user.first_name }} ">
+                                            value="{{ info.user.first_name }} ">
                                     </div>
                                 </div>
                                 
@@ -85,7 +86,7 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input disabled type="text" class="form-control"
-                                            value="{{ request.user.username }}">
+                                            value="{{ info.user.username }}">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -95,6 +96,15 @@
                                     <div class="col-sm-9 text-secondary">
                                         <input type="text" name="contact_no" class="form-control"
                                             value="{{ info.contact_no }}">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Status</p>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" name="status" class="form-control"
+                                            value="{{ info.status }}">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
