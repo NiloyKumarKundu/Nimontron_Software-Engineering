@@ -39,7 +39,7 @@
                 <td>[[ i.end_date | formatDate ]] </td>
                 <td>[[ i.status ]]</td>
                 <td>
-                    <a href="#" data-target="#mymodel" @click="specificStories([[i.id]])" data-toggle="modal" class="btn btn-success btn-sm">Edit</a>
+                    <a @click="specificStories([[i.id]])" data-target="#mymodel"  data-toggle="modal" class="btn btn-success btn-sm">Edit</a>
                 </td>
 
                 <td>
@@ -57,38 +57,43 @@
                     <button class="close" data-dismiss="modal">&times;</button>
                 </div>
 
-                <div class="modal-body">
-                    <form action="#" v-for="(i, count) in post">
+                <div class="modal-body" v-for="(i, count) in post">
+                    <form @submit="editStories([[i.id]])" method="GET">
                         {% csrf_token %}
                         <div class="form-group">
                             <label>Item Name </label>
-                            <input type="text" v-model="i.title" name="name" class="form-control" required>
+                            <input type="text" v-model="i.title" name="title" id="title" class="form-control" required>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label>Description </label>
+                            <input type="text" v-model="i.description" name="description" id="title" class="form-control" required>
                         </div>
                         <br>
                         <div class="form-group">
                             <label>Preferable Area</label>
-                            <input type="text" name="area" v-model="i.area" class="form-control" required>
+                            <input type="text" name="area" v-model="i.area" id="area" class="form-control" required>
                         </div>
                         <br>
                         <div class="form-group">
                             <label>Quantity</label>
-                            <input type="text" name="quantity" v-model="i.quantity" class="form-control" required>
+                            <input type="text" name="quantity" v-model="i.quantity" id="quantity" class="form-control" required>
                         </div>
                         <br>
                         <div class="form-group">
                             <label>Contact</label>
-                            <input type="text" name="contact" v-model="i.contact" class="form-control" required>
+                            <input type="text" name="contact" v-model="i.contact" id="contact" class="form-control" required>
                         </div>
                         <br>
                         <div class="form-group">
                             <label>End Date</label>
-                            <input type="date" name="end_date" v-model="i.end_date" class="form-control" required>
+                            <input type="date" name="end_date" v-model="i.end_date" id="end_data" class="form-control" required>
                         </div>
                     </form>
                 </div>
 
                 <div class="modal-footer justify-content-center">
-                    <button class="btn btn-primary" data-dismiss="modal">Update</button>
+                    <button class="btn btn-primary" id="formdata" data-dismiss="modal">Update</button>
                 </div>
             </div>
         </div>
@@ -125,12 +130,13 @@
             },
 
             editStories: function(id) {
-                fetch('http://127.0.0.1:8000/api/customer_delete_specific_donate_post/' + id)
+                fetch('http://127.0.0.1:8000/api/customer_edit_specific_donate_post/' + id + '?')
                 .then(ret => ret.json())
                 .then(res => {
                     this.getStories();
                 });
             },
+
             specificStories: function(id) {
                 post: [],
                 fetch('http://127.0.0.1:8000/api/customer_specific_donate_post/' + id)
@@ -140,6 +146,9 @@
                     console.log(this.post);
                     this.getStories();
                 });
+            },
+            editPage: function(id) {
+                window.location.href = 'http://127.0.0.1:8000/customer_edit_donate_post/' + id;
             }
         },
         created: function() {
