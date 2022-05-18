@@ -36,7 +36,7 @@
     <td>{{i.gender }}</td>
     <td>{{i.ratting }}</td>
     <td><img src = "{{i.image.url }}" style = "width:70px ; height : 70px; border-radius: 50%"></td>
-    <td><input type="button" data-sid="{{i.id}}" class="btn btn-outline-warning btn-delete" value="Delete" /> <a href="{% url 'customers:view_specific_delivery_man' i.id%}"class="btn btn-outline-success"> View </a></td>
+    <td><input type="button" data-sid="{{i.id}}" class="btn btn-outline-warning btn-delete" value="Delete" /> <input type="button" id="btnview" class="btn btn-outline-success" value="View" /> <a href="{% url 'customers:view_specific_delivery_man' i.id%}"class="btn btn-outline-success"> View </a></td>
 
 {%endfor%}
 </tr>
