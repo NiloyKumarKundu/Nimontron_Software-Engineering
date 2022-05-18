@@ -20,6 +20,7 @@ from django.core.files.storage import  FileSystemStorage
 import os
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 
@@ -1265,8 +1266,9 @@ def view_specific_delivery_man_account(request):
         d_id = request.POST.get('did')
         #print(d_id)
         delivery_man = Delivery_Man.objects.get(id=d_id)
-        delivery = [delivery_man.id,delivery_man.name,delivery_man.contact_no,delivery_man.address,delivery_man.gender,delivery_man.status,delivery_man.ratting]
-        #print(delivery)
+        img = json.dumps(str(delivery_man.image))
+        delivery = [delivery_man.id,delivery_man.name,delivery_man.contact_no,delivery_man.address,delivery_man.gender,delivery_man.status,delivery_man.ratting,img]
+        print(delivery)
         return JsonResponse({'status':1, 'delivery':delivery})
     else:
         return JsonResponse({'status':0})
