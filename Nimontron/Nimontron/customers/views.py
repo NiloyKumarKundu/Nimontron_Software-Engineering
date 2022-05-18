@@ -1256,6 +1256,18 @@ def view_specific_delivery_man(request, id):
     temp['delivery_man'] = delivery_man
     return render(request, 'admin/view_specific_delivery_man.html', temp)
 
+@csrf_exempt
+def view_specific_delivery_man_account(request):
+    if not request.user.is_authenticated:
+        return redirect('customers:admin_login')
+    if request.method == "POST":
+        d_id = request.POST.get('did')
+        print(id)
+        deliver_man = Delivery_Man.objects.get(id=d_id)
+        return JsonResponse({'status':1})
+    else:
+        return JsonResponse({'status':0})
+
 
 @csrf_exempt
 def delete_specific_delivery_man_account(request):
