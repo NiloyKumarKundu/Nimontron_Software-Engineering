@@ -23,6 +23,22 @@
 
     $("tbody").on("click", ".btn-view",function(){
         console.log("View Button Clicked")
+        let id = $(this).attr("delivery-man-id");
+        console.log(id);
+        mydata = {did:id}
+        mythis = this;
+        $.ajax({
+            url: "{% url 'customers:view_specific_delivery_man_account' %}",
+            method: "POST",
+            data: mydata,
+            success:function(data){
+                console.log(data);
+                if(data.status == 1){
+                    console.log("Data Deleted Successfully");
+                    $(mythis).closest("tr").fadeOut();
+                }
+            },
+        });
     });
 
 
