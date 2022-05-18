@@ -1264,7 +1264,8 @@ def view_specific_delivery_man_account(request):
         d_id = request.POST.get('did')
         print(id)
         deliver_man = Delivery_Man.objects.get(id=d_id)
-        return JsonResponse({'status':1})
+        delivery = list(deliver_man)
+        return JsonResponse({'status':1, 'delivery':delivery})
     else:
         return JsonResponse({'status':0})
 
