@@ -1,5 +1,6 @@
 from ctypes import sizeof
 from lib2to3.pgen2.token import EQUAL
+from multiprocessing.sharedctypes import Value
 from re import I
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
@@ -1262,9 +1263,10 @@ def view_specific_delivery_man_account(request):
         return redirect('customers:admin_login')
     if request.method == "POST":
         d_id = request.POST.get('did')
-        print(id)
-        deliver_man = Delivery_Man.objects.get(id=d_id)
-        delivery = list(deliver_man)
+        #print(d_id)
+        delivery_man = Delivery_Man.objects.get(id=d_id)
+        delivery = [delivery_man.id,delivery_man.name,delivery_man.contact_no,delivery_man.address,delivery_man.gender,delivery_man.status,delivery_man.ratting]
+        #print(delivery)
         return JsonResponse({'status':1, 'delivery':delivery})
     else:
         return JsonResponse({'status':0})
