@@ -124,6 +124,7 @@ urlpatterns = [
     path('view_specific_delivery_man/<int:id>', views.view_specific_delivery_man, name='view_specific_delivery_man'),
     path('delete_specific_delivery_man_account',views.delete_specific_delivery_man_account, name="delete_specific_delivery_man_account"),
     path('edit_delivery_man_profile/<int:id>', views.edit_delivery_man_profile, name='edit_delivery_man_profile'),
+    path('view_specific_delivery_man_account',views.view_specific_delivery_man_account, name="view_specific_delivery_man_account"),
     
 
  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
