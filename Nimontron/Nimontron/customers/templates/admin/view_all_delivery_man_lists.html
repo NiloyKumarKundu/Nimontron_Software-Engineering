@@ -17,9 +17,6 @@
             <th> Address </th>
             <th> Contact_no </th>
             <th> Status</th>
-            <th> Gender </th>
-            <th> Ratting </th>
-            <th> Image </th>
             <th> Action </th>
         </tr>
     </thead>
@@ -33,10 +30,7 @@
     <td>{{i.address }}</td>
     <td>{{i.contact_no }}</td>
     <td>{{i.status }}</td>
-    <td>{{i.gender }}</td>
-    <td>{{i.ratting }}</td>
-    <td><img src = "{{i.image.url }}" style = "width:70px ; height : 70px; border-radius: 50%"></td>
-    <td><input type="button" data-sid="{{i.id}}" class="btn btn-outline-warning btn-delete" value="Delete" /> <input type="button" id="btnview" class="btn btn-outline-success" value="View" /> <a href="{% url 'customers:view_specific_delivery_man' i.id%}"class="btn btn-outline-success"> View </a></td>
+    <td><input type="button" data-sid="{{i.id}}" class="btn btn-outline-warning btn-delete" value="Delete" /> <input type="button" delivery-man-id="{{i.id}}" class="btn btn-outline-success btn-view" value="View" /> <a href="{% url 'customers:view_specific_delivery_man' i.id%}"class="btn btn-outline-success"> View </a></td>
 
 {%endfor%}
 </tr>
