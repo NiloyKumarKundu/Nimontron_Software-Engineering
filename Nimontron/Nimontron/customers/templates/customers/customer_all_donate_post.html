@@ -190,6 +190,24 @@
         })
    } 
 
+   function submitForm(form) {
+    let form_id = document.querySelector("#form_id").value;
+    let title = document.querySelector("#title").value;
+    let description = document.querySelector("#description").value;
+    let end_date = document.querySelector("#end_date").value;
+    let quantity = document.querySelector("#quantity").value;
+    let area = document.querySelector("#area").value;
+    let contact = document.querySelector("#contact").value;
 
+    // form.submit();
+    console.log(form_id, title)
+
+    fetch('http://127.0.0.1:8000/customer_edit_s_donate_post?id=' + form_id + '&title=' + title + '&description=' + description + '&quantity=' + quantity + '&area=' + area + '&contact=' + contact + '&end_date=' + end_date)
+    .then(response => response.json()).then(myObj => {
+        alert("Item has been Edited successfully!");
+        getData();
+    })
+
+}
 
 </script>
