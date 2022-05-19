@@ -598,6 +598,42 @@ def customer_delete_specific_donate_post(request, id):
     return JsonResponse(post, safe=False)
 
 
+def customer_edit_s_donate_post(request):
+    
+    if request.method == 'GET':
+        id = request.GET['id']
+        title = request.GET['title']
+        description = request.GET['description']
+        quantity = request.GET['quantity']
+        area = request.GET['area']
+        contact = request.GET['contact']
+        end_date = request.GET['end_date']
+        print(id, title, description, quantity, area, contact, end_date)
+
+        post = CustomerPost.objects.get(id=id, customer=request.user)
+        print(post, request.user)
+
+        post.title = title
+        post.description = description
+        post.quantity = quantity
+        post.area = area
+        post.contact = contact
+
+        try:
+            post.save()
+            temp['error'] = 'no'
+        except:
+            temp['error'] = 'yes'
+
+        if end_date:
+            try:
+                post.end_date = end_date
+                post.save()
+            except:
+                pass
+
+    post = list(CustomerPost.objects.filter(customer=request.user).values())
+    return JsonResponse(post, safe=False)
 
 def customer_edit_specific_donate_post(request, id):
     post = list(CustomerPost.objects.filter(id=id).values())
