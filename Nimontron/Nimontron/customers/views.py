@@ -1315,6 +1315,13 @@ def accept_post(request,id):
     return render(request, 'customers/donate.html', temp)
 
 
+def foundation_others_donation_post(request):
+    if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+    return render(request, 'foundations/foundation_others_donation_post.html', temp)
+
+
+
 
 # For testing api
 def api_customer_post(request):
