@@ -1,5 +1,6 @@
 from ctypes import sizeof
 from lib2to3.pgen2.token import EQUAL
+from multiprocessing.sharedctypes import Value
 from re import I
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
@@ -19,6 +20,7 @@ from django.core.files.storage import  FileSystemStorage
 import os
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 
@@ -1255,6 +1257,21 @@ def view_specific_delivery_man(request, id):
     delivery_man = Delivery_Man.objects.filter(id=id)
     temp['delivery_man'] = delivery_man
     return render(request, 'admin/view_specific_delivery_man.html', temp)
+
+@csrf_exempt
+def view_specific_delivery_man_account(request):
+    if not request.user.is_authenticated:
+        return redirect('customers:admin_login')
+    if request.method == "POST":
+        d_id = request.POST.get('did')
+        #print(d_id)
+        delivery_man = Delivery_Man.objects.get(id=d_id)
+        img = json.dumps(str(delivery_man.image))
+        delivery = [delivery_man.id,delivery_man.name,delivery_man.contact_no,delivery_man.address,delivery_man.gender,delivery_man.status,delivery_man.ratting,img]
+        print(delivery)
+        return JsonResponse({'status':1, 'delivery':delivery})
+    else:
+        return JsonResponse({'status':0})
 
 
 @csrf_exempt
