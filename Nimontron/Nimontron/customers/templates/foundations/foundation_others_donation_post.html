@@ -2,4 +2,88 @@
 {% load static %}
 
 
+<div class="container">
+    <div class="row">
+        {% for i in post %}
+        <div class="col-md-3 p-4" style="margin-right: 70px;">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" height="200px" src=" {{i.image.url}}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{i.title}}</h5>
+                    <p class="card-text">
+                        Quantity: {{i.quantity}}
+                        <br>
+                        Location: {{i.area}}
+                        <br>
+                        End Date: {{ i.end_date }}
+                    </p>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a data-target='#mymodel' onclick='submit_view( {{ i.id }} )' data-toggle='modal' type="button" class="btn btn-sm btn-secondary">Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+    <div class="modal bd-example-modal-lg fade" id="mymodel">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="title">Title</h4>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div >
+                                <img id="img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" style="height: auto; width: 100%;" alt="">
+                            </div>  
+                        </div>
+                        <div class="col-md-6">
+                            <p id="description">Description:</p>
+                            <p id="quantity">Quantity: </p>
+                            <p id="contact">Contact: </p>
+                            <p id="location">Location: </p>
+                            <p id="end_date">Available Until: </p>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button class="btn btn btn-primary">Accept</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% include 'foundations/foundation_footer.html' %}
+
+
+
+
+<script>
+    function submit_view(id) {
+        let img = document.querySelector('#img');
+        let title = document.querySelector('#title');
+        let description = document.querySelector('#description');
+        let location = document.querySelector('#location');
+        let quantity = document.querySelector('#quantity');
+        let end_date = document.querySelector('#end_date');
+        let contact = document.querySelector('#contact');
+
+
+        fetch('http://127.0.0.1:8000/api/customer_specific_donate_post/' + id)
+        .then(response => response.json()).then(myObj => {
+            console.log(myObj)
+            title.innerHTML = JSON.parse(JSON.stringify(myObj['content'][0]['title']));
+            description.innerHTML = JSON.parse(JSON.stringify(myObj['content'][0]['description']));
+            quantity.innerHTML = "Quantity: " + JSON.parse(JSON.stringify(myObj['content'][0]['quantity']));
+            contact.innerHTML = "Contact: " + myObj['content'][0]['contact'];
+            location.innerHTML = "Location: " + myObj['content'][0]['area'];
+            end_date.innerHTML = "Available Until: " + myObj['content'][0]['end_date'];
+        })
+    }
+</script>

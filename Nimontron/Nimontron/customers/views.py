@@ -1318,6 +1318,9 @@ def accept_post(request,id):
 def foundation_others_donation_post(request):
     if not request.user.is_authenticated:
         return redirect('customer:login_as')
+
+    post = CustomerPost.objects.all()
+    temp['post'] = post
     return render(request, 'foundations/foundation_others_donation_post.html', temp)
 
 
