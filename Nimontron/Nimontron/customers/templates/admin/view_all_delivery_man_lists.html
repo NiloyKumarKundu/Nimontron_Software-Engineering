@@ -8,14 +8,12 @@
 {% include 'admin/admin_navbar.html' %}
 
 
-<table class="table table-hover container" style="color:rgb(185, 50, 50);">
+<table id="tab"  class="table table-hover container" style="color:rgb(185, 50, 50);">
     <thead>
         <tr>
-            <th> Srl.no </th>
             <th> ID </th>
             <th> Name </th>
-            <th> Address </th>
-            <th> Contact_no </th>
+            <th> Address</th>
             <th> Status</th>
             <th> Action </th>
         </tr>
@@ -24,13 +22,11 @@
 
     {% for i in data %}
  <tr> 
-    <td>{{forloop.counter}}</td>
     <td>{{i.id}}</td>
     <td>{{i.user.first_name}}{{i.user.last_name}}</td>
     <td>{{i.address }}</td>
-    <td>{{i.contact_no }}</td>
     <td>{{i.status }}</td>
-    <td><input type="button" data-sid="{{i.id}}" class="btn btn-outline-warning btn-delete" value="Delete" /> <input type="button" delivery-man-id="{{i.id}}" class="btn btn-outline-success btn-view" value="View" /> <a href="{% url 'customers:view_specific_delivery_man' i.id%}"class="btn btn-outline-success"> View </a></td>
+    <td><input type="button" data-sid="{{i.id}}" class="btn btn-outline-warning btn-delete" value="Delete" /> <input type="button" delivery-man-id="{{i.id}}" class="btn btn-outline-success btn-view" value="Details" /> <a href="{% url 'customers:view_specific_delivery_man' i.id%}"class="btn btn-outline-success"> View </a></td>
 
 {%endfor%}
 </tr>
