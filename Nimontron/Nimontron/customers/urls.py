@@ -110,7 +110,11 @@ urlpatterns = [
     path('api/customer_donate_post', views.customer_donate_post, name='customer_donate_post'),
     path('api/customer_delete_specific_donate_post/<int:id>', views.customer_delete_specific_donate_post, name='customer_delete_specific_donate_post'),
     path('api/customer_edit_specific_donate_post/<int:id>', views.customer_edit_specific_donate_post, name='customer_edit_specific_donate_post'),
+
+    path('customer_edit_s_donate_post', views.customer_edit_s_donate_post, name='customer_edit_s_donate_post'),
+
     path('api/customer_specific_donate_post/<int:id>', views.customer_specific_donate_post, name='customer_specific_donate_post'),
+    path('ajax_get_view', views.ajax_get_view, name='ajax_get_view'),
 
 
     #admin_part
