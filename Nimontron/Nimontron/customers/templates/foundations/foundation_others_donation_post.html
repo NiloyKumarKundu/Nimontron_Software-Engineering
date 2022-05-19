@@ -38,8 +38,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <div >
-                                <img id="img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" style="height: auto; width: 100%;" alt="">
+                            <div>
+                                <img id="img" src="" style="height: auto; width: 100%;" alt="">
                             </div>  
                         </div>
                         <div class="col-md-6">
@@ -84,6 +84,11 @@
             contact.innerHTML = "Contact: " + myObj['content'][0]['contact'];
             location.innerHTML = "Location: " + myObj['content'][0]['area'];
             end_date.innerHTML = "Available Until: " + myObj['content'][0]['end_date'];
-        })
+
+            let x = JSON.parse(JSON.stringify(myObj['content'][0]['image']));
+            console.log(x);
+            img.src = "/media/" + x;
+            console.log(img.src);
+        });
     }
 </script>

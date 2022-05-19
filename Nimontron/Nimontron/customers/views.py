@@ -1315,6 +1315,15 @@ def accept_post(request,id):
     return render(request, 'customers/donate.html', temp)
 
 
+def foundation_all_other_donate_post(request):
+    post = list(CustomerPost.objects.filter(status='pending').values())
+    data = {
+        'content' : post
+    }
+    return JsonResponse(post, safe=False)
+
+
+
 def foundation_others_donation_post(request):
     if not request.user.is_authenticated:
         return redirect('customer:login_as')
