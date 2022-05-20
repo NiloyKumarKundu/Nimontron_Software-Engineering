@@ -1471,6 +1471,7 @@ def view_specific_foundation(request, id):
 
 def edit_restaurant(request, id):
     restaurant = Restaurant.objects.get(id=id)
+    print(restaurant)
 
     if request.method == 'POST':
         name = request.POST['rname']

@@ -11,6 +11,7 @@
     <div class="container">
         <div class="row d-flex justify-content-center align-items-center">
             <div class="form-group col-6">
+                {% include 'customers/messages.html' %}
                 <div class="card card-registration" style="border-radius: 5px;">
                     <div class="card-body p-4 text-center">
                         <form action = "{% url 'customers:edit_foundation' foundation.id %}" method="post" enctype="multipart/form-data">
@@ -49,19 +50,5 @@
 
 
 
-
-
-{% if error == 'no' %} 
-<script>
-    alert('foundation edit has been updated ');
-    window.location = ( '{% url "customers:edit_foundation" %}' )
-</script>
-{% endif %}
-
-{% if error == 'yes' %} 
-<script>
-    alert('Something went wrong! Try again....');
-</script>
-{% endif %}
 
 {% endblock body %}
