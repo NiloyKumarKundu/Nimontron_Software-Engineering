@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+<body style="background-color:#79cb3200">
+
+
+
+{% include 'admin/admin_navbar.html' %}
+
+
+<table id="tab"  class="table table-hover container" style="color:rgb(185, 50, 50);">
+    <thead>
+        <tr>
+            <th> ID </th>
+            <th> Name </th>
+            <th> Address</th>
+            <th> Status</th>
+            <th> Action </th>
+        </tr>
+    </thead>
+    <tbody id="tbody">
+
+    {% for i in data %}
+ <tr> 
+    <td>{{i.id}}</td>
+    <td>{{i.user.first_name}}{{i.user.last_name}}</td>
+    <td>{{i.address }}</td>
+    <td>{{i.status }}</td>
+    <td><input type="button" data-sid="{{i.id}}" class="btn btn-outline-warning btn-delete" value="Delete" /> <input type="button" delivery-man-id="{{i.id}}" class="btn btn-outline-success btn-view" value="Details" /> <a href="{% url 'customers:view_specific_delivery_man' i.id%}"class="btn btn-outline-success"> View </a></td>
+
+{%endfor%}
+</tr>
+</table>
+
+{% include "admin/ajax.html" %}
+
+</body>
+</html>
+
