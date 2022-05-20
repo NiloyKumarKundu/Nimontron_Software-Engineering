@@ -1195,7 +1195,7 @@ def foundation_signup(request):
         Date_of_Establishment=request.POST['Date_of_Establishment']
     
         user = User.objects.create_user(first_name=first_name, username=email, password=password)
-        Foundation.objects.create(user=user, name=first_name, contact_no=contact_no,description = description,address=address, image=image, code_no= ngo_code, Doe=Date_of_Establishment, type='foundation', status='pending')
+        Foundation.objects.create(user=user, name=first_name, contact_no=contact_no,description=description,address=address, image=image, code_no= ngo_code, Doe=Date_of_Establishment, type='foundation', status='pending')
         temp['error'] = 'no'
 
     return render(request, 'visitors/foundation_signup.html', temp)

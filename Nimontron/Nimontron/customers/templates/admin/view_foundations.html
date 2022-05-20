@@ -8,57 +8,6 @@
 <div id="details"></div>
 
 
-<div class="modal fade" id="mymodel">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>Edit Info</h4>
-                <button class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <div class="modal-body">
-                <form action="." role="form" method="GET" id="formdata">
-                    {% csrf_token %}
-                    <input type="text" name="id" id="form_id" class="form-control" hidden>
-
-                    <div class="form-group">
-                        <label>Item Name </label>
-                        <input type="text" name="title" id="title" class="form-control" required>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label>Description </label>
-                        <textarea type="text" name="description" id="description" class="form-control" required></textarea>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label>Preferable Area</label>
-                        <input type="text" name="area" id="area" class="form-control" required>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label>Quantity</label>
-                        <input type="text" name="quantity" id="quantity" class="form-control" required>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label>Contact</label>
-                        <input type="text" name="contact" id="contact" class="form-control" required>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label>End Date</label>
-                        <input type="date" name="end_date" id="end_date" class="form-control" required>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <input onclick="submitForm(this.form)" class="btn btn-primary" value="Update" data-dismiss="modal">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 
 <div class="modal bd-example-modal-lg fade" id="viewModal">
@@ -247,7 +196,8 @@ function submit_view(id) {
     .then(response => response.json()).then(myObj => {
         console.log(myObj)
         postId.innerHTML = JSON.stringify(myObj['content'][0]['id']);
-        description.innerHTML = JSON.parse(JSON.stringify(myObj['content'][0]['description']));
+        description.innerHTML = "Description: " + JSON.parse(JSON.stringify(myObj['content'][0]['description']));
+
         name.innerHTML = JSON.parse(JSON.stringify(myObj['content'][0]['name']));
         contact_no.innerHTML = "Contact No: " + myObj['content'][0]['contact_no'];
         address.innerHTML = "Address: " + myObj['content'][0]['address'];
