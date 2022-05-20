@@ -18,7 +18,7 @@
             <div class="modal-body">
                 <form action="." role="form" method="GET" id="formdata">
                     {% csrf_token %}
-                    <input type="text" name="id" id="form_id" class="form-control" hidden>
+                    <input type="text" name="id" id="f_id" class="form-control" hidden>
 
                     <div class="form-group">
                         <label>Item Name </label>
@@ -78,11 +78,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
 
 
 <script>
@@ -150,8 +145,6 @@ function getData () {
 
 
 
-
-
 document.addEventListener("DOMContentLoaded", function() {
     getData();
 });
@@ -168,7 +161,7 @@ function submit_delete(id) {
 
 function submit_edit(id) {
     const form = document.getElementById("formdata");
-    let form_id = document.querySelector("#form_id");
+    let f_id = document.querySelector("#f_id");
     let title = document.querySelector("#title");
     let desc = document.querySelector("#desc");
     let area = document.querySelector("#area");
@@ -177,7 +170,7 @@ function submit_edit(id) {
     fetch('http://127.0.0.1:8000/specific_foundation_view/' + id)
     .then(response => response.json()).then(myObj => {
         console.log(myObj);
-        form_id.value = JSON.parse(JSON.stringify(myObj['content'][0]['id']));
+        f_id.value = JSON.parse(JSON.stringify(myObj['content'][0]['id']));
 
         let value = JSON.parse(JSON.stringify(myObj['content'][0]['name']));
         title.value = value;
@@ -196,22 +189,21 @@ function submit_edit(id) {
 
 
 function submitForm(form) {
-    let form_id = document.querySelector("#form_id").value;
+    let f_id = document.querySelector("#f_id").value;
     let title = document.querySelector("#title").value;
     let desc = document.querySelector("#desc").value;
     let area = document.querySelector("#area").value;
     let cont = document.querySelector("#cont").value;
 
     // form.submit();
-    console.log(form_id, title)
+    console.log(f_id, title)
 
-    fetch('http://127.0.0.1:8000/specific_foundation_edit_post?id=' + form_id + '&name=' + title + '&description=' + desc + '&address=' + area + '&contact_no=' + cont)
+    fetch('http://127.0.0.1:8000/specific_foundation_edit_post?id=' + f_id + '&name=' + title + '&description=' + desc + '&address=' + area + '&contact_no=' + cont)
     .then(response => response.json()).then(myObj => {
         alert("Item has been Edited successfully!");
         getData();
     })
 };
-
 
 
 
@@ -244,14 +236,7 @@ function submit_view(id) {
 }
 
 
-
-
-
-
 </script>
-
-
 
 </body>
 </html> 
-

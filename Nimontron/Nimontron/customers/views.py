@@ -1482,7 +1482,6 @@ def edit_restaurant(request, id):
         # facebook_page = request.post['facebook_page']
         # ratting = request.post['ratting']
 
-
         restaurant.name = name
         restaurant.address = address
         restaurant.contact_no = contact_no
@@ -1532,8 +1531,6 @@ def all_restaurant_jsn(request):
     return JsonResponse(data, safe=False)
 
 
-
-
 def all_foundation_jsn(request):
     post = list(Foundation.objects.all().values())
     data = {
@@ -1543,12 +1540,21 @@ def all_foundation_jsn(request):
 
 
 
-
-
+# -----------------------------------------------foundation delete
 def foundation_delete(request, id):
     obj = Foundation.objects.get(id=id)
     obj.delete()
     post = list(Foundation.objects.all().values())
+    data = {
+        'content' : post
+    }
+    return JsonResponse(data, safe=False)
+
+# -----------------------------------------------restaurant delete
+def restaurant_delete(request, id):
+    obj = Restaurant.objects.get(id=id)
+    obj.delete()
+    post = list(Restaurant.objects.all().values())
     data = {
         'content' : post
     }
@@ -1596,7 +1602,12 @@ def specific_foundation_edit_post(request):
 
 
 
-# //////////////////////////////////////////////
+
+
+
+
+
+# ////////////////////////////////////////////////////////////////////
 
 
 def view_all_delivery_man_lists(request):
