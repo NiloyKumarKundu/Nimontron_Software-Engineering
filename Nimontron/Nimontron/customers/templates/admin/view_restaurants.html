@@ -75,9 +75,136 @@
         }
     });
 
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        function getData () {
+            let xmlhttp = new XMLHttpRequest();
+        
+            fetch('http://127.0.0.1:8000/all_foundation_jsn')
+            .then(response => response.json()).then(myObj => {
+                    let doc = document.querySelector("#details");
+                    console.log(myObj);
+        
+                
+        
+                    let  tag1 = " <table class='table table-hover container' style='color:white;'>";
+                    tag1 += "<thead>";
+                    tag1 += "<tr>";
+                    tag1 += "<th> Sr.no </th>";
+                    tag1 += "<th> Name </th>";
+                    tag1 += "<th> Contact_no </th>";
+                    tag1 += "<th> Address </th>";
+                    tag1 += "</tr>";
+                    tag1 += "</thead>";
+                    tag1 += "<tbody>";
+        
+                    let size = myObj.content.length;
+        
+                    for (let i = 0; i < size; i++) {
+                        tag1 += "<tr>";
+        
+                        tag1 += "<td>";
+                        tag1 += i + 1;
+                        tag1 += "</td>";
+        
+                        tag1 += "<td>";
+                        tag1 += JSON.parse(JSON.stringify(myObj.content[i].name));
+                        tag1 += "</td>";
+        
+                        tag1 += "<td>";
+                        tag1 += JSON.parse(JSON.stringify(myObj.content[i].contact_no));
+                        tag1 += "</td>";
+        
+                        tag1 += "<td>";
+                        tag1 += JSON.parse(JSON.stringify(myObj.content[i].address));
+                        tag1 += "</td>";
+        
+                        tag1 += "<td>";
+                        tag1 += "<a href='#' onclick='submit_edit( + " + JSON.stringify(myObj.content[i].id) + ")' data-target='#mymodel'  data-toggle='modal' class='btn btn-success btn-sm'>Edit</a>";
+                        tag1 += "</td>";
+        
+                        tag1 += "<td>";
+                        tag1 += "<a href='#' onclick='submit_view( + " + JSON.stringify(myObj.content[i].id) + ")' data-target='#viewModal'  data-toggle='modal' class='btn btn-info btn-sm'>View</a>";
+                        tag1 += "</td>";
+        
+                        tag1 += "<td>";
+                        tag1 += "<a onclick='submit_delete( + " + JSON.stringify(myObj.content[i].id) + ")' class='btn btn-danger btn-sm delete'>Delete</a>";
+                        tag1 += "</td>";
+        
+                        tag1 += "</tr>";
+                    }
+                    tag1 += "</tbody>";
+                    tag1 += "</table></div>";
+                    doc.innerHTML = tag1;
+            })
+        };
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        getData();
+    });
+    
+    
+    function submit_delete(id) {
+        fetch('http://127.0.0.1:8000/restaurant_delete/' + id)
+        .then(response => response.json()).then(myObj => {
+            alert("Item has been deleted successfully!");
+            getData();
+        })
+    };
+
+
+
+
+
+
+
+
+
+
 </script>
-
-
 
 </body>
 </html>

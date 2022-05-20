@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function submit_delete(id) {
     fetch('http://127.0.0.1:8000/foundation_delete/' + id)
     .then(response => response.json()).then(myObj => {
-        alert("Item has been deleted successfully!");
+        alert("Item has been deleted");
         getData();
     })
 };
