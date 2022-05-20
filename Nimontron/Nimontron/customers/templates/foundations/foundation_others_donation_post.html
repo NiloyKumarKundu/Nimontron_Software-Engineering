@@ -1,0 +1,139 @@
+{% include 'foundations/foundation_header.html' %}
+{% load static %}
+
+
+<div class="container">
+    
+        
+    <div id="details"></div>
+    
+
+    <div class="modal bd-example-modal-lg fade" id="mymodel">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="title">Title</h4>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                                <img id="img" src="" style="height: auto; width: 100%;" alt="">
+                            </div>  
+                        </div>
+                        <div class="col-md-6">
+                            <p id="postId" hidden></p>
+                            <p id="description">Description:</p>
+                            <p id="quantity">Quantity: </p>
+                            <p id="contact">Contact: </p>
+                            <p id="location">Location: </p>
+                            <p id="end_date">Available Until: </p>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button onclick="acceptPost()" data-dismiss="modal" class="btn btn btn-primary">Accept</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'foundations/foundation_footer.html' %}
+
+
+
+
+<script>
+
+    function getData() {
+        fetch('http://127.0.0.1:8000/foundation_all_other_donate_post')
+        .then(response => response.json()).then(myObj => {
+            let doc = document.querySelector("#details");
+            
+            console.log(myObj);
+            let size = myObj.content.length;
+            let tag1 = '<div class="row">';
+            for (let i = 0; i < size; i++) {
+                let x = JSON.parse(JSON.stringify(myObj['content'][i]['image']));
+                console.log(x);
+
+                let postId = JSON.stringify(myObj['content'][i]['id']);
+                let title = JSON.parse(JSON.stringify(myObj['content'][i]['title']));
+                let quantity = JSON.parse(JSON.stringify(myObj['content'][i]['quantity']));
+                let location = JSON.parse(JSON.stringify(myObj['content'][i]['area']));
+                let end_date = JSON.parse(JSON.stringify(myObj['content'][i]['end_date']));
+
+                tag1 += "<div class='col-md-4 p-4'>";
+                tag1 += "<div class='card' style='width: 18rem' margin-left: 40px;>";
+                tag1 += "<img class='card-img-top' height='200px' src=/media/" + x + " alt='Card image cap'>";
+                tag1 += "<div class='card-body p-3'>";
+                tag1 += "<h5 class='card-title'>" + title + "</h5>";
+                tag1 += "<p class='card-text'>";
+                tag1 += "Quantity: " + quantity;
+
+                tag1 += "<br>";
+                tag1 += "Location: " + location;
+                tag1 += "<br>";
+                tag1 += "End Date: " + end_date;
+                tag1 += "</p>"; 
+                tag1 += " <div class='d-grid gap-2 d-md-flex justify-content-md-end'>";
+                tag1 += "<a data-target='#mymodel' onclick='submit_view( " + postId + " )' data-toggle='modal' type='button' class='btn btn-sm btn-secondary'>Details</a>";
+                tag1 += "</div>";
+                tag1 += "</div>";
+                tag1 += "</div>";
+                tag1 += "</div>";
+            }
+            tag1 += '</div>';
+            console.log(tag1);
+            doc.innerHTML = tag1;
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        getData();
+    });
+
+
+    function submit_view(id) {
+        let img = document.querySelector('#img');
+        let postId = document.querySelector('#postId');
+        let title = document.querySelector('#title');
+        let description = document.querySelector('#description');
+        let location = document.querySelector('#location');
+        let quantity = document.querySelector('#quantity');
+        let end_date = document.querySelector('#end_date');
+        let contact = document.querySelector('#contact');
+
+
+        fetch('http://127.0.0.1:8000/api/customer_specific_donate_post/' + id)
+        .then(response => response.json()).then(myObj => {
+            console.log(myObj)
+            postId.innerHTML = JSON.stringify(myObj['content'][0]['id']);
+            title.innerHTML = JSON.parse(JSON.stringify(myObj['content'][0]['title']));
+            description.innerHTML = JSON.parse(JSON.stringify(myObj['content'][0]['description']));
+            quantity.innerHTML = "Quantity: " + JSON.parse(JSON.stringify(myObj['content'][0]['quantity']));
+            contact.innerHTML = "Contact: " + myObj['content'][0]['contact'];
+            location.innerHTML = "Location: " + myObj['content'][0]['area'];
+            end_date.innerHTML = "Available Until: " + myObj['content'][0]['end_date'];
+
+            let x = JSON.parse(JSON.stringify(myObj['content'][0]['image']));
+            console.log(x);
+            img.src = "/media/" + x;
+            console.log(img.src);
+        });
+    }
+
+
+    function acceptPost() {
+        postId = document.querySelector('#postId').innerHTML;
+        console.log(postId);
+        fetch('http://127.0.0.1:8000/foundation_accept_donate_post?id=' + postId + '&status=accepted')
+        .then(response => response.json()).then(myObj => {
+            alert('You have successfully claimed the donation');
+            getData();
+        });
+    }
+</script>

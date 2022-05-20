@@ -36,6 +36,10 @@ urlpatterns = [
     path('Logout', views.Logout, name='Logout'),
     path('customer_food_post_details/<int:id>', views.customer_food_post_details, name='customer_food_post_details'),
     path('cart_item_decrease/<int:id>', views.cart_item_decrease, name='cart_item_decrease'),
+    path('customer_add_donate_post', views.customer_add_donate_post, name='customer_add_donate_post'),
+    path('customer_all_donate_post', views.customer_all_donate_post, name='customer_all_donate_post'),
+    path('customer_edit_donate_post/<int:id>', views.customer_edit_donate_post, name='customer_edit_donate_post'),
+    path('customer_delete_donate_post/<int:id>', views.customer_delete_donate_post, name='customer_delete_donate_post'),
 
     #customer_view_cart
     path('customer_view_cart', views.customer_view_cart, name='customer_view_cart'),
@@ -80,7 +84,15 @@ urlpatterns = [
     path('foundation_edit_post/<int:id>', views.foundation_edit_post, name='foundation_edit_post'),
     path('foundation_delete_post/<int:id>', views.foundation_delete_post, name='foundation_delete_post'),
     path('accept_post/<int:id>', views.accept_post, name='accept_post'),
+    path('foundation_others_donation_post', views.foundation_others_donation_post, name='foundation_others_donation_post'),
+
+
+#Foundation APIs
+   path('foundation_all_other_donate_post', views.foundation_all_other_donate_post, name='foundation_all_other_donate_post'),
+   path('foundation_accept_donate_post', views.foundation_accept_donate_post, name='foundation_accept_donate_post'),
+
     
+
 #foundation_profile
      path('foundation_profile', views.foundation_profile, name='foundation_profile'),
 
@@ -103,7 +115,14 @@ urlpatterns = [
     # For testing api
     
     path('api/customer_post', views.api_customer_post),
+    path('api/customer_donate_post', views.customer_donate_post, name='customer_donate_post'),
+    path('api/customer_delete_specific_donate_post/<int:id>', views.customer_delete_specific_donate_post, name='customer_delete_specific_donate_post'),
+    path('api/customer_edit_specific_donate_post/<int:id>', views.customer_edit_specific_donate_post, name='customer_edit_specific_donate_post'),
 
+    path('customer_edit_s_donate_post', views.customer_edit_s_donate_post, name='customer_edit_s_donate_post'),
+
+    path('api/customer_specific_donate_post/<int:id>', views.customer_specific_donate_post, name='customer_specific_donate_post'),
+    path('ajax_get_view', views.ajax_get_view, name='ajax_get_view'),
 
 
     #admin_part

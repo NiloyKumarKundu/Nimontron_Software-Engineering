@@ -1,11 +1,13 @@
 from ctypes import sizeof
 from lib2to3.pgen2.token import EQUAL
 from re import I
+from socket import create_connection
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from datetime import date
 import os
 from django.db.models import Q
@@ -57,11 +59,13 @@ def contact(request):
 
 
 def donate(request):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
     temp['title'] = 'Donate Others'
     temp['sub_title'] = 'Donate Others'
     post = Foundation_Post.objects.all()
     temp['post'] = post
-    return render(request, 'visitors/donate.html', temp)
+    return render(request, 'customers/donate.html', temp)
 
 
 def login_as(request):
@@ -532,6 +536,182 @@ def customer_order_details(request, rand_order_id):
     temp['customer'] = customer
 
     return render(request, 'customers/customer_order_details.html', temp)
+
+
+
+
+
+# Customer Food Donate
+
+def customer_add_donate_post(request):
+    temp['title'] = 'Donate Others'
+    temp['sub_title'] = 'Donate Others'
+
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+
+    if request.method == 'POST':
+        post_title = request.POST['title']
+        description = request.POST['description']
+        contact = request.POST['contact']
+        quantity = request.POST['quantity']
+        image = request.FILES['image']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        area = request.POST['area']
+        user = request.user
+        creation_date = date.today()
+        status = 'Pending'
+
+        try:
+            CustomerPost.objects.create(customer=user, title=post_title, start_date=start_date, end_date=end_date, description=description, area=area, contact=contact, quantity=quantity, image=image, creation_date=creation_date, status=status)
+
+            messages.success(request, 'Item has been added successfully.')
+        except:
+            messages.error(request, 'Something went wrong. Please try again!')
+    return render(request, 'customers/customer_add_donate_post.html', temp)
+
+
+
+def customer_all_donate_post(request):
+    temp['title'] = 'My Donations'
+    temp['sub_title'] = 'My Donations'
+
+    # if not request.user.is_authenticated:
+    #     return redirect('customers:login_as')
+
+    posts = CustomerPost.objects.filter(customer=request.user)
+    temp['post'] = posts
+
+    return render(request, 'customers/customer_all_donate_post.html', temp)
+
+
+def customer_donate_post(request):
+    post = list(CustomerPost.objects.filter(customer=request.user).values())
+    return JsonResponse(post, safe=False)
+
+
+def customer_delete_specific_donate_post(request, id):
+    data = CustomerPost.objects.get(id=id)
+    data.delete()
+    post = list(CustomerPost.objects.filter(customer=request.user).values())
+    return JsonResponse(post, safe=False)
+
+
+def customer_edit_s_donate_post(request):
+    
+    if request.method == 'GET':
+        id = request.GET['id']
+        title = request.GET['title']
+        description = request.GET['description']
+        quantity = request.GET['quantity']
+        area = request.GET['area']
+        contact = request.GET['contact']
+        end_date = request.GET['end_date']
+        print(id, title, description, quantity, area, contact, end_date)
+
+        post = CustomerPost.objects.get(id=id, customer=request.user)
+        print(post, request.user)
+
+        post.title = title
+        post.description = description
+        post.quantity = quantity
+        post.area = area
+        post.contact = contact
+
+        try:
+            post.save()
+            temp['error'] = 'no'
+        except:
+            temp['error'] = 'yes'
+
+        if end_date:
+            try:
+                post.end_date = end_date
+                post.save()
+            except:
+                pass
+
+    post = list(CustomerPost.objects.filter(customer=request.user).values())
+    return JsonResponse(post, safe=False)
+
+def customer_edit_specific_donate_post(request, id):
+    post = list(CustomerPost.objects.filter(id=id).values())
+    data = {
+        'content' : post
+    }
+    return JsonResponse(data, safe=False)
+
+def customer_specific_donate_post(request, id):
+    post = list(CustomerPost.objects.filter(id=id).values())
+    data = {
+        'content' : post
+    }
+    return JsonResponse(data, safe=False)
+
+
+def customer_edit_donate_post(request, id):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    post = CustomerPost.objects.get(id=id)
+    temp['error'] = ''
+
+    if request.method == 'POST':
+        post_title = request.POST['post_title']
+        description = request.POST['description']
+        area = request.POST['area']
+        quantity = request.POST['quantity']
+        contact = request.POST['contact']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        
+        post.title = post_title
+        post.description = description
+        post.quantity = quantity
+        post.area = area
+        post.contact = contact
+
+        try:
+            post.save()
+            temp['error'] = 'no'
+        except:
+            temp['error'] = 'yes'
+
+        if start_date:
+            try:
+                post.start_date = start_date
+                post.save()
+            except:
+                pass
+
+        if end_date:
+            try:
+                post.end_date = end_date
+                post.save()
+            except:
+                pass
+        return redirect('customers:customer_all_donate_post')
+    temp['post'] = post
+    return render(request, 'customers/customer_edit_donate_post.html', temp)
+
+
+
+def customer_delete_donate_post(request, id):
+    if not request.user.is_authenticated:
+        return redirect('customers:login_as')
+    posts = CustomerPost.objects.get(id=id)
+    posts.delete()
+    return redirect('../customer_all_donate_post')
+
+
+
+def ajax_get_view(request):
+    post = list(CustomerPost.objects.filter(customer=request.user).values())
+    data = {
+        "content" : post
+    }
+    return JsonResponse(data)
+
 
 
 
@@ -1133,6 +1313,46 @@ def accept_post(request,id):
     post = Foundation_Post.objects.all()
     temp['post'] = post
     return render(request, 'customers/donate.html', temp)
+
+
+def foundation_all_other_donate_post(request):
+    post = list(CustomerPost.objects.filter(status='pending').values())
+    data = {
+        'content' : post
+    }
+    return JsonResponse(data, safe=False)
+
+
+def foundation_accept_donate_post(request):
+    if request.method == 'GET':
+        id = request.GET['id']
+        status = request.GET['status']
+        post = CustomerPost.objects.get(id=id)
+        user = request.user
+        foundation = Foundation.objects.get(user=user)
+        if status == 'accepted' and foundation:
+            post.status = status
+            post.foundation = foundation
+        try:
+            post.save()
+        except:
+            pass
+    post = list(CustomerPost.objects.filter(status='accepted').values())
+    data = {
+        'content' : post
+    }
+    return JsonResponse(data, safe=False)
+
+
+
+def foundation_others_donation_post(request):
+    if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+
+    post = CustomerPost.objects.filter(status='pending')
+    temp['post'] = post
+    return render(request, 'foundations/foundation_others_donation_post.html', temp)
+
 
 
 

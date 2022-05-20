@@ -19,6 +19,8 @@ class Customer(models.Model):
         return self.user.username
 
 
+
+
 class Restaurant(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contact_no = models.CharField(max_length=15, null=True)
@@ -141,6 +143,25 @@ class Foundation_Post(models.Model):
     status = models.CharField(max_length=20, null=True)
     contact_no = models.CharField(max_length=15, null=True)
     fname=models.CharField(max_length=100,null=True)
+
+    def __str__(self):
+        return self.title
+
+
+
+class CustomerPost(models.Model):
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    title=models.TextField(max_length=100)
+    description = models.TextField(max_length=255, null=True)
+    quantity=models.TextField(max_length=100, null=True)
+    area=models.TextField(max_length=100, null=True)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    creation_date = models.DateField()
+    status = models.CharField(max_length=20, null=True)
+    contact = models.CharField(max_length=15, null=True)
+    image = models.FileField()
+    foundation = models.ForeignKey(Foundation, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.title
