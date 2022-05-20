@@ -157,6 +157,9 @@ urlpatterns = [
     path('specific_foundation_edit_post', views.specific_foundation_edit_post, name="specific_foundation_edit_post"),
 
 
+    path('restaurant_delete/<int:id>',views.restaurant_delete, name="restaurant_delete"),
+
+
  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
