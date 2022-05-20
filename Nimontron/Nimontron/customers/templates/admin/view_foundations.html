@@ -24,19 +24,19 @@
                         <label>Item Name </label>
                         <input type="text" name="name" id="title" class="form-control" required>
                     </div>
-                    <br>
+                    
                     <div class="form-group">
                         <label>Description </label>
                         <textarea type="text" name="description" id="desc" class="form-control" required></textarea>
                     </div>
-                    <br>
+                    
                     <div class="form-group">
-                        <label>Preferable Area</label>
+                        <label>Address</label>
                         <input type="text" name="address" id="area" class="form-control" required>
                     </div>
-                    <br>
+
                     <div class="form-group">
-                        <label>Quantity</label>
+                        <label>Contact No</label>
                         <input type="text" name="contact_no" id="cont" class="form-control" required>
                     </div>
         
@@ -174,43 +174,38 @@ function submit_edit(id) {
     let area = document.querySelector("#area");
     let cont = document.querySelector("#cont");
     
-    fetch('http://127.0.0.1:8000/api/customer_specific_donate_post/' + id)
+    fetch('http://127.0.0.1:8000/specific_foundation_view/' + id)
     .then(response => response.json()).then(myObj => {
+        console.log(myObj);
         form_id.value = JSON.parse(JSON.stringify(myObj['content'][0]['id']));
 
-        let value = JSON.parse(JSON.stringify(myObj['content'][0]['title']));
+        let value = JSON.parse(JSON.stringify(myObj['content'][0]['name']));
         title.value = value;
+        console.log(value);
 
         value = JSON.parse(JSON.stringify(myObj['content'][0]['description']));
-        description.value = value;
+        desc.value = value;
 
-        value = JSON.parse(JSON.stringify(myObj['content'][0]['end_date']));
-        end_date.value = value;
-
-        value = JSON.parse(JSON.stringify(myObj['content'][0]['quantity']));
-        quantity.value = value;
-
-        value = JSON.parse(JSON.stringify(myObj['content'][0]['area']));
+        value = JSON.parse(JSON.stringify(myObj['content'][0]['address']));
         area.value = value;
 
-        value = JSON.parse(JSON.stringify(myObj['content'][0]['contact']));
-        contact.value = value;
+        value = JSON.parse(JSON.stringify(myObj['content'][0]['contact_no']));
+        cont.value = value;
     })
 } 
 
 
 function submitForm(form) {
     let form_id = document.querySelector("#form_id").value;
-    let form_id = document.querySelector("#form_id");
-    let title = document.querySelector("#title");
-    let desc = document.querySelector("#desc");
-    let area = document.querySelector("#area");
-    let cont = document.querySelector("#cont");
+    let title = document.querySelector("#title").value;
+    let desc = document.querySelector("#desc").value;
+    let area = document.querySelector("#area").value;
+    let cont = document.querySelector("#cont").value;
 
     // form.submit();
     console.log(form_id, title)
 
-    fetch('http://127.0.0.1:8000/customer_edit_s_donate_post?id=' + form_id + '&title=' + title + '&description=' + description + '&quantity=' + quantity + '&area=' + area + '&contact=' + contact + '&end_date=' + end_date)
+    fetch('http://127.0.0.1:8000/specific_foundation_edit_post?id=' + form_id + '&name=' + title + '&description=' + desc + '&address=' + area + '&area=' + area + '&contact=' + cont)
     .then(response => response.json()).then(myObj => {
         alert("Item has been Edited successfully!");
         getData();
