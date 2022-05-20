@@ -1,118 +1,222 @@
-
 <!DOCTYPE html>
 <html>
 <body style="background-color:#19595E">
 {% include 'admin/admin_navbar.html' %}
 
 
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-<div id = 'app'>
-<table class="table table-hover container" style="color:white;">
-    <thead>
-        <tr>
-            <th> Sr.no </th>
-            <th> Name </th>
-            <th> Contact_no </th>
-            <th> Address </th>
-            <th> Contact_no </th>
-        </tr>
-    </thead>
+<div id="details"></div>
 
-    <tbody>
-  
-        <tr v-for= "(i, count) in stories"> 
-            <td>[[(count + 1)]]</td>
-            <td>[[i.name]]</td>
-            
-            <td>[[i.address]]</td>
-            <td>[[i.contact_no ]]</td>
-           
 
-    <td> <a @click="editItems([[i.id]])" class="btn btn-success btn-sm"> EDIT </a><a @click="viewItems([[i.id]])" class="btn btn-info btn-sm"> View </a>
-    | <a @click="deleteItems([[i.id]])" class="btn btn-danger btn-sm" onclick="return confirm('Are You Sure?')"> Delete </a>
-    </td>
-</tr>
-</table>
+<div class="modal fade" id="mymodel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Edit Info</h4>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form action="." role="form" method="GET" id="formdata">
+                    {% csrf_token %}
+                    <input type="text" name="id" id="form_id" class="form-control" hidden>
+
+                    <div class="form-group">
+                        <label>Item Name </label>
+                        <input type="text" name="title" id="title" class="form-control" required>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>Description </label>
+                        <textarea type="text" name="description" id="description" class="form-control" required></textarea>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>Preferable Area</label>
+                        <input type="text" name="area" id="area" class="form-control" required>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="text" name="quantity" id="quantity" class="form-control" required>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>Contact</label>
+                        <input type="text" name="contact" id="contact" class="form-control" required>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" name="end_date" id="end_date" class="form-control" required>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <input onclick="submitForm(this.form)" class="btn btn-primary" value="Update" data-dismiss="modal">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 
+<script>
+function getData () {
+    let xmlhttp = new XMLHttpRequest();
 
-<script type= "text/javascript">
-    let app = new Vue({
-        el: '#app',
-        data: {
-            stories: [],
-        },
-        delimiters: ['[[', ']]'],
-        methods: {
-            getStories: function() {
-                fetch('http://127.0.0.1:8000/all_foundation_jsn')
-                .then(ret => ret.json())
-                .then(res => {
-                    this.stories = (res);
-                    console.log(stories);
-                });
-            },
-            editItems: function(id) {
-                window.location.href= "http://127.0.0.1:8000/edit_foundation/" + id;
-            },
-            viewItems: function(id) {
-                window.location.href= "http://127.0.0.1:8000/view_specific_foundation/" + id;
-            },
-            deleteItems: function(id) {
-                window.location.href= "http://127.0.0.1:8000/delete_foundation/" + id;
-            },
+    fetch('http://127.0.0.1:8000/all_foundation_jsn')
+    .then(response => response.json()).then(myObj => {
+            let doc = document.querySelector("#details");
+            console.log(myObj);
 
-        },
-        created: function() {
-            this.getStories();
-        }
-    });
+           
+            
+                
+              /*
+                    <tr v-for= "(i, count) in stories"> 
+                        <td>[[(count + 1)]]</td>
+                        <td>[[i.name]]</td>
+                        <td>[[i.contact_no ]]</td>
+                        <td>[[i.address]]</td>
+                       
+            
+                        <td> <a @click="editItems([[i.id]])" class="btn btn-success btn-sm"> EDIT </a><a @click="viewItems([[i.id]])" class="btn btn-info btn-sm"> View </a>
+                        | <a @click="deleteItems([[i.id]])" class="btn btn-danger btn-sm" onclick="return confirm('Are You Sure?')"> Delete </a>
+                        </td>
+                    </tr>
+                </table>
+                */
 
-</script>
+            let  tag1 = " <table class='table table-hover container' style='color:white;'>";
+            tag1 += "<thead>";
+            tag1 += "<tr>";
+            tag1 += "<th> Sr.no </th>";
+            tag1 += "<th> Name </th>";
+            tag1 += "<th> Contact_no </th>";
+            tag1 += "<th> Address </th>";
+            tag1 += "</tr>";
+            tag1 += "</thead>";
+            tag1 += "<tbody>";
 
+            let size = myObj.content.length;
 
+            for (let i = 0; i < size; i++) {
+                tag1 += "<tr>";
 
-</body>
-</html>
+                tag1 += "<td>";
+                tag1 += i + 1;
+                tag1 += "</td>";
 
+                tag1 += "<td>";
+                tag1 += JSON.parse(JSON.stringify(myObj.content[i].name));
+                tag1 += "</td>";
 
+                tag1 += "<td>";
+                tag1 += JSON.parse(JSON.stringify(myObj.content[i].contact_no));
+                tag1 += "</td>";
 
+                tag1 += "<td>";
+                tag1 += JSON.parse(JSON.stringify(myObj.content[i].address));
+                tag1 += "</td>";
 
+                tag1 += "<td>";
+                tag1 += "<a href='#' onclick='submit_edit( + " + JSON.stringify(myObj.content[i].id) + ")' data-target='#mymodel'  data-toggle='modal' class='btn btn-success btn-sm'>Edit</a>";
+                tag1 += "</td>";
 
-{% comment %} 
+                tag1 += "<td>";
+                tag1 += "<a href='#' onclick='submit_view( + " + JSON.stringify(myObj.content[i].id) + ")' data-target='#mymodel'  data-toggle='modal' class='btn btn-info btn-sm'>View</a>";
+                tag1 += "</td>";
 
+                tag1 += "<td>";
+                tag1 += "<a onclick='submit_delete( + " + JSON.stringify(myObj.content[i].id) + ")' class='btn btn-danger btn-sm delete'>Delete</a>";
+                tag1 += "</td>";
 
-{% comment %} 
-
-<script type= "text/javascript">
-    let app = new Vue({
-        el: '#app',
-        data: {
-            stories: [],
-        },
-        delimiters: ['[[', ']]'],
-        methods: {
-            getStories: function() {
-                fetch('http://127.0.0.1:8000/all_foundation_jsn')
-                .then(ret => ret.json())
-                .then(res => {
-                    this.stories = (res);
-                });
+                tag1 += "</tr>";
             }
-        }
+            tag1 += "</tbody>";
+            tag1 += "</table></div>";
+            doc.innerHTML = tag1;
     })
-},
-created: function() {
-    this.getStories();
-}
+};
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    getData();
 });
 
+
+function submit_delete(id) {
+    fetch('http://127.0.0.1:8000/foundation_delete/' + id)
+    .then(response => response.json()).then(myObj => {
+        alert("Item has been deleted successfully!");
+        getData();
+    })
+};
+
+
+function submit_edit(id) {
+    const form = document.getElementById("content_form");
+    let form_id = document.querySelector("#form_id");
+    let title = document.querySelector("#title");
+    let description = document.querySelector("#description");
+    let end_date = document.querySelector("#end_date");
+    let quantity = document.querySelector("#quantity");
+    let area = document.querySelector("#area");
+    let contact = document.querySelector("#contact");
+    
+    fetch('http://127.0.0.1:8000/api/customer_specific_donate_post/' + id)
+    .then(response => response.json()).then(myObj => {
+        form_id.value = JSON.parse(JSON.stringify(myObj['content'][0]['id']));
+
+        let value = JSON.parse(JSON.stringify(myObj['content'][0]['title']));
+        title.value = value;
+
+        value = JSON.parse(JSON.stringify(myObj['content'][0]['description']));
+        description.value = value;
+
+        value = JSON.parse(JSON.stringify(myObj['content'][0]['end_date']));
+        end_date.value = value;
+
+        value = JSON.parse(JSON.stringify(myObj['content'][0]['quantity']));
+        quantity.value = value;
+
+        value = JSON.parse(JSON.stringify(myObj['content'][0]['area']));
+        area.value = value;
+
+        value = JSON.parse(JSON.stringify(myObj['content'][0]['contact']));
+        contact.value = value;
+    })
+} 
+
+
+function submitForm(form) {
+    let form_id = document.querySelector("#form_id").value;
+    let title = document.querySelector("#title").value;
+    let description = document.querySelector("#description").value;
+    let end_date = document.querySelector("#end_date").value;
+    let quantity = document.querySelector("#quantity").value;
+    let area = document.querySelector("#area").value;
+    let contact = document.querySelector("#contact").value;
+
+    // form.submit();
+    console.log(form_id, title)
+
+    fetch('http://127.0.0.1:8000/customer_edit_s_donate_post?id=' + form_id + '&title=' + title + '&description=' + description + '&quantity=' + quantity + '&area=' + area + '&contact=' + contact + '&end_date=' + end_date)
+    .then(response => response.json()).then(myObj => {
+        alert("Item has been Edited successfully!");
+        getData();
+    })
+
+}
+
+
+
+
+
+
 </script>
 
 
-</body>
-</html>
- {% endcomment %}
 
+</body>
+</html> 
 

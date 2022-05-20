@@ -1535,14 +1535,28 @@ def all_restaurant_jsn(request):
 
 
 def all_foundation_jsn(request):
-    data = list(Foundation.objects.all().values())
-    temp['data'] = data
+    post = list(Foundation.objects.all().values())
+    data = {
+        'content' : post
+    }
     return JsonResponse(data, safe=False)
 
 
 
 
 
+def foundation_delete(request, id):
+    obj = Foundation.objects.get(id=id)
+    obj.delete()
+    post = list(Foundation.objects.all().values())
+    data = {
+        'content' : post
+    }
+    return JsonResponse(data, safe=False)
+
+
+def foundation_view(request, id):
+    
 
 
 
@@ -1550,6 +1564,12 @@ def all_foundation_jsn(request):
 
 
 
+
+
+
+
+
+# //////////////////////////////////////////////
 
 
 def view_all_delivery_man_lists(request):

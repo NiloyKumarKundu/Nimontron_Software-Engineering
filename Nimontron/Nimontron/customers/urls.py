@@ -152,6 +152,9 @@ urlpatterns = [
     path('all_restaurant_jsn',views.all_restaurant_jsn, name="all_restaurant_jsn"),
     path('all_foundation_jsn',views.all_foundation_jsn, name="all_foundation_jsn"),
 
+    path('foundation_delete/<int:id>',views.foundation_delete, name="foundation_delete"),
+
+
  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
