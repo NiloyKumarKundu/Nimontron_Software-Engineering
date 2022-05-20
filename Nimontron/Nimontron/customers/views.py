@@ -1574,6 +1574,7 @@ def specific_foundation_edit_post(request):
         id = request.GET['id']
 
         post = Foundation.objects.get(id=id)
+        print("asche")
         post.name=name
         post.description=description
         post.address=address
@@ -1583,7 +1584,11 @@ def specific_foundation_edit_post(request):
             post.save()
         except:
             pass
-    return
+    obj = list(Foundation.objects.all().values())
+    data = {
+        'content' : obj
+    }
+    return JsonResponse(data, safe=False)
 
 
 

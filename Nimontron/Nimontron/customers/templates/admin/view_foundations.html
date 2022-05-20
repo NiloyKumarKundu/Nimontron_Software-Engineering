@@ -205,7 +205,7 @@ function submitForm(form) {
     // form.submit();
     console.log(form_id, title)
 
-    fetch('http://127.0.0.1:8000/specific_foundation_edit_post?id=' + form_id + '&name=' + title + '&description=' + desc + '&address=' + area + '&address=' + area + '&contact=' + cont)
+    fetch('http://127.0.0.1:8000/specific_foundation_edit_post?id=' + form_id + '&name=' + title + '&description=' + desc + '&address=' + area + '&contact_no=' + cont)
     .then(response => response.json()).then(myObj => {
         alert("Item has been Edited successfully!");
         getData();
