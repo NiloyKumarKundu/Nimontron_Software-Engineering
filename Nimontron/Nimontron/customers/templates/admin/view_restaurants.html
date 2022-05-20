@@ -1,4 +1,4 @@
-
+{% comment %} 
 <!DOCTYPE html>
 <html>
 
@@ -15,15 +15,13 @@
             <th> Contact_no </th>
             <th> Address </th>
            
-       
-        
 
             {% comment %} <th> Image </th> {% endcomment %}
-        </tr>
-    </thead>
+    {% comment %} //    </tr>
+ //   </thead>
 
-    <tbody>
-        <tr v-for= "(i, count) in stories"> 
+  //  <tbody> {% endcomment %}
+        {% comment %} <tr v-for= "(i, count) in stories"> 
             <td>[[(count + 1)]]</td>
             <td>[[i.name]]</td>
             <td>[[i.contact_no ]]</td>
@@ -31,7 +29,7 @@
            
            
             {% comment %} <td><img src = "Nimontron_Software-Engineering\Nimontron\Nimontron\media\[[i.image.url]]" style = "width:70px ; height : 70px; border-radius: 50%"></td> {% endcomment %}
-
+{% comment %} 
             <td>
             <a @click="editItems([[i.id]])" class="btn btn-success btn-sm"> EDIT </a><a @click="viewItems([[i.id]])" class="btn btn-info btn-sm"> View </a>
             | <a @click="deleteItems([[i.id]])" class="btn btn-danger btn-sm" onclick="return confirm('Are You Sure?')"> Delete </a>
@@ -40,9 +38,9 @@
         </tr>
     </tbody>
 </table>
-</div>
+</div> {% endcomment %}
 
-
+{% comment %} 
 <script type= "text/javascript">
     let app = new Vue({
         el: '#app',
@@ -67,13 +65,29 @@
             },
             deleteItems: function(id) {
                 window.location.href= "http://127.0.0.1:8000/delete_restaurant/" + id;
-            },
+            }, {% endcomment %}
 
-        },
-        created: function() {
+        {% comment %} },
+       created: function() {
             this.getStories();
         }
-    });
+  });
+
+
+ {% endcomment %} 
+
+
+
+
+
+
+ <!DOCTYPE html>
+ <html>
+ <body style="background-color:#19595E">
+ {% include 'admin/admin_navbar.html' %}
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+ 
+ <div id="details"></div>
 
 
 
@@ -85,88 +99,77 @@
 
 
 
+
+
+
+
+
+
+
+
+<script>
+    function getData () {
+        let xmlhttp = new XMLHttpRequest();
+        
+        fetch('http://127.0.0.1:8000/all_restaurant_jsn')
+        .then(response => response.json()).then(myObj => {
+                let doc = document.querySelector("#details");
+                console.log(myObj);
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <script>
-        function getData () {
-            let xmlhttp = new XMLHttpRequest();
-        
-            fetch('http://127.0.0.1:8000/all_foundation_jsn')
-            .then(response => response.json()).then(myObj => {
-                    let doc = document.querySelector("#details");
-                    console.log(myObj);
-        
-                
-        
-                    let  tag1 = " <table class='table table-hover container' style='color:white;'>";
-                    tag1 += "<thead>";
+            
+    
+                let  tag1 = " <table class='table table-hover container' style='color:white;'>";
+                tag1 += "<thead>";
+                tag1 += "<tr>";
+                tag1 += "<th> Sr.no </th>";
+                tag1 += "<th> Name </th>";
+                tag1 += "<th> Contact_no </th>";
+                tag1 += "<th> Address </th>";
+                tag1 += "</tr>";
+                tag1 += "</thead>";
+                tag1 += "<tbody>";
+    
+                let size = myObj.content.length;
+    
+                for (let i = 0; i < size; i++) {
                     tag1 += "<tr>";
-                    tag1 += "<th> Sr.no </th>";
-                    tag1 += "<th> Name </th>";
-                    tag1 += "<th> Contact_no </th>";
-                    tag1 += "<th> Address </th>";
+    
+                    tag1 += "<td>";
+                    tag1 += i + 1;
+                    tag1 += "</td>";
+    
+                    tag1 += "<td>";
+                    tag1 += JSON.parse(JSON.stringify(myObj.content[i].name));
+                    tag1 += "</td>";
+    
+                    tag1 += "<td>";
+                    tag1 += JSON.parse(JSON.stringify(myObj.content[i].contact_no));
+                    tag1 += "</td>";
+    
+                    tag1 += "<td>";
+                    tag1 += JSON.parse(JSON.stringify(myObj.content[i].address));
+                    tag1 += "</td>";
+    
+                    tag1 += "<td>";
+                    tag1 += "<a href='#' onclick='submit_edit( + " + JSON.stringify(myObj.content[i].id) + ")' data-target='#mymodel'  data-toggle='modal' class='btn btn-success btn-sm'>Edit</a>";
+                    tag1 += "</td>";
+    
+                    tag1 += "<td>";
+                    tag1 += "<a href='#' onclick='submit_view( + " + JSON.stringify(myObj.content[i].id) + ")' data-target='#viewModal'  data-toggle='modal' class='btn btn-info btn-sm'>View</a>";
+                    tag1 += "</td>";
+    
+                    tag1 += "<td>";
+                    tag1 += "<a onclick='rest_del( + " + JSON.stringify(myObj.content[i].id) + ")' class='btn btn-danger btn-sm delete'>Delete</a>";
+                    tag1 += "</td>";
+    
                     tag1 += "</tr>";
-                    tag1 += "</thead>";
-                    tag1 += "<tbody>";
-        
-                    let size = myObj.content.length;
-        
-                    for (let i = 0; i < size; i++) {
-                        tag1 += "<tr>";
-        
-                        tag1 += "<td>";
-                        tag1 += i + 1;
-                        tag1 += "</td>";
-        
-                        tag1 += "<td>";
-                        tag1 += JSON.parse(JSON.stringify(myObj.content[i].name));
-                        tag1 += "</td>";
-        
-                        tag1 += "<td>";
-                        tag1 += JSON.parse(JSON.stringify(myObj.content[i].contact_no));
-                        tag1 += "</td>";
-        
-                        tag1 += "<td>";
-                        tag1 += JSON.parse(JSON.stringify(myObj.content[i].address));
-                        tag1 += "</td>";
-        
-                        tag1 += "<td>";
-                        tag1 += "<a href='#' onclick='submit_edit( + " + JSON.stringify(myObj.content[i].id) + ")' data-target='#mymodel'  data-toggle='modal' class='btn btn-success btn-sm'>Edit</a>";
-                        tag1 += "</td>";
-        
-                        tag1 += "<td>";
-                        tag1 += "<a href='#' onclick='submit_view( + " + JSON.stringify(myObj.content[i].id) + ")' data-target='#viewModal'  data-toggle='modal' class='btn btn-info btn-sm'>View</a>";
-                        tag1 += "</td>";
-        
-                        tag1 += "<td>";
-                        tag1 += "<a onclick='submit_delete( + " + JSON.stringify(myObj.content[i].id) + ")' class='btn btn-danger btn-sm delete'>Delete</a>";
-                        tag1 += "</td>";
-        
-                        tag1 += "</tr>";
-                    }
-                    tag1 += "</tbody>";
-                    tag1 += "</table></div>";
-                    doc.innerHTML = tag1;
-            })
-        };
-        
+                }
+                tag1 += "</tbody>";
+                tag1 += "</table></div>";
+                doc.innerHTML = tag1;
+        })
+    };
+    
 
 
 
@@ -187,7 +190,7 @@
     });
     
     
-    function submit_delete(id) {
+    function rest_del(id) {
         fetch('http://127.0.0.1:8000/restaurant_delete/' + id)
         .then(response => response.json()).then(myObj => {
             alert("Item has been deleted successfully!");
