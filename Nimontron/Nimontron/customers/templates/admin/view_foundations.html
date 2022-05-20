@@ -7,6 +7,47 @@
 
 <div id="details"></div>
 
+<div class="modal fade" id="mymodel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Edit Info</h4>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form action="." role="form" method="GET" id="formdata">
+                    {% csrf_token %}
+                    <input type="text" name="id" id="form_id" class="form-control" hidden>
+
+                    <div class="form-group">
+                        <label>Item Name </label>
+                        <input type="text" name="name" id="title" class="form-control" required>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>Description </label>
+                        <textarea type="text" name="description" id="desc" class="form-control" required></textarea>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>Preferable Area</label>
+                        <input type="text" name="address" id="area" class="form-control" required>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="text" name="contact_no" id="cont" class="form-control" required>
+                    </div>
+        
+                    <div class="modal-footer justify-content-center">
+                        <input onclick="submitForm(this.form)" class="btn btn-primary" value="Update" data-dismiss="modal">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -126,14 +167,12 @@ function submit_delete(id) {
 
 
 function submit_edit(id) {
-    const form = document.getElementById("content_form");
+    const form = document.getElementById("formdata");
     let form_id = document.querySelector("#form_id");
     let title = document.querySelector("#title");
-    let description = document.querySelector("#description");
-    let end_date = document.querySelector("#end_date");
-    let quantity = document.querySelector("#quantity");
+    let desc = document.querySelector("#desc");
     let area = document.querySelector("#area");
-    let contact = document.querySelector("#contact");
+    let cont = document.querySelector("#cont");
     
     fetch('http://127.0.0.1:8000/api/customer_specific_donate_post/' + id)
     .then(response => response.json()).then(myObj => {
@@ -162,12 +201,11 @@ function submit_edit(id) {
 
 function submitForm(form) {
     let form_id = document.querySelector("#form_id").value;
-    let title = document.querySelector("#title").value;
-    let description = document.querySelector("#description").value;
-    let end_date = document.querySelector("#end_date").value;
-    let quantity = document.querySelector("#quantity").value;
-    let area = document.querySelector("#area").value;
-    let contact = document.querySelector("#contact").value;
+    let form_id = document.querySelector("#form_id");
+    let title = document.querySelector("#title");
+    let desc = document.querySelector("#desc");
+    let area = document.querySelector("#area");
+    let cont = document.querySelector("#cont");
 
     // form.submit();
     console.log(form_id, title)
