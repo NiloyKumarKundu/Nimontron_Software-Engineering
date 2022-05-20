@@ -1555,9 +1555,13 @@ def foundation_delete(request, id):
     return JsonResponse(data, safe=False)
 
 
-def foundation_view(request, id):
-    
 
+def specific_foundation_view(request, id):
+    obj = list(Foundation.objects.filter(id=id).values())
+    data = {
+        'content' : obj
+    }
+    return JsonResponse(data, safe=False)
 
 
 

@@ -2,6 +2,7 @@
 <html>
 <body style="background-color:#19595E">
 {% include 'admin/admin_navbar.html' %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 
 
 <div id="details"></div>
@@ -59,6 +60,45 @@
 </div>
 
 
+
+<div class="modal bd-example-modal-lg fade" id="viewModal">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="title">Title</h4>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>
+                            <img id="img" src="" style="height: auto; width: 100%;" alt="">
+                        </div>  
+                    </div>
+                    <div class="col-md-6">
+                        <p id="postId" hidden></p>
+                        <p id="description">Description:</p>
+                        <p id="quantity">Quantity: </p>
+                        <p id="contact">Contact: </p>
+                        <p id="location">Location: </p>
+                        <p id="end_date">Available Until: </p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button onclick="acceptPost()" data-dismiss="modal" class="btn btn btn-primary">Accept</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 <script>
 function getData () {
     let xmlhttp = new XMLHttpRequest();
@@ -68,23 +108,7 @@ function getData () {
             let doc = document.querySelector("#details");
             console.log(myObj);
 
-           
-            
-                
-              /*
-                    <tr v-for= "(i, count) in stories"> 
-                        <td>[[(count + 1)]]</td>
-                        <td>[[i.name]]</td>
-                        <td>[[i.contact_no ]]</td>
-                        <td>[[i.address]]</td>
-                       
-            
-                        <td> <a @click="editItems([[i.id]])" class="btn btn-success btn-sm"> EDIT </a><a @click="viewItems([[i.id]])" class="btn btn-info btn-sm"> View </a>
-                        | <a @click="deleteItems([[i.id]])" class="btn btn-danger btn-sm" onclick="return confirm('Are You Sure?')"> Delete </a>
-                        </td>
-                    </tr>
-                </table>
-                */
+        
 
             let  tag1 = " <table class='table table-hover container' style='color:white;'>";
             tag1 += "<thead>";
@@ -123,7 +147,7 @@ function getData () {
                 tag1 += "</td>";
 
                 tag1 += "<td>";
-                tag1 += "<a href='#' onclick='submit_view( + " + JSON.stringify(myObj.content[i].id) + ")' data-target='#mymodel'  data-toggle='modal' class='btn btn-info btn-sm'>View</a>";
+                tag1 += "<a href='#' onclick='submit_view( + " + JSON.stringify(myObj.content[i].id) + ")' data-target='#viewModal'  data-toggle='modal' class='btn btn-info btn-sm'>View</a>";
                 tag1 += "</td>";
 
                 tag1 += "<td>";
@@ -137,6 +161,9 @@ function getData () {
             doc.innerHTML = tag1;
     })
 };
+
+
+
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -205,8 +232,7 @@ function submitForm(form) {
         alert("Item has been Edited successfully!");
         getData();
     })
-
-}
+};
 
 
 

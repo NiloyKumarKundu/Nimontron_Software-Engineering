@@ -153,6 +153,7 @@ urlpatterns = [
     path('all_foundation_jsn',views.all_foundation_jsn, name="all_foundation_jsn"),
 
     path('foundation_delete/<int:id>',views.foundation_delete, name="foundation_delete"),
+    path('specific_foundation_view/<int:id>',views.specific_foundation_view, name="specific_foundation_view"),
 
 
  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
