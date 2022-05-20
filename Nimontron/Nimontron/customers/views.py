@@ -1499,7 +1499,9 @@ def edit_restaurant(request, id):
 
 
 def edit_foundation(request, id):
+    user=request.user
     foundation = Foundation.objects.get(id=id)
+        
     print (foundation)
     if request.method == 'POST':
         first_name = request.POST['title']
@@ -1507,14 +1509,17 @@ def edit_foundation(request, id):
         image = request.FILES['image']
         contact_no = request.POST['contact']
         description = request.POST['description']
-        
+        print(first_name)
         foundation.user.first_name = first_name
+        print(foundation.user.first_name)
+        foundation.name = first_name
         foundation.address = address
         foundation.image = image
         foundation.contact_no = contact_no
         foundation.description = description
         try:
             foundation.save()
+            user.save()
         except:
             messages.error(request, 'could not change')
     temp['foundation'] = foundation
