@@ -65,7 +65,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 id="title">Title</h4>
+                <h4 id="name">Name</h4>
                 <button class="close" data-dismiss="modal">&times;</button>
             </div>
 
@@ -79,13 +79,9 @@
                     <div class="col-md-6">
                         <p id="postId" hidden></p>
                         <p id="description">Description:</p>
-                        <p id="quantity">Quantity: </p>
-                        <p id="contact">Contact: </p>
-                        <p id="location">Location: </p>
-                        <p id="end_date">Available Until: </p>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button onclick="acceptPost()" data-dismiss="modal" class="btn btn btn-primary">Accept</button>
-                        </div>
+                        <p id="address">Address: </p>
+                        <p id="contact_no">Contact No: </p>
+                        <p id="code_no">Code No: </p>
                     </div>
                 </div>
             </div>
@@ -233,6 +229,36 @@ function submitForm(form) {
         getData();
     })
 };
+
+
+
+
+function submit_view(id) {
+    let img = document.querySelector('#img');
+    let postId = document.querySelector('#postId');
+    let name = document.querySelector('#name');
+    let description = document.querySelector('#description');
+    let address = document.querySelector('#address');
+    let contact_no = document.querySelector('#contact_no');
+    let code_no = document.querySelector('#code_no');
+
+
+    fetch('http://127.0.0.1:8000/specific_foundation_view/' + id)
+    .then(response => response.json()).then(myObj => {
+        console.log(myObj)
+        postId.innerHTML = JSON.stringify(myObj['content'][0]['id']);
+        description.innerHTML = JSON.parse(JSON.stringify(myObj['content'][0]['description']));
+        name.innerHTML = JSON.parse(JSON.stringify(myObj['content'][0]['name']));
+        contact_no.innerHTML = "Contact No: " + myObj['content'][0]['contact_no'];
+        address.innerHTML = "Address: " + myObj['content'][0]['address'];
+        code_no.innerHTML = "Code No: " + myObj['content'][0]['code_no'];
+
+        let x = JSON.parse(JSON.stringify(myObj['content'][0]['image']));
+        console.log(x);
+        img.src = "/media/" + x;
+        console.log(img.src);
+    });
+}
 
 
 
