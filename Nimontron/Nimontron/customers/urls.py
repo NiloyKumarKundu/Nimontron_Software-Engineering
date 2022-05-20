@@ -89,6 +89,7 @@ urlpatterns = [
 
 #Foundation APIs
    path('foundation_all_other_donate_post', views.foundation_all_other_donate_post, name='foundation_all_other_donate_post'),
+   path('foundation_accept_donate_post', views.foundation_accept_donate_post, name='foundation_accept_donate_post'),
 
     
 

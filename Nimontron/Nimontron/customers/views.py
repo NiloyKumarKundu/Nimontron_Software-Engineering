@@ -1320,7 +1320,28 @@ def foundation_all_other_donate_post(request):
     data = {
         'content' : post
     }
-    return JsonResponse(post, safe=False)
+    return JsonResponse(data, safe=False)
+
+
+def foundation_accept_donate_post(request):
+    if request.method == 'GET':
+        id = request.GET['id']
+        status = request.GET['status']
+        post = CustomerPost.objects.get(id=id)
+        user = request.user
+        foundation = Foundation.objects.get(user=user)
+        if status == 'accepted' and foundation:
+            post.status = status
+            post.foundation = foundation
+        try:
+            post.save()
+        except:
+            pass
+    post = list(CustomerPost.objects.filter(status='accepted').values())
+    data = {
+        'content' : post
+    }
+    return JsonResponse(data, safe=False)
 
 
 
@@ -1328,7 +1349,7 @@ def foundation_others_donation_post(request):
     if not request.user.is_authenticated:
         return redirect('customer:login_as')
 
-    post = CustomerPost.objects.all()
+    post = CustomerPost.objects.filter(status='pending')
     temp['post'] = post
     return render(request, 'foundations/foundation_others_donation_post.html', temp)
 
