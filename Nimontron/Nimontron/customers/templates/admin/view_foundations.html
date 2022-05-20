@@ -2,34 +2,117 @@
 <!DOCTYPE html>
 <html>
 <body style="background-color:#19595E">
-
-
 {% include 'admin/admin_navbar.html' %}
 
 
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<div id = 'app'>
 <table class="table table-hover container" style="color:white;">
     <thead>
         <tr>
             <th> Sr.no </th>
             <th> Name </th>
             <th> Contact_no </th>
+            <th> Address </th>
+            <th> Contact_no </th>
         </tr>
     </thead>
 
     <tbody>
-    {% for i in data %}
- <tr> 
-    <td>{{forloop.counter}}</td>
-    <td>{{i.user.first_name}}{{i.user.last_name}}</td>
-    <td>{{i.contact_no }}</td>
-    <td><a href="{% url 'customers:delete_foundation' i.id%}" class="btn btn-danger btn-sm" onclick="return confirm('Are You Sure?')"> Delete </a> <a href="{% url 'customers:view_specific_foundation' i.id%}" class="btn btn-info btn-sm"> View </a></td>
+  
+        <tr v-for= "(i, count) in stories"> 
+            <td>[[(count + 1)]]</td>
+            <td>[[i.first_name]]</td>
+            
+            <td>[[i.address]]</td>
+            <td>[[i.contact_no ]]</td>
+           
 
-
-{%endfor%}
+    <td> <a @click="editItems([[i.id]])" class="btn btn-success btn-sm"> EDIT </a><a @click="viewItems([[i.id]])" class="btn btn-info btn-sm"> View </a>
+    | <a @click="deleteItems([[i.id]])" class="btn btn-danger btn-sm" onclick="return confirm('Are You Sure?')"> Delete </a>
+    </td>
 </tr>
 </table>
+</div>
+
+
+
+<script type= "text/javascript">
+    let app = new Vue({
+        el: '#app',
+        data: {
+            stories: [],
+        },
+        delimiters: ['[[', ']]'],
+        methods: {
+            getStories: function() {
+                fetch('http://127.0.0.1:8000/all_foundation_jsn')
+                .then(ret => ret.json())
+                .then(res => {
+                    this.stories = (res);
+                    console.log(stories);
+                });
+            },
+            editItems: function(id) {
+                window.location.href= "http://127.0.0.1:8000/edit_foundation/" + id;
+            },
+            viewItems: function(id) {
+                window.location.href= "http://127.0.0.1:8000/view_specific_foundation/" + id;
+            },
+            deleteItems: function(id) {
+                window.location.href= "http://127.0.0.1:8000/delete_foundation/" + id;
+            },
+
+        },
+        created: function() {
+            this.getStories();
+        }
+    });
+
+</script>
+
 
 
 </body>
 </html>
+
+
+
+
+
+{% comment %} 
+
+
+{% comment %} 
+
+<script type= "text/javascript">
+    let app = new Vue({
+        el: '#app',
+        data: {
+            stories: [],
+        },
+        delimiters: ['[[', ']]'],
+        methods: {
+            getStories: function() {
+                fetch('http://127.0.0.1:8000/all_foundation_jsn')
+                .then(ret => ret.json())
+                .then(res => {
+                    this.stories = (res);
+                });
+            }
+        }
+    })
+},
+created: function() {
+    this.getStories();
+}
+});
+
+</script>
+
+
+</body>
+</html>
+ {% endcomment %}
+
 

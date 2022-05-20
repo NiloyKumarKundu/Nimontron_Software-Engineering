@@ -1464,6 +1464,88 @@ def view_specific_foundation(request, id):
 
 
 
+
+    
+
+# from this line///////////////////////////////////////////////////////////////
+
+def edit_restaurant(request, id):
+    restaurant = Restaurant.objects.get(id=id)
+
+    if request.method == 'POST':
+        name = request.POST['rname']
+        address = request.POST['address']
+        image = request.FILES['image']
+        contact_no = request.POST['contact']
+        description = request.POST['description']
+        # facebook_page = request.post['facebook_page']
+        # ratting = request.post['ratting']
+
+
+        restaurant.name = name
+        restaurant.address = address
+        restaurant.contact_no = contact_no
+        restaurant.description = description
+        # restaurant.facebook_page = facebook_page
+        # restaurant.ratting = ratting
+        restaurant.image = image
+        try:
+            restaurant.save()
+        except:
+            messages.error(request, 'could not change')
+    temp['restaurant'] = restaurant
+    return render(request, 'admin/edit_restaurant.html', temp)
+
+
+def edit_foundation(request, id):
+    foundation = Foundation.objects.get(id=id)
+    print (foundation)
+    if request.method == 'POST':
+        first_name = request.POST['title']
+        address = request.POST['address']
+        image = request.FILES['image']
+        contact_no = request.POST['contact']
+        description = request.POST['description']
+        
+        foundation.user.first_name = first_name
+        foundation.address = address
+        foundation.image = image
+        foundation.contact_no = contact_no
+        foundation.description = description
+        try:
+            foundation.save()
+        except:
+            messages.error(request, 'could not change')
+    temp['foundation'] = foundation
+    return render(request, 'admin/edit_foundation.html', temp)
+
+
+def all_restaurant_jsn(request):
+    data = list(Restaurant.objects.all().values())
+    temp['data'] = data
+    return JsonResponse(data, safe=False)
+
+
+
+
+def all_foundation_jsn(request):
+    data = list(Foundation.objects.all().values())
+    temp['data'] = data
+    return JsonResponse(data, safe=False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def view_all_delivery_man_lists(request):
     if not request.user.is_authenticated:
         return redirect('customers:admin_login')

@@ -14,12 +14,10 @@
            <th> Image </th>
            <th> Name </th>
            <th> Email/Username </th>
-           <th> Password </th>
            <th> Address</th>
            <th> Contact_no </th>
            <th> Description </th>
-           <th> NGO_CODE </th>
-           <th> Date_of_Stablishment </th>
+          
         </tr>
     </thead>
 
@@ -30,12 +28,10 @@
     <td><img src = "{{i.image.url }}" style = "width:150px ; height : 150px; border-radius: 7%"></td>
     <td>{{i.user.first_name}}{{i.user.last_name}}</td>
     <td>{{i.user.username }}</td>
-    <td>{{i.password }}</td>
     <td>{{i.address }}</td>
     <td>{{i.contact_no }}</td>
     <td>{{i.description }}</td>
-    <td>{{i.ngo_code }}</td>
-    <td>{{i.Date_of_Establishment }}</td>
+
    
 {%endfor%}
 </tr>
