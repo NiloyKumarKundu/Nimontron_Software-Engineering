@@ -154,6 +154,7 @@ urlpatterns = [
 
     path('foundation_delete/<int:id>',views.foundation_delete, name="foundation_delete"),
     path('specific_foundation_view/<int:id>',views.specific_foundation_view, name="specific_foundation_view"),
+    path('specific_foundation_edit_post',views.specific_foundation_edit_post, name="specific_foundation_edit_post"),
 
 
  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1565,7 +1565,25 @@ def specific_foundation_view(request, id):
 
 
 
+def specific_foundation_edit_post(request):
+    if request.method == 'GET':
+        name = request.GET['name']
+        description = request.GET['description']
+        address = request.GET['address']
+        contact_no = request.GET['contact_no']
+        id = request.GET['id']
 
+        post = Foundation.objects.get(id=id)
+        post.name=name
+        post.description=description
+        post.address=address
+        post.contact_no=contact_no
+        
+        try:
+            post.save()
+        except:
+            pass
+    return
 
 
 
