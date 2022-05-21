@@ -202,7 +202,7 @@ function submitForm(form) {
 
     fetch('http://127.0.0.1:8000/specific_foundation_edit_post?id=' + f_id + '&name=' + title + '&description=' + desc + '&address=' + area + '&contact_no=' + cont)
     .then(response => response.json()).then(myObj => {
-        alert("Item has been Edited successfully!");
+        alert("Item has been Edited");
         getData();
     })
 };
