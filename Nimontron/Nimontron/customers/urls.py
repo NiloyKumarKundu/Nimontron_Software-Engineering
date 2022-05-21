@@ -148,6 +148,22 @@ urlpatterns = [
     path('view_specific_delivery_man_account',views.view_specific_delivery_man_account, name="view_specific_delivery_man_account"),
     
 
+    path('edit_restaurant/<int:id>',views.edit_restaurant, name="edit_restaurant"),
+    path('edit_foundation/<int:id>',views.edit_foundation, name="edit_foundation"),
+
+    path('all_restaurant_jsn',views.all_restaurant_jsn, name="all_restaurant_jsn"),
+    path('all_foundation_jsn',views.all_foundation_jsn, name="all_foundation_jsn"),
+
+    path('foundation_delete/<int:id>',views.foundation_delete, name="foundation_delete"),
+    path('specific_foundation_view/<int:id>',views.specific_foundation_view, name="specific_foundation_view"),
+    path('specific_foundation_edit_post', views.specific_foundation_edit_post, name="specific_foundation_edit_post"),
+
+   
+   
+     
+    
+
+
  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

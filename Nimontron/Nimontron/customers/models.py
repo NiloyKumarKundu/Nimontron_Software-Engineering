@@ -122,6 +122,7 @@ class Foundation(models.Model):
     Doe=models.CharField(max_length=15, null=True)
     type = models.CharField(max_length=20, null=True)
     status = models.CharField(max_length=20, null=True)
+    name = models.CharField(max_length=100, null=True)
 
 
     def __str__(self):
