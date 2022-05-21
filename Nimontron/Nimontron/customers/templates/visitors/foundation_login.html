@@ -26,7 +26,7 @@
                 <label style="margin-left: 5px;" class="form-check-label" for="form1Example3"> Remember password
                 </label>
               </div>
-
+              {% include 'customers/messages.html' %}
               <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
 
             </form>
@@ -41,13 +41,6 @@
 {% include 'visitors/footer.html' %}
 
 
-
-{% if error == 'no' %}
-<script>
-  alert('LogIn successful!');
-  window.location = ('{% url "customers:foundation_home" %}')
-</script>
-{% endif %}
 
 
 {% if error == 'yes' %}
