@@ -1526,8 +1526,10 @@ def edit_foundation(request, id):
 
 
 def all_restaurant_jsn(request):
-    data = list(Restaurant.objects.all().values())
-    temp['data'] = data
+    post = list(Restaurant.objects.all().values())
+    data = {
+        'content' : post
+    }
     return JsonResponse(data, safe=False)
 
 
@@ -1540,7 +1542,9 @@ def all_foundation_jsn(request):
 
 
 
-# -----------------------------------------------foundation delete
+
+
+
 def foundation_delete(request, id):
     obj = Foundation.objects.get(id=id)
     obj.delete()
@@ -1549,8 +1553,9 @@ def foundation_delete(request, id):
         'content' : post
     }
     return JsonResponse(data, safe=False)
+    
 
-# -----------------------------------------------restaurant delete
+
 def restaurant_delete(request, id):
     obj = Restaurant.objects.get(id=id)
     obj.delete()
@@ -1562,12 +1567,22 @@ def restaurant_delete(request, id):
 
 
 
+
 def specific_foundation_view(request, id):
     obj = list(Foundation.objects.filter(id=id).values())
     data = {
         'content' : obj
     }
     return JsonResponse(data, safe=False)
+
+
+def specific_restaurant_view(request, id):
+    obj = list(Restaurant.objects.filter(id=id).values())
+    data = {
+        'content' : obj
+    }
+    return JsonResponse(data, safe=False)
+
 
 
 
@@ -1591,6 +1606,35 @@ def specific_foundation_edit_post(request):
         except:
             pass
     obj = list(Foundation.objects.all().values())
+    data = {
+        'content' : obj
+    }
+    return JsonResponse(data, safe=False)
+
+
+#////////////////////////////////////////////////////////////
+
+
+def specific_restaurant_edit_post(request):
+    if request.method == 'GET':
+        name = request.GET['name']
+        description = request.GET['description']
+        address = request.GET['address']
+        contact_no = request.GET['contact_no']
+        id = request.GET['id']
+
+        post = Restaurant.objects.get(id=id)
+        print("asche")
+        post.name=name
+        post.description=description
+        post.address=address
+        post.contact_no=contact_no
+        
+        try:
+            post.save()
+        except:
+            pass
+    obj = list(Restaurant.objects.all().values())
     data = {
         'content' : obj
     }
