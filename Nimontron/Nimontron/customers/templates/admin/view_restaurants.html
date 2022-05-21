@@ -1,169 +1,83 @@
+
 <!DOCTYPE html>
 <html>
+
+
 <body style="background-color:#19595E">
 {% include 'admin/admin_navbar.html' %}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-
-
-<div id="details"></div>
-
-<div class="modal fade" id="mymodel">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>Update Restaurant Profile</h4>
-                <button class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <div class="modal-body">
-                <form action="." role="form" method="GET" id="formdata">
-                    {% csrf_token %}
-                    <input type="text" name="id" id="f_id" class="form-control" hidden>
-
-                    <div class="form-group">
-                        <label>Restaurant Name </label>
-                        <input type="text" name="name" id="name" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Description </label>
-                        <textarea type="text" name="description" id="desc" class="form-control" required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input type="text" name="address" id="area" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Contact No</label>
-                        <input type="text" name="contact_no" id="cont" class="form-control" required>
-                    </div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<div id = 'app'>
+<table class="table table-hover container" style="color:white;">
+    <thead>
+        <tr>
+            <th> Sr.no </th>
+            <th> Name </th>
+            <th> Contact_no </th>
+            <th> Address </th>
+           
+            <th> facebook_page </th>
         
-                    <div class="modal-footer justify-content-center">
-                        <input onclick="submitForm(this.form)" class="btn btn-primary" value="Update" data-dismiss="modal">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
+            {% comment %} <th> Image </th> {% endcomment %}
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr v-for= "(i, count) in stories"> 
+            <td>[[(count + 1)]]</td>
+            <td>[[i.name]]</td>
+            <td>[[i.contact_no ]]</td>
+            <td>[[i.address]]</td>
+           
+            <td>[[i.facebook_page]]</td>
+            {% comment %} <td><img src = "Nimontron_Software-Engineering\Nimontron\Nimontron\media\[[i.image.url]]" style = "width:70px ; height : 70px; border-radius: 50%"></td> {% endcomment %}
+
+            <td>
+            <a @click="editItems([[i.id]])" class="btn btn-success btn-sm"> EDIT </a><a @click="viewItems([[i.id]])" class="btn btn-info btn-sm"> View </a>
+            | <a @click="deleteItems([[i.id]])" class="btn btn-danger btn-sm" onclick="return confirm('Are You Sure?')"> Delete </a>
+            </td>
+
+        </tr>
+    </tbody>
+</table>
 </div>
 
 
+<script type= "text/javascript">
+    let app = new Vue({
+        el: '#app',
+        data: {
+            stories: [],
+        },
+        delimiters: ['[[', ']]'],
+        methods: {
+            getStories: function() {
+                fetch('http://127.0.0.1:8000/all_restaurant_jsn')
+                .then(ret => ret.json())
+                .then(res => {
+                    this.stories = (res);
+                    console.log(stories);
+                });
+            },
+            editItems: function(id) {
+                window.location.href= "http://127.0.0.1:8000/edit_restaurant/" + id;
+            },
+            viewItems: function(id) {
+                window.location.href= "http://127.0.0.1:8000/view_specific_restaurant/" + id;
+            },
+            deleteItems: function(id) {
+                window.location.href= "http://127.0.0.1:8000/delete_restaurant/" + id;
+            },
 
-<div class="modal bd-example-modal-lg fade" id="viewModal">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4> View Profile</h4>
-                <button class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div>
-                            <img id="img" src="" style="height: auto; width: 100%;" alt="">
-                        </div>  
-                    </div>
-                    <div class="col-md-6">
-                        <p id="postId" hidden></p>
-                        <p id="name">Name: </p>
-                        <p id="address">Address: </p>
-                        <p id="contact_no">Contact No: </p>
-                        <p id="code_no">Code No: </p>
-                        <p id="description">Description:</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<script>
-function getData () {
-    let xmlhttp = new XMLHttpRequest();
-
-    fetch('http://127.0.0.1:8000/all_restaurant_jsn')
-    .then(response => response.json()).then(myObj => {
-            let doc = document.querySelector("#details");
-            console.log(myObj);
-
-        
-
-            let  tag1 = " <table class='table table-hover container' style='color:white;'>";
-            tag1 += "<thead>";
-            tag1 += "<tr>";
-            tag1 += "<th> Sr.no </th>";
-            tag1 += "<th> Name </th>";
-            tag1 += "<th> Contact_no </th>";
-            tag1 += "<th> Address </th>";
-            tag1 += "</tr>";
-            tag1 += "</thead>";
-            tag1 += "<tbody>";
-
-            let size = myObj.content.length;
-
-            for (let i = 0; i < size; i++) {
-                tag1 += "<tr>";
-
-                tag1 += "<td>";
-                tag1 += i + 1;
-                tag1 += "</td>";
-
-                tag1 += "<td>";
-                tag1 += JSON.parse(JSON.stringify(myObj.content[i].name));
-                tag1 += "</td>";
-
-                tag1 += "<td>";
-                tag1 += JSON.parse(JSON.stringify(myObj.content[i].contact_no));
-                tag1 += "</td>";
-
-                tag1 += "<td>";
-                tag1 += JSON.parse(JSON.stringify(myObj.content[i].address));
-                tag1 += "</td>";
-
-                tag1 += "<td>";
-                tag1 += "<a href='#' onclick='submit_edit( + " + JSON.stringify(myObj.content[i].id) + ")' data-target='#mymodel'  data-toggle='modal' class='btn btn-success btn-sm'>Edit</a>";
-                tag1 += "</td>";
-
-                tag1 += "<td>";
-                tag1 += "<a href='#' onclick='submit_view( + " + JSON.stringify(myObj.content[i].id) + ")' data-target='#viewModal'  data-toggle='modal' class='btn btn-info btn-sm'>View</a>";
-                tag1 += "</td>";
-
-                tag1 += "<td>";
-                tag1 += "<a onclick='submit_delete( + " + JSON.stringify(myObj.content[i].id) + ")' class='btn btn-danger btn-sm delete'>Delete</a>";
-                tag1 += "</td>";
-
-                tag1 += "</tr>";
-            }
-            tag1 += "</tbody>";
-            tag1 += "</table></div>";
-            doc.innerHTML = tag1;
-    })
-};
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    getData();
-});
-
-
-function submit_delete(id) {
-    fetch('http://127.0.0.1:8000/restaurant_delete/' + id)
-    .then(response => response.json()).then(myObj => {
-        alert("Item has been deleted");
-        getData();
-    })
-};
-
-
-
-
+        },
+        created: function() {
+            this.getStories();
+        }
+    });
 
 </script>
 
+
+
 </body>
-</html> 
+</html>

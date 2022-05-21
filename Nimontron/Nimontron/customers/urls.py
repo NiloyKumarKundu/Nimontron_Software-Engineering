@@ -156,10 +156,7 @@ urlpatterns = [
     path('specific_foundation_view/<int:id>',views.specific_foundation_view, name="specific_foundation_view"),
     path('specific_foundation_edit_post', views.specific_foundation_edit_post, name="specific_foundation_edit_post"),
 
-    
-    path('restaurant_delete/<int:id>',views.restaurant_delete, name="restaurant_delete"),
-    path('specific_restaurant_view/<int:id>',views.specific_restaurant_view, name="specific_restaurant_view"),
-    path('specific_restaurant_edit_post', views.specific_restaurant_edit_post, name="specific_restaurant_edit_post"),
+   
    
      
     

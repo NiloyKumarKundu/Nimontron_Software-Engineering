@@ -187,7 +187,7 @@ function submit_edit(id) {
         value = JSON.parse(JSON.stringify(myObj['content'][0]['contact_no']));
         cont.value = value;
     })
-} 
+};
 
 
 function submitForm(form) {
@@ -197,7 +197,6 @@ function submitForm(form) {
     let area = document.querySelector("#area").value;
     let cont = document.querySelector("#cont").value;
 
-    // form.submit();
     console.log(f_id, title)
 
     fetch('http://127.0.0.1:8000/specific_foundation_edit_post?id=' + f_id + '&name=' + title + '&description=' + desc + '&address=' + area + '&contact_no=' + cont)
@@ -235,7 +234,7 @@ function submit_view(id) {
         img.src = "/media/" + x;
         console.log(img.src);
     });
-}
+};
 
 
 </script>

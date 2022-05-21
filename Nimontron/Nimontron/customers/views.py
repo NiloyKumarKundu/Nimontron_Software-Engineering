@@ -1373,17 +1373,18 @@ def api_customer_post(request):
 
 
 
-
-
-
-
+#/////////////////////////////////////////////// NEW
 
 #admin_part
 
 
+
+
+
+
+
 def admin_home(request):
     return render(request, 'admin/admin_home.html', temp)
-
 
 
 
@@ -1417,8 +1418,6 @@ def view_restaurants(request):
     return render(request, 'admin/view_restaurants.html', temp)
 
 
-
-
 def delete_restaurant(request,id):
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
@@ -1426,7 +1425,6 @@ def delete_restaurant(request,id):
     restaurant.delete()
     return redirect('customers:view_restaurants')
     
-
 
 
 def view_specific_restaurant(request, id):
@@ -1446,15 +1444,12 @@ def view_foundations(request):
     return render(request, 'admin/view_foundations.html', temp)
 
 
-
-
 def delete_foundation(request,id):
     if not request.user.is_authenticated:
         return redirect('customers:login_as')
     foundation = Foundation.objects.get(id=id)
     foundation.delete()
     return redirect('customers:view_foundations')
-
 
 
 def view_specific_foundation(request, id):
@@ -1464,14 +1459,10 @@ def view_specific_foundation(request, id):
 
 
 
-
-    
-
 # from this line///////////////////////////////////////////////////////////////
 
 def edit_restaurant(request, id):
     restaurant = Restaurant.objects.get(id=id)
-    print(restaurant)
 
     if request.method == 'POST':
         name = request.POST['rname']
@@ -1481,6 +1472,7 @@ def edit_restaurant(request, id):
         description = request.POST['description']
         # facebook_page = request.post['facebook_page']
         # ratting = request.post['ratting']
+
 
         restaurant.name = name
         restaurant.address = address
@@ -1498,9 +1490,7 @@ def edit_restaurant(request, id):
 
 
 def edit_foundation(request, id):
-    user=request.user
     foundation = Foundation.objects.get(id=id)
-        
     print (foundation)
     if request.method == 'POST':
         first_name = request.POST['title']
@@ -1508,17 +1498,14 @@ def edit_foundation(request, id):
         image = request.FILES['image']
         contact_no = request.POST['contact']
         description = request.POST['description']
-        print(first_name)
+        
         foundation.user.first_name = first_name
-        print(foundation.user.first_name)
-        foundation.name = first_name
         foundation.address = address
         foundation.image = image
         foundation.contact_no = contact_no
         foundation.description = description
         try:
             foundation.save()
-            user.save()
         except:
             messages.error(request, 'could not change')
     temp['foundation'] = foundation
@@ -1526,11 +1513,20 @@ def edit_foundation(request, id):
 
 
 def all_restaurant_jsn(request):
-    post = list(Restaurant.objects.all().values())
-    data = {
-        'content' : post
-    }
+    data = list(Restaurant.objects.all().values())
+    temp['data'] = data
     return JsonResponse(data, safe=False)
+
+
+
+
+def all_foundation_jsn(request):
+    data = list(Foundation.objects.all().values())
+    temp['data'] = data
+    return JsonResponse(data, safe=False)
+
+
+
 
 
 def all_foundation_jsn(request):
@@ -1539,6 +1535,7 @@ def all_foundation_jsn(request):
         'content' : post
     }
     return JsonResponse(data, safe=False)
+
 
 
 
@@ -1556,17 +1553,6 @@ def foundation_delete(request, id):
     
 
 
-def restaurant_delete(request, id):
-    obj = Restaurant.objects.get(id=id)
-    obj.delete()
-    post = list(Restaurant.objects.all().values())
-    data = {
-        'content' : post
-    }
-    return JsonResponse(data, safe=False)
-
-
-
 
 def specific_foundation_view(request, id):
     obj = list(Foundation.objects.filter(id=id).values())
@@ -1575,13 +1561,6 @@ def specific_foundation_view(request, id):
     }
     return JsonResponse(data, safe=False)
 
-
-def specific_restaurant_view(request, id):
-    obj = list(Restaurant.objects.filter(id=id).values())
-    data = {
-        'content' : obj
-    }
-    return JsonResponse(data, safe=False)
 
 
 
@@ -1612,33 +1591,221 @@ def specific_foundation_edit_post(request):
     return JsonResponse(data, safe=False)
 
 
-#////////////////////////////////////////////////////////////
 
 
-def specific_restaurant_edit_post(request):
-    if request.method == 'GET':
-        name = request.GET['name']
-        description = request.GET['description']
-        address = request.GET['address']
-        contact_no = request.GET['contact_no']
-        id = request.GET['id']
 
-        post = Restaurant.objects.get(id=id)
-        print("asche")
-        post.name=name
-        post.description=description
-        post.address=address
-        post.contact_no=contact_no
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# #admin_part
+
+
+# def admin_home(request):
+#     return render(request, 'admin/admin_home.html', temp)
+
+
+
+
+# def admin_login(request):
+#     error = ""
+#     if request.method == 'POST':
+#         email = request.POST['email']
+#         password = request.POST['password']
+#         print(email, password)
+#         user = authenticate(username=email, password = password)
+
+#         try: 
+#             if user.is_staff:
+#                 login(request, user)
+#                 error = "no"
+#             else:
+#                 error="yes"
+#         except:
+#             error = "yes"
+#         temp['error'] = error
+#     return render(request, 'admin/admin_login.html', temp)
+
+
+
+
+# def view_restaurants(request):
+#     if not request.user.is_authenticated:
+#         return redirect('customers:login_as')
+#     data = Restaurant.objects.all()
+#     temp['data'] = data
+#     return render(request, 'admin/view_restaurants.html', temp)
+
+
+
+
+# def delete_restaurant(request,id):
+#     if not request.user.is_authenticated:
+#         return redirect('customers:login_as')
+#     restaurant = Restaurant.objects.get(id=id)
+#     restaurant.delete()
+#     return redirect('customers:view_restaurants')
+    
+
+
+
+# def view_specific_restaurant(request, id):
+#     restaurant = Restaurant.objects.filter(id=id)
+#     temp['restaurant'] = restaurant
+#     return render(request, 'admin/view_specific_restaurant.html', temp)
+
+
+
+
+
+# def view_foundations(request):
+#     if not request.user.is_authenticated:
+#         return redirect('customers:login_as')
+#     data = Foundation.objects.all()
+#     temp['data'] = data
+#     return render(request, 'admin/view_foundations.html', temp)
+
+
+
+
+# def delete_foundation(request,id):
+#     if not request.user.is_authenticated:
+#         return redirect('customers:login_as')
+#     foundation = Foundation.objects.get(id=id)
+#     foundation.delete()
+#     return redirect('customers:view_foundations')
+
+
+
+# def view_specific_foundation(request, id):
+#     foundation = Foundation.objects.filter(id=id)
+#     temp['foundation'] = foundation
+#     return render(request, 'admin/view_specific_foundation.html', temp)
+
+
+
+
+    
+
+# # from this line///////////////////////////////////////////////////////////////
+
+
+
+# def edit_restaurant(request, id):
+#     restaurant = Restaurant.objects.get(id=id)
+
+#     if request.method == 'POST':
+#         name = request.POST['rname']
+#         address = request.POST['address']
+#         image = request.FILES['image']
+#         contact_no = request.POST['contact']
+#         description = request.POST['description']
+#         # facebook_page = request.post['facebook_page']
+#         # ratting = request.post['ratting']
+
+
+#         restaurant.name = name
+#         restaurant.address = address
+#         restaurant.contact_no = contact_no
+#         restaurant.description = description
+#         # restaurant.facebook_page = facebook_page
+#         # restaurant.ratting = ratting
+#         restaurant.image = image
+#         try:
+#             restaurant.save()
+#         except:
+#             messages.error(request, 'could not change')
+#     temp['restaurant'] = restaurant
+#     return render(request, 'admin/edit_restaurant.html', temp)
+
+
+
+
+# def all_restaurant_jsn(request):
+#     data = list(Restaurant.objects.all().values())
+#     temp['data'] = data
+#     return JsonResponse(data, safe=False)
+
+
+
+
+
+
+
+
+# def all_foundation_jsn(request):
+#     post = list(Foundation.objects.all().values())
+#     data = {
+#         'content' : post
+#     }
+#     return JsonResponse(data, safe=False)
+
+
+
+
+
+
+
+# def foundation_delete(request, id):
+#     obj = Foundation.objects.get(id=id)
+#     obj.delete()
+#     post = list(Foundation.objects.all().values())
+#     data = {
+#         'content' : post
+#     }
+#     return JsonResponse(data, safe=False)
+    
+
+
+
+# def specific_foundation_view(request, id):
+#     obj = list(Foundation.objects.filter(id=id).values())
+#     data = {
+#         'content' : obj
+#     }
+#     return JsonResponse(data, safe=False)
+
+
+
+
+
+# def specific_foundation_edit_post(request):
+#     if request.method == 'GET':
+#         name = request.GET['name']
+#         description = request.GET['description']
+#         address = request.GET['address']
+#         contact_no = request.GET['contact_no']
+#         id = request.GET['id']
+
+#         post = Foundation.objects.get(id=id)
+#         print("asche")
+#         post.name=name
+#         post.description=description
+#         post.address=address
+#         post.contact_no=contact_no
         
-        try:
-            post.save()
-        except:
-            pass
-    obj = list(Restaurant.objects.all().values())
-    data = {
-        'content' : obj
-    }
-    return JsonResponse(data, safe=False)
+#         try:
+#             post.save()
+#         except:
+#             pass
+#     obj = list(Foundation.objects.all().values())
+#     data = {
+#         'content' : obj
+#     }
+#     return JsonResponse(data, safe=False)
+
 
 
 
