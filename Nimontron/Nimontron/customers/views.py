@@ -1328,8 +1328,25 @@ def foundation_all_other_donate_post(request):
 
 
 def foundation_accept_donate_post(request):
-    post = CustomerPost.objects.filter(status='accepted')
+    if request.method == 'GET':
+        id = request.GET['id']
+        status = request.GET['status']
+        post = CustomerPost.objects.get(id=id)
+        post.status = status
+        try:
+            post.save()
+        except:
+            pass
 
+    post = list(CustomerPost.objects.filter(status='accepted').values())
+    data = {
+        'content' : post
+    }
+    return JsonResponse(data, safe=False)
+
+
+def accepted_posts_foundation(request):
+    post = CustomerPost.objects.filter(status='accepted')
     temp['post'] = post
     
     return render(request, 'foundations/foundation_accept_donate_post.html', temp)

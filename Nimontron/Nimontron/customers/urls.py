@@ -86,6 +86,7 @@ urlpatterns = [
     path('accept_post/<int:id>', views.accept_post, name='accept_post'),
     path('foundation_others_donation_post', views.foundation_others_donation_post, name='foundation_others_donation_post'),
    path('foundation_accept_donate_post', views.foundation_accept_donate_post, name='foundation_accept_donate_post'),
+   path('accepted_posts_foundation', views.accepted_posts_foundation, name='accepted_posts_foundation'),
     
 
 
