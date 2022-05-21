@@ -1324,24 +1324,11 @@ def foundation_all_other_donate_post(request):
 
 
 def foundation_accept_donate_post(request):
-    if request.method == 'GET':
-        id = request.GET['id']
-        status = request.GET['status']
-        post = CustomerPost.objects.get(id=id)
-        user = request.user
-        foundation = Foundation.objects.get(user=user)
-        if status == 'accepted' and foundation:
-            post.status = status
-            post.foundation = foundation
-        try:
-            post.save()
-        except:
-            pass
-    post = list(CustomerPost.objects.filter(status='accepted').values())
-    data = {
-        'content' : post
-    }
-    return JsonResponse(data, safe=False)
+    post = CustomerPost.objects.filter(status='accepted')
+
+    temp['post'] = post
+    
+    return render(request, 'foundations/foundation_accept_donate_post.html', temp)
 
 
 
