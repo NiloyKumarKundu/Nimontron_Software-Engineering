@@ -85,12 +85,12 @@ urlpatterns = [
     path('foundation_delete_post/<int:id>', views.foundation_delete_post, name='foundation_delete_post'),
     path('accept_post/<int:id>', views.accept_post, name='accept_post'),
     path('foundation_others_donation_post', views.foundation_others_donation_post, name='foundation_others_donation_post'),
-    path('foundation_accepted_donation_post', views.foundation_accepted_donation_post, name='foundation_accepted_donation_post'),
+   path('foundation_accept_donate_post', views.foundation_accept_donate_post, name='foundation_accept_donate_post'),
+    
 
 
 #Foundation APIs
    path('foundation_all_other_donate_post', views.foundation_all_other_donate_post, name='foundation_all_other_donate_post'),
-   path('foundation_accept_donate_post', views.foundation_accept_donate_post, name='foundation_accept_donate_post'),
 
     
 
