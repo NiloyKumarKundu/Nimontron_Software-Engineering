@@ -1359,6 +1359,13 @@ def foundation_others_donation_post(request):
 
 
 
+def foundation_accepted_donation_post(request):
+    if not request.user.is_authenticated:
+        return redirect('customer:login_as')
+    temp['post'] = CustomerPost.objects.filter(status='accepted')
+
+    return render(request, 'foundations/foundation_accepted_donation_post.html', temp)
+
 
 # For testing api
 def api_customer_post(request):
